@@ -121,3 +121,17 @@ b9c4e0,172.25.0.1,GET,http://127.0.0.1:81/api/author,1709205831,,200,request
 13f824,172.25.0.1,POST,http://127.0.0.1:81/api/author,1709205835,,500,request
 fdedd6,172.25.0.1,POST,http://127.0.0.1:81/api/author,1709205899,,200,request
 9caf39,172.25.0.1,POST,http://127.0.0.1:81/api/author,1709205931,,200,request
+a06bed,172.26.0.1,GET,http://127.0.0.1:81/api/books,1709213135,,500,request
+c28922,172.26.0.1,GET,http://127.0.0.1:81/api/books,1709213198,,200,request
+18ad96,172.26.0.1,POST,http://127.0.0.1:81/api/book,1709213202,,400,request
+64a801,172.26.0.1,POST,http://127.0.0.1:81/api/author,1709213206,,200,request
+cb09ff,172.26.0.1,POST,http://127.0.0.1:81/api/book,1709213213,,500,request
+ffd46c,172.26.0.1,POST,http://127.0.0.1:81/api/book,1709213235,,200,request
+d233ac,172.26.0.1,GET,http://127.0.0.1:81/api/books,1709213238,,200,request
+97791f,172.26.0.1,PUT,http://127.0.0.1:81/api/book/81be5e27-9e7b-4b9f-9635-c4574a8c1f2c,1709213249,,200,request
+c7739a,172.26.0.1,PATCH,http://127.0.0.1:81/api/book/81be5e27-9e7b-4b9f-9635-c4574a8c1f2c,1709213253,,200,request
+dffa32,172.26.0.1,GET,http://127.0.0.1:81/api/isbn?isbn=OL17860744W,1709213262,,500,request
+6781ac,172.26.0.1,GET,http://127.0.0.1:81/api/isbn?isbn=OL17860744W,1709213524,,500,request
+f9451a,172.26.0.1,GET,http://127.0.0.1:81/api/books,1709213528,,200,request
+1a57d8,172.26.0.1,GET,http://127.0.0.1:81/api/isbn?isbn=OL17860744W,1709213571,,500,request
+3840dd,172.26.0.1,GET,http://127.0.0.1:81/api/isbn?isbn=OL17860744W,1709213589,,200,request
