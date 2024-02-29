@@ -1,0 +1,24 @@
+book_controller_get:
+    path: /api/books
+    controller: App\Books\Infrastructure\Controllers\BooksGetController
+    methods:  [GET] 
+book_controller_get_id:
+    path: /api/books/{id}
+    controller: App\Books\Infrastructure\Controllers\BookGetController
+    methods:  [GET]
+book_controller_post:
+    path: /api/book
+    controller: App\Books\Infrastructure\Controllers\BooksPostController
+    methods:  [POST] 
+book_controller_edit:
+    path: /api/book/{id}
+    controller: App\Books\Infrastructure\Controllers\BooksPutController
+    methods : [PUT]
+book_controller_delete:
+    path: /api/book/{id}
+    controller: App\Books\Infrastructure\Controllers\BooksDeleteController
+    methods : [DELETE]
+book_controller_patch:
+    path: /api/book/{id}
+    controller: App\Books\Infrastructure\Controllers\BooksPatchController   
+    methods : [PATCH]

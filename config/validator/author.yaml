@@ -1,0 +1,8 @@
+App\Authors\Domain\Author:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                min: 3

@@ -1,0 +1,4 @@
+App\Books\Application\Dto\BookDto:
+    properties:
+        title:
+            - NotBlank: ~

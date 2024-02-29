@@ -1,0 +1,4 @@
+App\Categories\Application\Dto\CategoryDto:
+    properties:
+        name:
+            - NotBlank: ~

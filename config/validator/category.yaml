@@ -1,0 +1,4 @@
+App\Categories\Domain\Category:
+    properties:
+        name:
+            - NotBlank: ~

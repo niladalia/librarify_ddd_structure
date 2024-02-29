@@ -1,0 +1,33 @@
+App\Categories\Domain\Category:
+    type: entity
+    table: category
+    repositoryClass: App\Categories\Infrastructure\Persistence\DoctrineCategoryRepository
+    id:
+        id:
+            type: string
+            scale: null
+            length: null
+            unique: false
+            nullable: false
+            precision: null
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            scale: null
+            length: 255
+            unique: false
+            nullable: false
+            precision: null
+    manyToMany:
+        books:
+            targetEntity: App\Books\Domain\Book
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: categories
+            inversedBy: null
+            joinTable: {  }
+            orderBy: null
+    lifecycleCallbacks: {  }

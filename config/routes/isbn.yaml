@@ -1,0 +1,4 @@
+isbn_controller_get:
+    path: /api/isbn
+    controller: App\Isbn\Intrastructure\Controllers\IsbnGetController
+    methods:  [GET]
