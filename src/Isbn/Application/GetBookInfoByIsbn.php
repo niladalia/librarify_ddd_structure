@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Isbn;
+namespace App\Isbn\Application;
 
 use App\Shared\Infrastructure\Symfony\HttpClientInterface;
 use App\Isbn\Domain\Dto\IsbnDto;

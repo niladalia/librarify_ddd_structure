@@ -531,13 +531,17 @@
       <argument type="service" id="default.storage"/>
     </service>
     <service id="App\Isbn\Application\GetBookInfoByIsbn" class="App\Isbn\Application\GetBookInfoByIsbn" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="The autoloader expected class &quot;App\Isbn\Application\GetBookInfoByIsbn&quot; to be defined in file &quot;/var/www/librarify/vendor/composer/../../src/Isbn/Application/GetBookInfoByIsbn.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+      <argument type="service" id="App\Shared\Infrastructure\Symfony\HttpClient"/>
     </service>
     <service id="App\Isbn\Domain\Dto\IsbnDto" class="App\Isbn\Domain\Dto\IsbnDto" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\Isbn\Domain\Dto\IsbnDto&quot;: argument &quot;$title&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
     </service>
-    <service id="App\Isbn\Intrastructure\Controllers\IsbnController" class="App\Isbn\Intrastructure\Controllers\IsbnController" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="The autoloader expected class &quot;App\Isbn\Intrastructure\Controllers\IsbnController&quot; to be defined in file &quot;/var/www/librarify/vendor/composer/../../src/Isbn/Intrastructure/Controllers/IsbnController.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+    <service id="App\Isbn\Intrastructure\Controllers\IsbnGetController" class="App\Isbn\Intrastructure\Controllers\IsbnGetController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.jUv.zyj.App\Isbn\Intrastructure\Controllers\IsbnGetController"/>
+      </call>
     </service>
     <service id="App\Security\ApiKeyAuthenticator" class="App\Security\ApiKeyAuthenticator" autowire="true" autoconfigure="true">
       <argument>%env(resolve:APP_API_TOKEN)%</argument>
@@ -580,7 +584,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.jx4KBNS"/>
+      <argument type="service" id=".service_locator.hHoT7Zh"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -2056,7 +2060,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.jx4KBNS"/>
+      <argument type="service" id=".service_locator.hHoT7Zh"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -5343,6 +5347,9 @@
     <service id=".abstract.instanceof.App\Categories\Application\Dto\CategoryFormType" class="App\Categories\Application\Dto\CategoryFormType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Categories\Infrastructure\Persistence\DoctrineCategoryRepository" class="App\Categories\Infrastructure\Persistence\DoctrineCategoryRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Categories\Infrastructure\Persistence\DoctrineCategoryRepository" class="App\Categories\Infrastructure\Persistence\DoctrineCategoryRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Isbn\Intrastructure\Controllers\IsbnGetController" class="App\Isbn\Intrastructure\Controllers\IsbnGetController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Isbn\Intrastructure\Controllers\IsbnGetController" class="App\Isbn\Intrastructure\Controllers\IsbnGetController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Isbn\Intrastructure\Controllers\IsbnGetController" class="App\Isbn\Intrastructure\Controllers\IsbnGetController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.bJ.4HC5" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -5773,7 +5780,13 @@
         <argument key="bookEditor" type="service_closure" id="App\Books\Application\Edit\BookEditor"/>
       </argument>
     </service>
-    <service id=".service_locator.jx4KBNS" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.kAci.x3" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="getIsbn" type="service_closure" id="App\Isbn\Application\GetBookInfoByIsbn"/>
+      </argument>
+    </service>
+    <service id=".service_locator.hHoT7Zh" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Authors\Infrastructure\Controllers\AuthorsGetController::__invoke" type="service_closure" id=".service_locator.Ppccw9C"/>
@@ -5784,6 +5797,7 @@
         <argument key="App\Books\Infrastructure\Controllers\BooksPatchController::__invoke" type="service_closure" id=".service_locator.2aYyOJg"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPostController::__invoke" type="service_closure" id=".service_locator.zKNIjhi"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPutController::__invoke" type="service_closure" id=".service_locator.bRBK_1."/>
+        <argument key="App\Isbn\Intrastructure\Controllers\IsbnGetController::__invoke" type="service_closure" id=".service_locator.kAci.x3"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
@@ -5804,6 +5818,8 @@
         <argument key="App\Books\Infrastructure\Controllers\BooksPostController" type="service_closure" id=".service_locator.zKNIjhi"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPutController:__invoke" type="service_closure" id=".service_locator.bRBK_1."/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPutController" type="service_closure" id=".service_locator.bRBK_1."/>
+        <argument key="App\Isbn\Intrastructure\Controllers\IsbnGetController:__invoke" type="service_closure" id=".service_locator.kAci.x3"/>
+        <argument key="App\Isbn\Intrastructure\Controllers\IsbnGetController" type="service_closure" id=".service_locator.kAci.x3"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
       </argument>
@@ -6286,6 +6302,12 @@
     <service id=".service_locator.jUv.zyj.App\Books\Infrastructure\Controllers\BooksPutController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Books\Infrastructure\Controllers\BooksPutController"/>
       <argument>App\Books\Infrastructure\Controllers\BooksPutController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.jUv.zyj" method="withContext"/>
+    </service>
+    <service id=".service_locator.jUv.zyj.App\Isbn\Intrastructure\Controllers\IsbnGetController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Isbn\Intrastructure\Controllers\IsbnGetController"/>
+      <argument>App\Isbn\Intrastructure\Controllers\IsbnGetController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.jUv.zyj" method="withContext"/>
     </service>
@@ -7491,7 +7513,7 @@
     <service id="League\Flysystem\FilesystemWriter $defaultStorage" alias="default.storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.bJ.4HC5" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.jx4KBNS"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.hHoT7Zh"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
     <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>
     <service id="Psr\Log\LoggerInterface $cacheLogger" alias="monolog.logger.cache"/>
@@ -7530,6 +7552,7 @@
     <service id=".service_locator.ACiAlDY" alias=".service_locator.2aYyOJg"/>
     <service id=".service_locator.B9_lAvC" alias=".service_locator.zKNIjhi"/>
     <service id=".service_locator.jjUOWgb" alias=".service_locator.bRBK_1."/>
+    <service id=".service_locator.f60pbri" alias=".service_locator.kAci.x3"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.jUv.zyj"/>
   </services>
 </container>
