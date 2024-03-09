@@ -11,11 +11,11 @@ return [[
 'Traversable' => 4,
 'Countable' => 5,
 'ArrayAccess' => 6,
-'App.Entity.Author' => 7,
-'App.Entity.Book' => 8,
-'App.Entity.Category' => 9,
-'App.Form.Model.CategoryDto' => 10,
-'App.Form.Model.BookDto' => 11,
+'App.Authors.Domain.Author' => 7,
+'App.Books.Domain.Book' => 8,
+'App.Categories.Domain.Category' => 9,
+'App.Categories.Application.Dto.CategoryDto' => 10,
+'App.Books.Application.Dto.BookDto' => 11,
 
 ], [
 
@@ -195,15 +195,6 @@ return [[
             ($f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'))(),
             clone ($p['Symfony\\Component\\Validator\\Constraints\\NotBlank'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotBlank')),
             clone ($p['Symfony\\Component\\Validator\\Constraints\\Length'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Length')),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Type')),
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\All'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\All')),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\NotNull'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotNull')),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
         ],
         null,
         [
@@ -215,19 +206,6 @@ return [[
                     2 => [
                         $o[3],
                         $o[4],
-                        $o[5],
-                    ],
-                    6 => [
-                        $o[7],
-                    ],
-                    8 => [
-                        $o[9],
-                        $o[12],
-                        $o[13],
-                    ],
-                    [
-                        $o[10],
-                        $o[11],
                     ],
                 ],
                 'constraintsByGroup' => [
@@ -243,40 +221,16 @@ return [[
                         'Default' => [
                             $o[3],
                             $o[4],
-                            $o[5],
                         ],
                         'Author' => [
                             $o[3],
                             $o[4],
-                            $o[5],
-                        ],
-                    ],
-                    6 => [
-                        'Default' => [
-                            $o[7],
-                        ],
-                        'Author' => [
-                            $o[7],
-                        ],
-                    ],
-                    8 => [
-                        'Default' => [
-                            $o[9],
-                            $o[12],
-                            $o[13],
-                        ],
-                        'Author' => [
-                            $o[9],
-                            $o[12],
-                            $o[13],
                         ],
                     ],
                 ],
                 'name' => [
-                    'App\\Entity\\Author',
+                    'App\\Authors\\Domain\\Author',
                     2 => 'name',
-                    6 => 'id',
-                    8 => 'books',
                 ],
                 'defaultGroup' => [
                     'Author',
@@ -286,31 +240,16 @@ return [[
                         'name' => [
                             $o[2],
                         ],
-                        'id' => [
-                            $o[6],
-                        ],
-                        'books' => [
-                            $o[8],
-                        ],
                     ],
                 ],
                 'properties' => [
                     [
                         'name' => $o[2],
-                        'id' => $o[6],
-                        'books' => $o[8],
                     ],
                 ],
                 'payload' => [
                     1 => null,
                     3 => null,
-                    null,
-                    null,
-                    7 => null,
-                    9 => null,
-                    null,
-                    null,
-                    null,
                     null,
                 ],
                 'groups' => [
@@ -326,56 +265,18 @@ return [[
                         'Default',
                         'Author',
                     ],
-                    [
-                        'Default',
-                        'Author',
-                    ],
-                    7 => [
-                        'Default',
-                        'Author',
-                    ],
-                    9 => [
-                        'Default',
-                        'Author',
-                    ],
-                    [
-                        'Default',
-                        'Author',
-                    ],
-                    [
-                        'Default',
-                        'Author',
-                    ],
-                    [
-                        'Default',
-                        'Author',
-                    ],
-                    [
-                        'Default',
-                        'Author',
-                    ],
                 ],
                 'fields' => [
                     1 => 'name',
                 ],
                 'class' => [
-                    2 => 'App\\Entity\\Author',
-                    6 => 'App\\Entity\\Author',
-                    8 => 'App\\Entity\\Author',
+                    2 => 'App\\Authors\\Domain\\Author',
                 ],
                 'property' => [
                     2 => 'name',
-                    6 => 'id',
-                    8 => 'books',
                 ],
                 'min' => [
                     4 => 3,
-                ],
-                'type' => [
-                    5 => 'App\\Entity\\Author\\AuthorName',
-                    7 => 'Ramsey\\Uuid\\UuidInterface',
-                    11 => 'App\\Entity\\Book',
-                    'Doctrine\\Common\\Collections\\Collection',
                 ],
             ],
         ],
@@ -386,355 +287,16 @@ return [[
 8 => static function () {
     return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
         $o = [
-            (($f = &\Symfony\Component\VarExporter\Internal\Registry::$factories)['Symfony\\Component\\Validator\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\ClassMetadata'))(),
-            ($f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'))(),
-            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Validator\\Constraints\\All'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\All')),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\NotNull'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotNull')),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Type')),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\Length'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Length')),
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\All'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
+            (\Symfony\Component\VarExporter\Internal\Registry::$factories['Symfony\\Component\\Validator\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\ClassMetadata'))(),
         ],
         null,
         [
             'stdClass' => [
                 'name' => [
-                    'App\\Entity\\Book',
-                    'domainEvents',
-                    7 => 'title',
-                    10 => 'image',
-                    13 => 'pages',
-                    15 => 'categories',
-                    21 => 'author',
-                    23 => 'score',
-                    26 => 'description',
+                    'App\\Books\\Domain\\Book',
                 ],
                 'defaultGroup' => [
                     'Book',
-                ],
-                'members' => [
-                    [
-                        'domainEvents' => [
-                            $o[1],
-                        ],
-                        'title' => [
-                            $o[7],
-                        ],
-                        'image' => [
-                            $o[10],
-                        ],
-                        'pages' => [
-                            $o[13],
-                        ],
-                        'categories' => [
-                            $o[15],
-                        ],
-                        'author' => [
-                            $o[21],
-                        ],
-                        'score' => [
-                            $o[23],
-                        ],
-                        'description' => [
-                            $o[26],
-                        ],
-                    ],
-                ],
-                'properties' => [
-                    [
-                        'domainEvents' => $o[1],
-                        'title' => $o[7],
-                        'image' => $o[10],
-                        'pages' => $o[13],
-                        'categories' => $o[15],
-                        'author' => $o[21],
-                        'score' => $o[23],
-                        'description' => $o[26],
-                    ],
-                ],
-                'constraints' => [
-                    1 => [
-                        $o[2],
-                        $o[5],
-                        $o[6],
-                    ],
-                    [
-                        $o[3],
-                        $o[4],
-                    ],
-                    7 => [
-                        $o[8],
-                        $o[9],
-                    ],
-                    10 => [
-                        $o[11],
-                        $o[12],
-                    ],
-                    13 => [
-                        $o[14],
-                    ],
-                    15 => [
-                        $o[16],
-                        $o[19],
-                        $o[20],
-                    ],
-                    [
-                        $o[17],
-                        $o[18],
-                    ],
-                    21 => [
-                        $o[22],
-                    ],
-                    23 => [
-                        $o[24],
-                        $o[25],
-                    ],
-                    26 => [
-                        $o[27],
-                        $o[28],
-                    ],
-                ],
-                'constraintsByGroup' => [
-                    1 => [
-                        'Default' => [
-                            $o[2],
-                            $o[5],
-                            $o[6],
-                        ],
-                        'Book' => [
-                            $o[2],
-                            $o[5],
-                            $o[6],
-                        ],
-                    ],
-                    7 => [
-                        'Default' => [
-                            $o[8],
-                            $o[9],
-                        ],
-                        'Book' => [
-                            $o[8],
-                            $o[9],
-                        ],
-                    ],
-                    10 => [
-                        'Default' => [
-                            $o[11],
-                            $o[12],
-                        ],
-                        'Book' => [
-                            $o[11],
-                            $o[12],
-                        ],
-                    ],
-                    13 => [
-                        'Default' => [
-                            $o[14],
-                        ],
-                        'Book' => [
-                            $o[14],
-                        ],
-                    ],
-                    15 => [
-                        'Default' => [
-                            $o[16],
-                            $o[19],
-                            $o[20],
-                        ],
-                        'Book' => [
-                            $o[16],
-                            $o[19],
-                            $o[20],
-                        ],
-                    ],
-                    21 => [
-                        'Default' => [
-                            $o[22],
-                        ],
-                        'Book' => [
-                            $o[22],
-                        ],
-                    ],
-                    23 => [
-                        'Default' => [
-                            $o[24],
-                            $o[25],
-                        ],
-                        'Book' => [
-                            $o[24],
-                            $o[25],
-                        ],
-                    ],
-                    26 => [
-                        'Default' => [
-                            $o[27],
-                            $o[28],
-                        ],
-                        'Book' => [
-                            $o[27],
-                            $o[28],
-                        ],
-                    ],
-                ],
-                'class' => [
-                    1 => 'App\\Entity\\Book',
-                    7 => 'App\\Entity\\Book',
-                    10 => 'App\\Entity\\Book',
-                    13 => 'App\\Entity\\Book',
-                    15 => 'App\\Entity\\Book',
-                    21 => 'App\\Entity\\Book',
-                    23 => 'App\\Entity\\Book',
-                    26 => 'App\\Entity\\Book',
-                ],
-                'property' => [
-                    1 => 'domainEvents',
-                    7 => 'title',
-                    10 => 'image',
-                    13 => 'pages',
-                    15 => 'categories',
-                    21 => 'author',
-                    23 => 'score',
-                    26 => 'description',
-                ],
-                'payload' => [
-                    2 => null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    8 => null,
-                    null,
-                    11 => null,
-                    null,
-                    14 => null,
-                    16 => null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    22 => null,
-                    24 => null,
-                    null,
-                    27 => null,
-                    null,
-                ],
-                'groups' => [
-                    2 => [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    8 => [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    11 => [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    14 => [
-                        'Default',
-                        'Book',
-                    ],
-                    16 => [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    22 => [
-                        'Default',
-                        'Book',
-                    ],
-                    24 => [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                    27 => [
-                        'Default',
-                        'Book',
-                    ],
-                    [
-                        'Default',
-                        'Book',
-                    ],
-                ],
-                'type' => [
-                    4 => 'Symfony\\Contracts\\EventDispatcher\\Event',
-                    'array',
-                    8 => 'App\\Entity\\Book\\Title',
-                    11 => 'string',
-                    14 => 'int',
-                    18 => 'App\\Entity\\Category',
-                    'Doctrine\\Common\\Collections\\Collection',
-                    22 => 'App\\Entity\\Author',
-                    24 => 'App\\Entity\\Book\\Score',
-                    27 => 'App\\Entity\\Book\\Description',
-                ],
-                'max' => [
-                    12 => 255,
                 ],
             ],
         ],
@@ -747,22 +309,14 @@ return [[
         $o = [
             (($f = &\Symfony\Component\VarExporter\Internal\Registry::$factories)['Symfony\\Component\\Validator\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\ClassMetadata'))(),
             ($f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::f('Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'))(),
-            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Validator\\Constraints\\NotBlank'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotBlank')),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Type')),
-            $f['Symfony\\Component\\Validator\\Mapping\\PropertyMetadata'](),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\All'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\All')),
-            clone ($p['Symfony\\Component\\Validator\\Constraints\\NotNull'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotNull')),
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\Type'],
-            clone $p['Symfony\\Component\\Validator\\Constraints\\NotNull'],
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Validator\\Constraints\\NotBlank'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotBlank')),
         ],
         null,
         [
             'stdClass' => [
                 'name' => [
-                    'App\\Entity\\Category',
+                    'App\\Categories\\Domain\\Category',
                     'name',
-                    4 => 'books',
                 ],
                 'defaultGroup' => [
                     'Category',
@@ -772,107 +326,42 @@ return [[
                         'name' => [
                             $o[1],
                         ],
-                        'books' => [
-                            $o[4],
-                        ],
                     ],
                 ],
                 'properties' => [
                     [
                         'name' => $o[1],
-                        'books' => $o[4],
                     ],
                 ],
                 'constraints' => [
                     1 => [
                         $o[2],
-                        $o[3],
-                    ],
-                    4 => [
-                        $o[5],
-                        $o[8],
-                        $o[9],
-                    ],
-                    [
-                        $o[6],
-                        $o[7],
                     ],
                 ],
                 'constraintsByGroup' => [
                     1 => [
                         'Default' => [
                             $o[2],
-                            $o[3],
                         ],
                         'Category' => [
                             $o[2],
-                            $o[3],
-                        ],
-                    ],
-                    4 => [
-                        'Default' => [
-                            $o[5],
-                            $o[8],
-                            $o[9],
-                        ],
-                        'Category' => [
-                            $o[5],
-                            $o[8],
-                            $o[9],
                         ],
                     ],
                 ],
                 'class' => [
-                    1 => 'App\\Entity\\Category',
-                    4 => 'App\\Entity\\Category',
+                    1 => 'App\\Categories\\Domain\\Category',
                 ],
                 'property' => [
                     1 => 'name',
-                    4 => 'books',
                 ],
                 'payload' => [
                     2 => null,
-                    null,
-                    5 => null,
-                    null,
-                    null,
-                    null,
-                    null,
                 ],
                 'groups' => [
                     2 => [
                         'Default',
                         'Category',
                     ],
-                    [
-                        'Default',
-                        'Category',
-                    ],
-                    5 => [
-                        'Default',
-                        'Category',
-                    ],
-                    [
-                        'Default',
-                        'Category',
-                    ],
-                    [
-                        'Default',
-                        'Category',
-                    ],
-                    [
-                        'Default',
-                        'Category',
-                    ],
-                    [
-                        'Default',
-                        'Category',
-                    ],
-                ],
-                'type' => [
-                    3 => 'App\\Entity\\Category\\CategoryName',
-                    7 => 'App\\Entity\\Book',
-                    'Doctrine\\Common\\Collections\\Collection',
                 ],
             ],
         ],
@@ -891,7 +380,7 @@ return [[
         [
             'stdClass' => [
                 'name' => [
-                    'App\\Form\\Model\\CategoryDto',
+                    'App\\Categories\\Application\\Dto\\CategoryDto',
                     'name',
                 ],
                 'defaultGroup' => [
@@ -925,7 +414,7 @@ return [[
                     ],
                 ],
                 'class' => [
-                    1 => 'App\\Form\\Model\\CategoryDto',
+                    1 => 'App\\Categories\\Application\\Dto\\CategoryDto',
                 ],
                 'property' => [
                     1 => 'name',
@@ -956,7 +445,7 @@ return [[
         [
             'stdClass' => [
                 'name' => [
-                    'App\\Form\\Model\\BookDto',
+                    'App\\Books\\Application\\Dto\\BookDto',
                     'title',
                 ],
                 'defaultGroup' => [
@@ -990,7 +479,7 @@ return [[
                     ],
                 ],
                 'class' => [
-                    1 => 'App\\Form\\Model\\BookDto',
+                    1 => 'App\\Books\\Application\\Dto\\BookDto',
                 ],
                 'property' => [
                     1 => 'title',

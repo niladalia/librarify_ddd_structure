@@ -3,10 +3,11 @@
 namespace App\Books\Infrastructure\Persistence;
 
 use App\Books\Domain\Book;
+use App\Books\Domain\BookRepository;
 use App\Books\Domain\Books;
-use App\Categories\Domain\Categories;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -17,15 +18,19 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Book[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<Book>
  */
-class DoctrineBookRepository extends ServiceEntityRepository
+class DoctrineBookRepository extends ServiceEntityRepository implements BookRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
     }
 
+    public function search(UuidInterface $id): ?Book {
+    
+        return $this->getEntityManager()->find(Book::class,$id);
+    }
 
-    public function find_all(): Books
+    public function find_all(): ?Books
     {
         $all_books = $this->findBy([]);
 

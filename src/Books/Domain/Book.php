@@ -20,17 +20,8 @@ class Book
     private UuidInterface $id;
 
 
-    private Title $title;
-
-
-    private ?string $image = null;
-
-
     private ?int $pages = null;
 
-    private ?Score $score;
-
-    private ?Description $description;
 
     /**
      * @var  Collection<int, Category>
@@ -40,15 +31,16 @@ class Book
 
     private array $domainEvents;
 
-    private ?Author $author = null;
 
     public function __construct(
-        UuidInterface $uuid,
-        Title $title,
-        ?string $image,
-        ?Author $author,
-        ?Description $description =  new Description(),
-        ?Score $score = new Score()
+        private UuidInterface $uuid,
+        private Title $title,
+        private ?string $image,
+
+        // En comptes de Author crec que tindria que ser AuthorID igual que a codely, així no ens caldria fer la comprobació en el servei de Aplicacio.
+        private ?Author $author,
+        private ?Description $description =  new Description(),
+        private ?Score $score = new Score()
     ) {
         $this->id = $uuid;
         $this->title = $title;
@@ -142,7 +134,15 @@ class Book
             'score' => $this->getScore()->getValue(),
             'description' => $this->getDescription()->getValue(),
             'categories' => $categories->toArray(),
-            'author' => $this->getAuthor() ? $this->getAuthor()->toArray() : null
+            'author' => $this->getAuthor() ? $this->getAuthor()->toSmallArray() : null
+        ];
+    }
+
+    public function toSmallArray(): array
+    {
+        return [
+            'id' => $this->getId()->serialize(),
+            'title' => $this->getTitle()->getValue()
         ];
     }
 

@@ -8,7 +8,7 @@ use App\Books\Domain\Score;
 use App\Books\Domain\Title;
 use App\Books\Application\Dto\BookDto;
 use App\Categories\Application\Dto\CategoryDto;
-use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
+use App\Books\Domain\BookRepository;
 use App\Books\Application\Dto\BookFormType;
 use App\Books\Application\Find\BookFinder;
 use App\FileUploader\Domain\FileUploaderInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 class BookEditor
 {
     public function __construct(
-        private DoctrineBookRepository $book_rep,
+        private BookRepository $book_rep,
         private FormFactoryInterface $formFactory,
         private FileUploaderInterface $fileUploader,
         private BookFinder $BookFinder,
@@ -40,8 +40,16 @@ class BookEditor
     {
         $book = ($this->BookFinder)($id);
 
-        $bookDto = BookDto::createFromBook($book);
-
+        //$bookDto = BookDto::createFromBook($book);
+        $bookDto = new BookDto(
+            $request_data['title'] ?? null,
+            $request_data['base64Image'] ?? null,
+            $request_data['categories'] ?? [],
+            $request_data['author_id'] ?? null,
+            $request_data['score'] ?? null,
+            $request_data['description'] ?? null
+        );
+    
         $original_categories_dto = new ArrayCollection();
         /*
          Recorrem totes les categories que el llibre te asignades originalment.

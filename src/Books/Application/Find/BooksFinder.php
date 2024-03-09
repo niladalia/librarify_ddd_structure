@@ -3,13 +3,13 @@
 namespace App\Books\Application\Find;
 
 use App\Books\Domain\Books;
-use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
+use App\Books\Domain\BookRepository;
 
 class BooksFinder
 {
     private $book_rep;
 
-    public function __construct(DoctrineBookRepository $book_rep)
+    public function __construct(BookRepository $book_rep)
     {
         $this->book_rep = $book_rep;
     }

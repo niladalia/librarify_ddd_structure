@@ -7,7 +7,7 @@ use App\Books\Domain\Description;
 use App\Books\Domain\Score;
 use App\Books\Domain\Title;
 use App\Books\Application\Dto\BookDto;
-use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
+use App\Books\Domain\BookRepository;
 use App\FileUploader\Domain\FileUploaderInterface;
 use App\Authors\Application\Find\AuthorFinder;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -16,7 +16,7 @@ class BookCreator
 {
     public function __construct(
         private FileUploaderInterface $fileUploader,
-        private DoctrineBookRepository $book_rep,
+        private BookRepository $book_rep,
         private AuthorFinder $authorFinder,
         private EventDispatcherInterface $eventDispatcher
     ) {
@@ -28,7 +28,10 @@ class BookCreator
 
     public function __invoke(BookDto $bookDto): Book
     {
+
         $author = $bookDto->author_id ? ($this->authorFinder)($bookDto->author_id) : null;
+
+        // Aixó ho podem fer mitjançant un event de domini. I així sera asincrono?
         $filename = $bookDto->base64Image ? $this->fileUploader->uploadFile($bookDto) : null;
 
         $book = Book::create(

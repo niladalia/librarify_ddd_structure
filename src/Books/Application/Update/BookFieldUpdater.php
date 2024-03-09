@@ -7,7 +7,7 @@ use App\Books\Domain\Book;
 use App\Books\Domain\Description;
 use App\Books\Domain\Score;
 use App\Books\Domain\Title;
-use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
+use App\Books\Domain\BookRepository;
 
 class BookFieldUpdater
 {
@@ -16,7 +16,7 @@ class BookFieldUpdater
     private $updateBookAuthor;
 
     public function __construct(
-        DoctrineBookRepository $book_rep,
+        BookRepository $book_rep,
         BookFinder $bookFinder,
         UpdateBookAuthor $updateBookAuthor
     ) {

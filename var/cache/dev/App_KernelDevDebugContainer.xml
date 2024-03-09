@@ -346,6 +346,10 @@
         <parameter>dump</parameter>
         <parameter>@Debug/Profiler/dump.html.twig</parameter>
       </parameter>
+      <parameter key="data_collector.messenger" type="collection">
+        <parameter>messenger</parameter>
+        <parameter>@WebProfiler/Collector/messenger.html.twig</parameter>
+      </parameter>
       <parameter key="serializer.data_collector" type="collection">
         <parameter>serializer</parameter>
         <parameter>@WebProfiler/Collector/serializer.html.twig</parameter>
@@ -366,6 +370,21 @@
     <service id="App\Authors\Application\Create\AuthorCreator" class="App\Authors\Application\Create\AuthorCreator" autowire="true" autoconfigure="true">
       <argument type="service" id="App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository"/>
     </service>
+    <service id="App\Authors\Application\Create\CreateAuthorCommand" class="App\Authors\Application\Create\CreateAuthorCommand" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\Authors\Application\Create\CreateAuthorCommand&quot;: argument &quot;$name&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
+    </service>
+    <service id="App\Authors\Application\Create\CreateAuthorCommandHandler" class="App\Authors\Application\Create\CreateAuthorCommandHandler" autowire="true" autoconfigure="true">
+      <tag name="messenger.message_handler" bus="" handles="" method="" priority="0" from_transport=""/>
+      <argument type="service" id="App\Authors\Application\Create\AuthorCreator"/>
+    </service>
+    <service id="App\Authors\Application\Delete\DeleteAuthor" class="App\Authors\Application\Delete\DeleteAuthor" autowire="true" autoconfigure="true">
+      <argument type="service" id="App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository"/>
+    </service>
+    <service id="App\Authors\Application\Delete\DeleteAuthorOnBookDelete" class="App\Authors\Application\Delete\DeleteAuthorOnBookDelete" autowire="true" autoconfigure="true">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="App\Authors\Application\Delete\DeleteAuthor"/>
+      <argument type="service" id="App\Authors\Application\Find\AuthorFinder"/>
+    </service>
     <service id="App\Authors\Application\Dto\AuthorDto" class="App\Authors\Application\Dto\AuthorDto" autowire="true" autoconfigure="true"/>
     <service id="App\Authors\Application\Dto\AuthorFormType" class="App\Authors\Application\Dto\AuthorFormType" autowire="true" autoconfigure="true">
       <tag name="container.error" message="The autoloader expected class &quot;App\Authors\Application\Dto\AuthorFormType&quot; to be defined in file &quot;/var/www/librarify/vendor/composer/../../src/Authors/Application/Dto/AuthorFormType.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
@@ -382,6 +401,13 @@
     <service id="App\Authors\Domain\AuthorName" class="App\Authors\Domain\AuthorName" autowire="true" autoconfigure="true"/>
     <service id="App\Authors\Domain\AuthorNotFound" class="App\Authors\Domain\AuthorNotFound" autowire="true" autoconfigure="true"/>
     <service id="App\Authors\Domain\Authors" class="App\Authors\Domain\Authors" autowire="true" autoconfigure="true"/>
+    <service id="App\Authors\Infrastructure\Controllers\AuthorsDeleteController" class="App\Authors\Infrastructure\Controllers\AuthorsDeleteController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.jUv.zyj.App\Authors\Infrastructure\Controllers\AuthorsDeleteController"/>
+      </call>
+    </service>
     <service id="App\Authors\Infrastructure\Controllers\AuthorsGetController" class="App\Authors\Infrastructure\Controllers\AuthorsGetController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -400,8 +426,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Books\Application\BookCreatedEventSubscriber" class="App\Books\Application\BookCreatedEventSubscriber" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="The autoloader expected class &quot;App\Books\Application\BookCreatedEventSubscriber&quot; to be defined in file &quot;/var/www/librarify/vendor/composer/../../src/Books/Application/BookCreatedEventSubscriber.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+    <service id="App\Books\Application\Create\BookCreatedEventSubscriber" class="App\Books\Application\Create\BookCreatedEventSubscriber" autowire="true" autoconfigure="true">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="App\Books\Application\Find\BookFinder"/>
+      <argument type="service" id="monolog.logger"/>
     </service>
     <service id="App\Books\Application\Create\BookCreator" class="App\Books\Application\Create\BookCreator" autowire="true" autoconfigure="true">
       <argument type="service" id="App\FileUploader\Application\FileUploaderS3"/>
@@ -411,11 +439,9 @@
     </service>
     <service id="App\Books\Application\Delete\DeleteBook" class="App\Books\Application\Delete\DeleteBook" autowire="true" autoconfigure="true">
       <argument type="service" id="App\Books\Infrastructure\Persistence\DoctrineBookRepository"/>
-      <argument type="service" id="App\Books\Application\Delete\DeleteFile"/>
-      <argument type="service" id="App\Books\Application\Find\BookFinder"/>
-    </service>
-    <service id="App\Books\Application\Delete\DeleteFile" class="App\Books\Application\Delete\DeleteFile" autowire="true" autoconfigure="true">
-      <argument type="service" id="default.storage"/>
+      <argument type="service" id="App\Shared\Application\DeleteFile"/>
+      <argument type="service" id="App\Books\Domain\BookFinder"/>
+      <argument type="service" id="debug.event_dispatcher"/>
     </service>
     <service id="App\Books\Application\Dto\BookDto" class="App\Books\Application\Dto\BookDto" autowire="true" autoconfigure="true"/>
     <service id="App\Books\Application\Dto\BookFormType" class="App\Books\Application\Dto\BookFormType" autowire="true" autoconfigure="true">
@@ -430,7 +456,7 @@
       <argument type="service" id="App\Books\Application\Update\UpdateBookAuthor"/>
     </service>
     <service id="App\Books\Application\Find\BookFinder" class="App\Books\Application\Find\BookFinder" autowire="true" autoconfigure="true">
-      <argument type="service" id="App\Books\Infrastructure\Persistence\DoctrineBookRepository"/>
+      <argument type="service" id="App\Books\Domain\BookFinder"/>
     </service>
     <service id="App\Books\Application\Find\BooksFinder" class="App\Books\Application\Find\BooksFinder" autowire="true" autoconfigure="true">
       <argument type="service" id="App\Books\Infrastructure\Persistence\DoctrineBookRepository"/>
@@ -452,6 +478,12 @@
     </service>
     <service id="App\Books\Domain\BookCreatedDomainEvent" class="App\Books\Domain\BookCreatedDomainEvent" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\Books\Domain\BookCreatedDomainEvent&quot;: argument &quot;$bookId&quot; of method &quot;__construct()&quot; references interface &quot;Ramsey\Uuid\UuidInterface&quot; but no such service exists. Did you create a class that implements this interface?"/>
+    </service>
+    <service id="App\Books\Domain\BookDeletedDomainEvent" class="App\Books\Domain\BookDeletedDomainEvent" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\Books\Domain\BookDeletedDomainEvent&quot;: argument &quot;$bookId&quot; of method &quot;__construct()&quot; references interface &quot;Ramsey\Uuid\UuidInterface&quot; but no such service exists. Did you create a class that implements this interface?"/>
+    </service>
+    <service id="App\Books\Domain\BookFinder" class="App\Books\Domain\BookFinder" autowire="true" autoconfigure="true">
+      <argument type="service" id="App\Books\Infrastructure\Persistence\DoctrineBookRepository"/>
     </service>
     <service id="App\Books\Domain\BookNotFound" class="App\Books\Domain\BookNotFound" autowire="true" autoconfigure="true"/>
     <service id="App\Books\Domain\Books" class="App\Books\Domain\Books" autowire="true" autoconfigure="true"/>
@@ -548,6 +580,14 @@
     </service>
     <service id="App\Security\User" class="App\Security\User" autowire="true" autoconfigure="true"/>
     <service id="App\Security\UserProvider" class="App\Security\UserProvider" autowire="true" autoconfigure="true"/>
+    <service id="App\Shared\Application\DeleteFile" class="App\Shared\Application\DeleteFile" autowire="true" autoconfigure="true">
+      <argument type="service" id="default.storage"/>
+    </service>
+    <service id="App\Shared\Application\DeleteFileOnBookDelete" class="App\Shared\Application\DeleteFileOnBookDelete" autowire="true" autoconfigure="true">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="App\Shared\Application\DeleteFile"/>
+      <argument type="service" id="monolog.logger"/>
+    </service>
     <service id="App\Shared\Domain\Exceptions\InvalidArgument" class="App\Shared\Domain\Exceptions\InvalidArgument" autowire="true" autoconfigure="true"/>
     <service id="App\Shared\Domain\Exceptions\InvalidData" class="App\Shared\Domain\Exceptions\InvalidData" autowire="true" autoconfigure="true"/>
     <service id="App\Shared\Infrastructure\Symfony\ApiExceptionListener" class="App\Shared\Infrastructure\Symfony\ApiExceptionListener" autowire="true" autoconfigure="true">
@@ -584,7 +624,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.hHoT7Zh"/>
+      <argument type="service" id=".service_locator.vstswpC"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -704,6 +744,7 @@
         <argument key="cache.validator" type="service" id="cache.validator" on-invalid="ignore_uninitialized"/>
         <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.messenger.restart_workers_signal" type="service" id="cache.messenger.restart_workers_signal" on-invalid="ignore_uninitialized"/>
         <argument key="http_client.transport" type="service" id="http_client.transport" on-invalid="ignore_uninitialized"/>
         <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
         <argument key="debug.event_dispatcher" type="service" id="debug.event_dispatcher" on-invalid="ignore_uninitialized"/>
@@ -711,6 +752,7 @@
         <argument key="session_listener" type="service" id="session_listener" on-invalid="ignore_uninitialized"/>
         <argument key="form.choice_list_factory.cached" type="service" id="form.choice_list_factory.cached" on-invalid="ignore_uninitialized"/>
         <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
+        <argument key="messenger.transport.in_memory.factory" type="service" id="messenger.transport.in_memory.factory" on-invalid="ignore_uninitialized"/>
         <argument key="profiler" type="service" id="profiler" on-invalid="ignore_uninitialized"/>
         <argument key="debug.validator" type="service" id="debug.validator" on-invalid="ignore_uninitialized"/>
         <argument key="monolog.handler.main" type="service" id="monolog.handler.main" on-invalid="ignore_uninitialized"/>
@@ -742,6 +784,9 @@
         <argument key="cache.property_info" type="collection">
           <argument>reset</argument>
         </argument>
+        <argument key="cache.messenger.restart_workers_signal" type="collection">
+          <argument>reset</argument>
+        </argument>
         <argument key="http_client.transport" type="collection">
           <argument>?reset</argument>
         </argument>
@@ -761,6 +806,9 @@
           <argument>reset</argument>
         </argument>
         <argument key="cache.validator_expression_language" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="messenger.transport.in_memory.factory" type="collection">
           <argument>reset</argument>
         </argument>
         <argument key="profiler" type="collection">
@@ -841,7 +889,7 @@
     <service id="container.get_routing_condition_service" class="Closure" public="true">
       <tag name="routing.expression_language_function" function="service"/>
       <argument type="collection">
-        <argument type="service" id=".service_locator.Xbsa8iG"/>
+        <argument type="service" id="messenger.retry_strategy_locator"/>
         <argument>get</argument>
       </argument>
       <factory class="Closure" method="fromCallable"/>
@@ -961,6 +1009,7 @@
         <argument>cache.validator</argument>
         <argument>cache.serializer</argument>
         <argument>cache.property_info</argument>
+        <argument>cache.messenger.restart_workers_signal</argument>
         <argument>cache.validator_expression_language</argument>
         <argument>cache.doctrine.orm.default.result</argument>
         <argument>cache.doctrine.orm.default.query</argument>
@@ -1006,6 +1055,7 @@
         <argument>cache.validator</argument>
         <argument>cache.serializer</argument>
         <argument>cache.property_info</argument>
+        <argument>cache.messenger.restart_workers_signal</argument>
         <argument>cache.validator_expression_language</argument>
         <argument>cache.doctrine.orm.default.result</argument>
         <argument>cache.doctrine.orm.default.query</argument>
@@ -1028,6 +1078,7 @@
         <argument>cache.validator</argument>
         <argument>cache.serializer</argument>
         <argument>cache.property_info</argument>
+        <argument>cache.messenger.restart_workers_signal</argument>
         <argument>cache.validator_expression_language</argument>
         <argument>cache.doctrine.orm.default.result</argument>
         <argument>cache.doctrine.orm.default.query</argument>
@@ -1125,6 +1176,107 @@
       </call>
       <call method="setDescription">
         <argument>Display configured listeners for an application</argument>
+      </call>
+    </service>
+    <service id="console.command.messenger_consume_messages" class="Symfony\Component\Messenger\Command\ConsumeMessagesCommand">
+      <tag name="console.command"/>
+      <tag name="monolog.logger" channel="messenger"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="messenger.routable_message_bus"/>
+      <argument type="service" id="messenger.receiver_locator"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument type="service" id="monolog.logger.messenger" on-invalid="null"/>
+      <argument type="collection"/>
+      <argument type="service" id="messenger.listener.reset_services" on-invalid="null"/>
+      <argument type="collection">
+        <argument>messenger.bus.default</argument>
+      </argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <call method="setName">
+        <argument>messenger:consume</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Consume messages</argument>
+      </call>
+    </service>
+    <service id="console.command.messenger_setup_transports" class="Symfony\Component\Messenger\Command\SetupTransportsCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="messenger.receiver_locator"/>
+      <argument type="collection"/>
+      <call method="setName">
+        <argument>messenger:setup-transports</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Prepare the required infrastructure for the transport</argument>
+      </call>
+    </service>
+    <service id="console.command.messenger_debug" class="Symfony\Component\Messenger\Command\DebugCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="collection">
+        <argument key="messenger.bus.default" type="collection">
+          <argument key="App\Authors\Application\Create\CreateAuthorCommand" type="collection">
+            <argument type="collection">
+              <argument>App\Authors\Application\Create\CreateAuthorCommandHandler</argument>
+              <argument type="collection"/>
+            </argument>
+          </argument>
+          <argument key="Symfony\Component\Process\Messenger\RunProcessMessage" type="collection">
+            <argument type="collection">
+              <argument>process.messenger.process_message_handler</argument>
+              <argument type="collection"/>
+            </argument>
+          </argument>
+          <argument key="Symfony\Component\Console\Messenger\RunCommandMessage" type="collection">
+            <argument type="collection">
+              <argument>console.messenger.execute_command_handler</argument>
+              <argument type="collection"/>
+            </argument>
+          </argument>
+          <argument key="Symfony\Component\HttpClient\Messenger\PingWebhookMessage" type="collection">
+            <argument type="collection">
+              <argument>http_client.messenger.ping_webhook_handler</argument>
+              <argument type="collection"/>
+            </argument>
+          </argument>
+          <argument key="Symfony\Component\Messenger\Message\RedispatchMessage" type="collection">
+            <argument type="collection">
+              <argument>messenger.redispatch_message_handler</argument>
+              <argument type="collection"/>
+            </argument>
+          </argument>
+        </argument>
+      </argument>
+      <call method="setName">
+        <argument>debug:messenger</argument>
+      </call>
+      <call method="setDescription">
+        <argument>List messages you can dispatch using the message buses</argument>
+      </call>
+    </service>
+    <service id="console.command.messenger_stop_workers" class="Symfony\Component\Messenger\Command\StopWorkersCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="cache.messenger.restart_workers_signal"/>
+      <call method="setName">
+        <argument>messenger:stop-workers</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Stop workers after their current message</argument>
+      </call>
+    </service>
+    <service id="console.command.messenger_stats" class="Symfony\Component\Messenger\Command\StatsCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="messenger.receiver_locator"/>
+      <argument type="collection"/>
+      <call method="setName">
+        <argument>messenger:stats</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Show the message count for one or more transports</argument>
       </call>
     </service>
     <service id="console.command.router_debug" class="Symfony\Bundle\FrameworkBundle\Command\RouterDebugCommand">
@@ -1336,6 +1488,11 @@
       <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="cache.property_info.recorder_inner"/>
     </service>
+    <service id="cache.messenger.restart_workers_signal" class="Symfony\Component\Cache\Adapter\TraceableAdapter">
+      <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
+      <argument type="service" id="cache.messenger.restart_workers_signal.recorder_inner"/>
+    </service>
     <service id="cache.adapter.system" class="Symfony\Component\Cache\Adapter\AdapterInterface" abstract="true">
       <tag name="cache.pool" clearer="cache.system_clearer" reset="reset"/>
       <tag name="monolog.logger" channel="cache"/>
@@ -1446,6 +1603,7 @@
       <tag name="cache.pool.clearer"/>
       <argument type="collection">
         <argument key="cache.app" type="service" id="cache.app" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.messenger.restart_workers_signal" type="service" id="cache.messenger.restart_workers_signal" on-invalid="ignore_uninitialized"/>
       </argument>
     </service>
     <service id="cache.system_clearer" class="Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer" public="true">
@@ -1469,6 +1627,7 @@
         <argument key="cache.validator" type="service" id="cache.validator" on-invalid="ignore_uninitialized"/>
         <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.messenger.restart_workers_signal" type="service" id="cache.messenger.restart_workers_signal" on-invalid="ignore_uninitialized"/>
         <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
         <argument key="cache.doctrine.orm.default.result" type="service" id="cache.doctrine.orm.default.result" on-invalid="ignore_uninitialized"/>
         <argument key="cache.doctrine.orm.default.query" type="service" id="cache.doctrine.orm.default.query" on-invalid="ignore_uninitialized"/>
@@ -1645,6 +1804,38 @@
           <argument>onResponse</argument>
         </argument>
         <argument>-10</argument>
+      </call>
+      <call method="addListener">
+        <argument>App\Books\Domain\BookDeletedDomainEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="App\Authors\Application\Delete\DeleteAuthorOnBookDelete"/>
+          <argument>__invoke</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>App\Books\Domain\BookCreatedDomainEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="App\Books\Application\Create\BookCreatedEventSubscriber"/>
+          <argument>logCreation</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>App\Books\Domain\BookCreatedDomainEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="App\Books\Application\Create\BookCreatedEventSubscriber"/>
+          <argument>sendMail</argument>
+        </argument>
+        <argument>10</argument>
+      </call>
+      <call method="addListener">
+        <argument>App\Books\Domain\BookDeletedDomainEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="App\Shared\Application\DeleteFileOnBookDelete"/>
+          <argument>__invoke</argument>
+        </argument>
+        <argument>0</argument>
       </call>
       <call method="addListener">
         <argument>kernel.controller_arguments</argument>
@@ -1855,6 +2046,54 @@
         <argument>-1000</argument>
       </call>
       <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerMessageFailedEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="messenger.retry.send_failed_message_for_retry_listener"/>
+          <argument>onMessageFailed</argument>
+        </argument>
+        <argument>100</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerMessageFailedEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="messenger.failure.add_error_details_stamp_listener"/>
+          <argument>onMessageFailed</argument>
+        </argument>
+        <argument>200</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerStartedEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="messenger.listener.stop_worker_on_restart_signal_listener"/>
+          <argument>onWorkerStarted</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerRunningEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="messenger.listener.stop_worker_on_restart_signal_listener"/>
+          <argument>onWorkerRunning</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerMessageFailedEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="messenger.listener.stop_worker_on_stop_exception_listener"/>
+          <argument>onMessageFailed</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerRunningEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="messenger.listener.stop_worker_on_stop_exception_listener"/>
+          <argument>onWorkerRunning</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
         <argument>kernel.response</argument>
         <argument type="collection">
           <argument type="service_closure" id="profiler_listener"/>
@@ -1949,6 +2188,22 @@
           <argument>onTerminate</argument>
         </argument>
         <argument>-255</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerMessageHandledEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="doctrine.orm.messenger.event_subscriber.doctrine_clear_entity_manager"/>
+          <argument>onWorkerMessageHandled</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>Symfony\Component\Messenger\Event\WorkerMessageFailedEvent</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="doctrine.orm.messenger.event_subscriber.doctrine_clear_entity_manager"/>
+          <argument>onWorkerMessageFailed</argument>
+        </argument>
+        <argument>0</argument>
       </call>
       <call method="addListener">
         <argument>kernel.view</argument>
@@ -2060,7 +2315,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.hHoT7Zh"/>
+      <argument type="service" id=".service_locator.vstswpC"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -2160,7 +2415,7 @@
     <service id="router.default" class="Symfony\Bundle\FrameworkBundle\Routing\Router">
       <tag name="monolog.logger" channel="router"/>
       <tag name="container.service_subscriber" id="routing.loader"/>
-      <argument type="service" id=".service_locator.8NWUArH.router.default"/>
+      <argument type="service" id=".service_locator.EMavxuq.router.default"/>
       <argument>kernel::loadRoutes</argument>
       <argument type="collection">
         <argument key="cache_dir">/var/www/librarify/var/cache/dev</argument>
@@ -2630,7 +2885,7 @@
         <argument type="service" id="validator.validator_factory"/>
       </call>
       <call method="setGroupProviderLocator">
-        <argument type="service" id=".service_locator.Xbsa8iG"/>
+        <argument type="service" id="messenger.retry_strategy_locator"/>
       </call>
       <call method="setTranslationDomain">
         <argument>validators</argument>
@@ -2967,6 +3222,101 @@
       <argument type="service" id="property_info"/>
       <argument>{^App\\Entity\\}</argument>
     </service>
+    <service id="messenger.senders_locator" class="Symfony\Component\Messenger\Transport\Sender\SendersLocator">
+      <argument type="collection"/>
+      <argument type="service" id="messenger.retry_strategy_locator"/>
+    </service>
+    <service id="messenger.middleware.send_message" class="Symfony\Component\Messenger\Middleware\SendMessageMiddleware" abstract="true">
+      <tag name="monolog.logger" channel="messenger"/>
+      <argument type="service" id="messenger.senders_locator"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger.messenger" on-invalid="ignore"/>
+      </call>
+    </service>
+    <service id="serializer.normalizer.flatten_exception" class="Symfony\Component\Messenger\Transport\Serialization\Normalizer\FlattenExceptionNormalizer">
+      <tag name="serializer.normalizer" priority="-880"/>
+    </service>
+    <service id="messenger.transport.native_php_serializer" class="Symfony\Component\Messenger\Transport\Serialization\PhpSerializer"/>
+    <service id="messenger.middleware.handle_message" class="Symfony\Component\Messenger\Middleware\HandleMessageMiddleware" abstract="true">
+      <tag name="monolog.logger" channel="messenger"/>
+      <argument type="abstract">bus handler resolver</argument>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger.messenger" on-invalid="ignore"/>
+      </call>
+    </service>
+    <service id="messenger.middleware.add_bus_name_stamp_middleware" class="Symfony\Component\Messenger\Middleware\AddBusNameStampMiddleware" abstract="true"/>
+    <service id="messenger.middleware.dispatch_after_current_bus" class="Symfony\Component\Messenger\Middleware\DispatchAfterCurrentBusMiddleware"/>
+    <service id="messenger.middleware.validation" class="Symfony\Component\Messenger\Middleware\ValidationMiddleware">
+      <argument type="service" id="debug.validator"/>
+    </service>
+    <service id="messenger.middleware.reject_redelivered_message_middleware" class="Symfony\Component\Messenger\Middleware\RejectRedeliveredMessageMiddleware"/>
+    <service id="messenger.middleware.failed_message_processing_middleware" class="Symfony\Component\Messenger\Middleware\FailedMessageProcessingMiddleware"/>
+    <service id="messenger.middleware.traceable" class="Symfony\Component\Messenger\Middleware\TraceableMiddleware" abstract="true">
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="messenger.middleware.router_context" class="Symfony\Component\Messenger\Middleware\RouterContextMiddleware">
+      <argument type="service" id="router.default"/>
+    </service>
+    <service id="messenger.receiver_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
+    </service>
+    <service id="messenger.transport_factory" class="Symfony\Component\Messenger\Transport\TransportFactory">
+      <argument type="tagged_iterator" tag="messenger.transport_factory"/>
+    </service>
+    <service id="messenger.transport.sync.factory" class="Symfony\Component\Messenger\Transport\Sync\SyncTransportFactory">
+      <tag name="messenger.transport_factory"/>
+      <argument type="service" id="messenger.routable_message_bus"/>
+    </service>
+    <service id="messenger.transport.in_memory.factory" class="Symfony\Component\Messenger\Transport\InMemory\InMemoryTransportFactory">
+      <tag name="messenger.transport_factory"/>
+      <tag name="kernel.reset" method="reset"/>
+    </service>
+    <service id="messenger.retry_strategy_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
+    </service>
+    <service id="messenger.retry.abstract_multiplier_retry_strategy" class="Symfony\Component\Messenger\Retry\MultiplierRetryStrategy" abstract="true">
+      <argument type="abstract">max retries</argument>
+      <argument type="abstract">delay ms</argument>
+      <argument type="abstract">multiplier</argument>
+      <argument type="abstract">max delay ms</argument>
+    </service>
+    <service id="messenger.retry.send_failed_message_for_retry_listener" class="Symfony\Component\Messenger\EventListener\SendFailedMessageForRetryListener">
+      <tag name="monolog.logger" channel="messenger"/>
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="messenger.retry_strategy_locator"/>
+      <argument type="service" id="messenger.retry_strategy_locator"/>
+      <argument type="service" id="monolog.logger.messenger" on-invalid="ignore"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+    </service>
+    <service id="messenger.failure.add_error_details_stamp_listener" class="Symfony\Component\Messenger\EventListener\AddErrorDetailsStampListener">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="messenger.listener.dispatch_pcntl_signal_listener" class="Symfony\Component\Messenger\EventListener\DispatchPcntlSignalListener">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="messenger.listener.stop_worker_on_restart_signal_listener" class="Symfony\Component\Messenger\EventListener\StopWorkerOnRestartSignalListener">
+      <tag name="monolog.logger" channel="messenger"/>
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="cache.messenger.restart_workers_signal"/>
+      <argument type="service" id="monolog.logger.messenger" on-invalid="ignore"/>
+    </service>
+    <service id="messenger.listener.stop_worker_on_stop_exception_listener" class="Symfony\Component\Messenger\EventListener\StopWorkerOnCustomStopExceptionListener">
+      <tag name="kernel.event_subscriber"/>
+    </service>
+    <service id="messenger.listener.reset_services" class="Symfony\Component\Messenger\EventListener\ResetServicesListener">
+      <argument type="service" id="services_resetter"/>
+    </service>
+    <service id="messenger.routable_message_bus" class="Symfony\Component\Messenger\RoutableMessageBus">
+      <argument type="service" id=".service_locator.5cAhUFF"/>
+      <argument type="service" id="debug.traced.messenger.bus.default"/>
+    </service>
+    <service id="messenger.redispatch_message_handler" class="Symfony\Component\Messenger\Handler\RedispatchMessageHandler">
+      <tag name="messenger.message_handler"/>
+      <argument type="service" id="debug.traced.messenger.bus.default"/>
+    </service>
     <service id="profiler" class="Symfony\Component\HttpKernel\Profiler\Profiler" public="true">
       <tag name="monolog.logger" channel="profiler"/>
       <tag name="container.private" package="symfony/framework-bundle" version="5.4"/>
@@ -3024,6 +3374,9 @@
       </call>
       <call method="add">
         <argument type="service" id="data_collector.dump"/>
+      </call>
+      <call method="add">
+        <argument type="service" id="data_collector.messenger"/>
       </call>
       <call method="add">
         <argument type="service" id="serializer.data_collector"/>
@@ -3134,6 +3487,10 @@
         <argument type="service" id="cache.property_info"/>
       </call>
       <call method="addInstance">
+        <argument>cache.messenger.restart_workers_signal</argument>
+        <argument type="service" id="cache.messenger.restart_workers_signal"/>
+      </call>
+      <call method="addInstance">
         <argument>cache.validator_expression_language</argument>
         <argument type="service" id="cache.validator_expression_language"/>
       </call>
@@ -3179,6 +3536,13 @@
     <service id="data_collector.validator" class="Symfony\Component\Validator\DataCollector\ValidatorDataCollector">
       <tag name="data_collector" template="@WebProfiler/Collector/validator.html.twig" id="validator" priority="320"/>
       <argument type="service" id="debug.validator"/>
+    </service>
+    <service id="data_collector.messenger" class="Symfony\Component\Messenger\DataCollector\MessengerDataCollector">
+      <tag name="data_collector" template="@WebProfiler/Collector/messenger.html.twig" id="messenger" priority="100"/>
+      <call method="registerBus">
+        <argument>messenger.bus.default</argument>
+        <argument type="service" id="debug.traced.messenger.bus.default"/>
+      </call>
     </service>
     <service id="data_collector.http_client" class="Symfony\Component\HttpClient\DataCollector\HttpClientDataCollector">
       <tag name="data_collector" template="@WebProfiler/Collector/http_client.html.twig" id="http_client" priority="250"/>
@@ -3631,6 +3995,24 @@
       <tag name="doctrine.middleware" connection="default"/>
       <argument type="service" id="doctrine.debug_data_holder"/>
       <argument type="service" id="debug.stopwatch" on-invalid="null"/>
+    </service>
+    <service id="messenger.middleware.doctrine_transaction" class="Symfony\Bridge\Doctrine\Messenger\DoctrineTransactionMiddleware" abstract="true">
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="messenger.middleware.doctrine_ping_connection" class="Symfony\Bridge\Doctrine\Messenger\DoctrinePingConnectionMiddleware" abstract="true">
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="messenger.middleware.doctrine_close_connection" class="Symfony\Bridge\Doctrine\Messenger\DoctrineCloseConnectionMiddleware" abstract="true">
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="messenger.middleware.doctrine_open_transaction_logger" class="Symfony\Bridge\Doctrine\Messenger\DoctrineOpenTransactionLoggerMiddleware" abstract="true">
+      <argument type="service" id="doctrine"/>
+      <argument>null</argument>
+      <argument type="service" id="monolog.logger"/>
+    </service>
+    <service id="doctrine.orm.messenger.event_subscriber.doctrine_clear_entity_manager" class="Symfony\Bridge\Doctrine\Messenger\DoctrineClearEntityManagerWorkerSubscriber">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="doctrine"/>
     </service>
     <service id=".1_ServiceLocator~cFmxGHc" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection"/>
@@ -4336,7 +4718,7 @@
       <tag name="twig.extension"/>
     </service>
     <service id="twig.extension.htmlsanitizer" class="Symfony\Bridge\Twig\Extension\HtmlSanitizerExtension">
-      <argument type="service" id=".service_locator.Xbsa8iG"/>
+      <argument type="service" id="messenger.retry_strategy_locator"/>
     </service>
     <service id="twig.extension.httpkernel" class="Symfony\Bridge\Twig\Extension\HttpKernelExtension">
       <tag name="twig.extension"/>
@@ -5313,6 +5695,13 @@
         <argument>Start a log server that displays logs in real time</argument>
       </call>
     </service>
+    <service id=".instanceof.App\Authors\Application\Create\CreateAuthorCommandHandler.0.App\Authors\Application\Create\CreateAuthorCommandHandler" class="App\Authors\Application\Create\CreateAuthorCommandHandler" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Authors\Application\Create\CreateAuthorCommandHandler" class="App\Authors\Application\Create\CreateAuthorCommandHandler" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\Authors\Application\Delete\DeleteAuthorOnBookDelete" class="App\Authors\Application\Delete\DeleteAuthorOnBookDelete" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Authors\Application\Delete\DeleteAuthorOnBookDelete" class="App\Authors\Application\Delete\DeleteAuthorOnBookDelete" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Authors\Infrastructure\Controllers\AuthorsDeleteController" class="App\Authors\Infrastructure\Controllers\AuthorsDeleteController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Authors\Infrastructure\Controllers\AuthorsDeleteController" class="App\Authors\Infrastructure\Controllers\AuthorsDeleteController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Authors\Infrastructure\Controllers\AuthorsDeleteController" class="App\Authors\Infrastructure\Controllers\AuthorsDeleteController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Authors\Infrastructure\Controllers\AuthorsGetController" class="App\Authors\Infrastructure\Controllers\AuthorsGetController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Authors\Infrastructure\Controllers\AuthorsGetController" class="App\Authors\Infrastructure\Controllers\AuthorsGetController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Authors\Infrastructure\Controllers\AuthorsGetController" class="App\Authors\Infrastructure\Controllers\AuthorsGetController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -5321,6 +5710,8 @@
     <service id=".abstract.instanceof.App\Authors\Infrastructure\Controllers\AuthorsPostController" class="App\Authors\Infrastructure\Controllers\AuthorsPostController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository" class="App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository" class="App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\Books\Application\Create\BookCreatedEventSubscriber" class="App\Books\Application\Create\BookCreatedEventSubscriber" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Books\Application\Create\BookCreatedEventSubscriber" class="App\Books\Application\Create\BookCreatedEventSubscriber" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Books\Application\Dto\BookFormType" class="App\Books\Application\Dto\BookFormType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Books\Application\Dto\BookFormType" class="App\Books\Application\Dto\BookFormType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Books\Infrastructure\Controllers\BookGetController" class="App\Books\Infrastructure\Controllers\BookGetController" autowire="true" abstract="true"/>
@@ -5350,6 +5741,8 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Isbn\Intrastructure\Controllers\IsbnGetController" class="App\Isbn\Intrastructure\Controllers\IsbnGetController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Isbn\Intrastructure\Controllers\IsbnGetController" class="App\Isbn\Intrastructure\Controllers\IsbnGetController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Isbn\Intrastructure\Controllers\IsbnGetController" class="App\Isbn\Intrastructure\Controllers\IsbnGetController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\Shared\Application\DeleteFileOnBookDelete" class="App\Shared\Application\DeleteFileOnBookDelete" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Shared\Application\DeleteFileOnBookDelete" class="App\Shared\Application\DeleteFileOnBookDelete" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.bJ.4HC5" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -5731,16 +6124,23 @@
         <argument key="loader" type="service_closure" id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface"/>
       </argument>
     </service>
+    <service id=".service_locator.QmvsV.i" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="authorsFinder" type="service_closure" id="App\Authors\Application\Find\AuthorFinder"/>
+        <argument key="deleteAuthor" type="service_closure" id="App\Authors\Application\Delete\DeleteAuthor"/>
+      </argument>
+    </service>
     <service id=".service_locator.Ppccw9C" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="authorsFinder" type="service_closure" id="App\Authors\Application\Find\AuthorsFinder"/>
       </argument>
     </service>
-    <service id=".service_locator.O7oC5Tw" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.51QoQMd" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="author_creator" type="service_closure" id="App\Authors\Application\Create\AuthorCreator"/>
+        <argument key="commandBus" type="service_closure" id="debug.traced.messenger.bus.default"/>
       </argument>
     </service>
     <service id=".service_locator.Smwf69k" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -5767,11 +6167,16 @@
         <argument key="bookFieldUpdater" type="service_closure" id="App\Books\Application\Update\BookFieldUpdater"/>
       </argument>
     </service>
-    <service id=".service_locator.zKNIjhi" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.o_KbN5P" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="bookCreator" type="service_closure" id="App\Books\Application\Create\BookCreator"/>
-        <argument key="formFactory" type="service_closure" id="form.factory"/>
+      </argument>
+    </service>
+    <service id=".service_locator.XtLJX52" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="constraint" type="service_closure" id=".errored..service_locator.XtLJX52.Symfony\Component\Validator\Constraints\Collection"/>
       </argument>
     </service>
     <service id=".service_locator.bRBK_1." class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -5786,26 +6191,30 @@
         <argument key="getIsbn" type="service_closure" id="App\Isbn\Application\GetBookInfoByIsbn"/>
       </argument>
     </service>
-    <service id=".service_locator.hHoT7Zh" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.vstswpC" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Authors\Infrastructure\Controllers\AuthorsDeleteController::__invoke" type="service_closure" id=".service_locator.QmvsV.i"/>
         <argument key="App\Authors\Infrastructure\Controllers\AuthorsGetController::__invoke" type="service_closure" id=".service_locator.Ppccw9C"/>
-        <argument key="App\Authors\Infrastructure\Controllers\AuthorsPostController::__invoke" type="service_closure" id=".service_locator.O7oC5Tw"/>
+        <argument key="App\Authors\Infrastructure\Controllers\AuthorsPostController::__invoke" type="service_closure" id=".service_locator.51QoQMd"/>
         <argument key="App\Books\Infrastructure\Controllers\BookGetController::__invoke" type="service_closure" id=".service_locator.Smwf69k"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksDeleteController::__invoke" type="service_closure" id=".service_locator.wHVpYfE"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksGetController::__invoke" type="service_closure" id=".service_locator.0zdjA.7"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPatchController::__invoke" type="service_closure" id=".service_locator.2aYyOJg"/>
-        <argument key="App\Books\Infrastructure\Controllers\BooksPostController::__invoke" type="service_closure" id=".service_locator.zKNIjhi"/>
+        <argument key="App\Books\Infrastructure\Controllers\BooksPostController::__invoke" type="service_closure" id=".service_locator.o_KbN5P"/>
+        <argument key="App\Books\Infrastructure\Controllers\BooksPostController::validate" type="service_closure" id=".service_locator.XtLJX52"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPutController::__invoke" type="service_closure" id=".service_locator.bRBK_1."/>
         <argument key="App\Isbn\Intrastructure\Controllers\IsbnGetController::__invoke" type="service_closure" id=".service_locator.kAci.x3"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
+        <argument key="App\Authors\Infrastructure\Controllers\AuthorsDeleteController:__invoke" type="service_closure" id=".service_locator.QmvsV.i"/>
+        <argument key="App\Authors\Infrastructure\Controllers\AuthorsDeleteController" type="service_closure" id=".service_locator.QmvsV.i"/>
         <argument key="App\Authors\Infrastructure\Controllers\AuthorsGetController:__invoke" type="service_closure" id=".service_locator.Ppccw9C"/>
         <argument key="App\Authors\Infrastructure\Controllers\AuthorsGetController" type="service_closure" id=".service_locator.Ppccw9C"/>
-        <argument key="App\Authors\Infrastructure\Controllers\AuthorsPostController:__invoke" type="service_closure" id=".service_locator.O7oC5Tw"/>
-        <argument key="App\Authors\Infrastructure\Controllers\AuthorsPostController" type="service_closure" id=".service_locator.O7oC5Tw"/>
+        <argument key="App\Authors\Infrastructure\Controllers\AuthorsPostController:__invoke" type="service_closure" id=".service_locator.51QoQMd"/>
+        <argument key="App\Authors\Infrastructure\Controllers\AuthorsPostController" type="service_closure" id=".service_locator.51QoQMd"/>
         <argument key="App\Books\Infrastructure\Controllers\BookGetController:__invoke" type="service_closure" id=".service_locator.Smwf69k"/>
         <argument key="App\Books\Infrastructure\Controllers\BookGetController" type="service_closure" id=".service_locator.Smwf69k"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksDeleteController:__invoke" type="service_closure" id=".service_locator.wHVpYfE"/>
@@ -5814,8 +6223,9 @@
         <argument key="App\Books\Infrastructure\Controllers\BooksGetController" type="service_closure" id=".service_locator.0zdjA.7"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPatchController:__invoke" type="service_closure" id=".service_locator.2aYyOJg"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPatchController" type="service_closure" id=".service_locator.2aYyOJg"/>
-        <argument key="App\Books\Infrastructure\Controllers\BooksPostController:__invoke" type="service_closure" id=".service_locator.zKNIjhi"/>
-        <argument key="App\Books\Infrastructure\Controllers\BooksPostController" type="service_closure" id=".service_locator.zKNIjhi"/>
+        <argument key="App\Books\Infrastructure\Controllers\BooksPostController:__invoke" type="service_closure" id=".service_locator.o_KbN5P"/>
+        <argument key="App\Books\Infrastructure\Controllers\BooksPostController" type="service_closure" id=".service_locator.o_KbN5P"/>
+        <argument key="App\Books\Infrastructure\Controllers\BooksPostController:validate" type="service_closure" id=".service_locator.XtLJX52"/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPutController:__invoke" type="service_closure" id=".service_locator.bRBK_1."/>
         <argument key="App\Books\Infrastructure\Controllers\BooksPutController" type="service_closure" id=".service_locator.bRBK_1."/>
         <argument key="App\Isbn\Intrastructure\Controllers\IsbnGetController:__invoke" type="service_closure" id=".service_locator.kAci.x3"/>
@@ -5847,6 +6257,10 @@
     </service>
     <service id=".debug.serializer.normalizer.serializer.denormalizer.unwrapping" class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
       <argument type="service" id="serializer.denormalizer.unwrapping"/>
+      <argument type="service" id="serializer.data_collector"/>
+    </service>
+    <service id=".debug.serializer.normalizer.serializer.normalizer.flatten_exception" class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
+      <argument type="service" id="serializer.normalizer.flatten_exception"/>
       <argument type="service" id="serializer.data_collector"/>
     </service>
     <service id=".debug.serializer.normalizer.serializer.normalizer.problem" class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
@@ -5981,6 +6395,78 @@
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service_closure" id="form.type.form"/>
       </argument>
     </service>
+    <service id="messenger.bus.default.middleware.traceable" class="Symfony\Component\Messenger\Middleware\TraceableMiddleware">
+      <argument type="service" id="debug.stopwatch"/>
+      <argument>messenger.bus.default</argument>
+    </service>
+    <service id="messenger.bus.default.middleware.add_bus_name_stamp_middleware" class="Symfony\Component\Messenger\Middleware\AddBusNameStampMiddleware">
+      <argument>messenger.bus.default</argument>
+    </service>
+    <service id="messenger.bus.default.middleware.send_message" class="Symfony\Component\Messenger\Middleware\SendMessageMiddleware">
+      <argument type="service" id="messenger.senders_locator"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument>true</argument>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger.messenger" on-invalid="ignore"/>
+      </call>
+    </service>
+    <service id="messenger.bus.default.middleware.handle_message" class="Symfony\Component\Messenger\Middleware\HandleMessageMiddleware">
+      <argument type="service" id="messenger.bus.default.messenger.handlers_locator"/>
+      <argument>false</argument>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger.messenger" on-invalid="ignore"/>
+      </call>
+    </service>
+    <service id="debug.traced.messenger.bus.default" class="Symfony\Component\Messenger\TraceableMessageBus">
+      <tag name="messenger.bus"/>
+      <tag name="container.decorator" id="messenger.bus.default" inner="debug.traced.messenger.bus.default.inner"/>
+      <argument type="service" id="debug.traced.messenger.bus.default.inner"/>
+    </service>
+    <service id=".service_locator.5cAhUFF" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="messenger.bus.default" type="service_closure" id="debug.traced.messenger.bus.default"/>
+      </argument>
+    </service>
+    <service id=".messenger.handler_descriptor.xPW5g_1" class="Symfony\Component\Messenger\Handler\HandlerDescriptor">
+      <argument type="service" id="App\Authors\Application\Create\CreateAuthorCommandHandler"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".messenger.handler_descriptor.QXXNQ9d" class="Symfony\Component\Messenger\Handler\HandlerDescriptor">
+      <argument type="service" id="process.messenger.process_message_handler"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".messenger.handler_descriptor.kEzMhfs" class="Symfony\Component\Messenger\Handler\HandlerDescriptor">
+      <argument type="service" id="console.messenger.execute_command_handler"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".messenger.handler_descriptor.6kVvRT." class="Symfony\Component\Messenger\Handler\HandlerDescriptor">
+      <argument type="service" id="http_client.messenger.ping_webhook_handler"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".messenger.handler_descriptor.p4Qvabm" class="Symfony\Component\Messenger\Handler\HandlerDescriptor">
+      <argument type="service" id="messenger.redispatch_message_handler"/>
+      <argument type="collection"/>
+    </service>
+    <service id="messenger.bus.default.messenger.handlers_locator" class="Symfony\Component\Messenger\Handler\HandlersLocator">
+      <argument type="collection">
+        <argument key="App\Authors\Application\Create\CreateAuthorCommand" type="iterator">
+          <argument type="service" id=".messenger.handler_descriptor.xPW5g_1"/>
+        </argument>
+        <argument key="Symfony\Component\Process\Messenger\RunProcessMessage" type="iterator">
+          <argument type="service" id=".messenger.handler_descriptor.QXXNQ9d"/>
+        </argument>
+        <argument key="Symfony\Component\Console\Messenger\RunCommandMessage" type="iterator">
+          <argument type="service" id=".messenger.handler_descriptor.kEzMhfs"/>
+        </argument>
+        <argument key="Symfony\Component\HttpClient\Messenger\PingWebhookMessage" type="iterator">
+          <argument type="service" id=".messenger.handler_descriptor.6kVvRT."/>
+        </argument>
+        <argument key="Symfony\Component\Messenger\Message\RedispatchMessage" type="iterator">
+          <argument type="service" id=".messenger.handler_descriptor.p4Qvabm"/>
+        </argument>
+      </argument>
+    </service>
     <service id=".debug.http_client" class="Symfony\Component\HttpClient\TraceableHttpClient">
       <tag name="http_client.client"/>
       <tag name="kernel.reset" method="reset"/>
@@ -6000,6 +6486,16 @@
     </service>
     <service id="monolog.logger.console" class="Monolog\Logger">
       <argument>console</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
+    </service>
+    <service id="monolog.logger.messenger" class="Monolog\Logger">
+      <argument>messenger</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
       <call method="pushHandler">
         <argument type="service" id="monolog.handler.main"/>
       </call>
@@ -6257,6 +6753,12 @@
         <argument key="web_link.http_header_serializer" type="service_closure" id="web_link.http_header_serializer" on-invalid="ignore"/>
       </argument>
     </service>
+    <service id=".service_locator.jUv.zyj.App\Authors\Infrastructure\Controllers\AuthorsDeleteController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Authors\Infrastructure\Controllers\AuthorsDeleteController"/>
+      <argument>App\Authors\Infrastructure\Controllers\AuthorsDeleteController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.jUv.zyj" method="withContext"/>
+    </service>
     <service id=".service_locator.jUv.zyj.App\Authors\Infrastructure\Controllers\AuthorsGetController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Authors\Infrastructure\Controllers\AuthorsGetController"/>
       <argument>App\Authors\Infrastructure\Controllers\AuthorsGetController</argument>
@@ -6311,17 +6813,17 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.jUv.zyj" method="withContext"/>
     </service>
-    <service id=".service_locator.8NWUArH" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.EMavxuq" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="routing.loader" type="service_closure" id="routing.loader"/>
       </argument>
     </service>
-    <service id=".service_locator.8NWUArH.router.default" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.EMavxuq.router.default" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="router.default"/>
       <argument>router.default</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator.8NWUArH" method="withContext"/>
+      <factory service=".service_locator.EMavxuq" method="withContext"/>
     </service>
     <service id=".service_locator.cUcW89y" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -6371,10 +6873,6 @@
       <argument type="collection">
         <argument key="reverse_container" type="service_closure" id="reverse_container" on-invalid="ignore_uninitialized"/>
       </argument>
-    </service>
-    <service id=".service_locator.Xbsa8iG" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection"/>
     </service>
     <service id=".service_locator.NBUFN6A" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -6473,6 +6971,12 @@
         <argument type="service">
           <service class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
             <argument type="service" id="serializer.denormalizer.unwrapping"/>
+            <argument type="service" id="serializer.data_collector"/>
+          </service>
+        </argument>
+        <argument type="service">
+          <service class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
+            <argument type="service" id="serializer.normalizer.flatten_exception"/>
             <argument type="service" id="serializer.data_collector"/>
           </service>
         </argument>
@@ -6601,6 +7105,17 @@
         </argument>
       </call>
     </service>
+    <service id="debug.traced.messenger.bus.default.inner" class="Symfony\Component\Messenger\MessageBus">
+      <argument type="iterator">
+        <argument type="service" id="messenger.bus.default.middleware.traceable"/>
+        <argument type="service" id="messenger.bus.default.middleware.add_bus_name_stamp_middleware"/>
+        <argument type="service" id="messenger.middleware.reject_redelivered_message_middleware"/>
+        <argument type="service" id="messenger.middleware.dispatch_after_current_bus"/>
+        <argument type="service" id="messenger.middleware.failed_message_processing_middleware"/>
+        <argument type="service" id="messenger.bus.default.middleware.send_message"/>
+        <argument type="service" id="messenger.bus.default.middleware.handle_message"/>
+      </argument>
+    </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
         <argument type="service" id="doctrine.orm.default_xml_metadata_driver"/>
@@ -6618,6 +7133,9 @@
     <service id="debug.security.event_dispatcher.api.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
     <service id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.y4_Zrx.&quot;: it needs an instance of &quot;Symfony\Component\Config\Loader\LoaderInterface&quot; but this type has been excluded from autowiring."/>
+    </service>
+    <service id=".errored..service_locator.XtLJX52.Symfony\Component\Validator\Constraints\Collection" class="Symfony\Component\Validator\Constraints\Collection">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.XtLJX52&quot;: it references class &quot;Symfony\Component\Validator\Constraints\Collection&quot; but no such service exists."/>
     </service>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>about</argument>
@@ -6730,6 +7248,41 @@
       <argument>Display configured listeners for an application</argument>
       <argument>false</argument>
       <argument type="service_closure" id="console.command.event_dispatcher_debug"/>
+    </service>
+    <service id=".console.command.messenger_consume_messages.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>messenger:consume</argument>
+      <argument type="collection"/>
+      <argument>Consume messages</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.messenger_consume_messages"/>
+    </service>
+    <service id=".console.command.messenger_setup_transports.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>messenger:setup-transports</argument>
+      <argument type="collection"/>
+      <argument>Prepare the required infrastructure for the transport</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.messenger_setup_transports"/>
+    </service>
+    <service id=".console.command.messenger_debug.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>debug:messenger</argument>
+      <argument type="collection"/>
+      <argument>List messages you can dispatch using the message buses</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.messenger_debug"/>
+    </service>
+    <service id=".console.command.messenger_stop_workers.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>messenger:stop-workers</argument>
+      <argument type="collection"/>
+      <argument>Stop workers after their current message</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.messenger_stop_workers"/>
+    </service>
+    <service id=".console.command.messenger_stats.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>messenger:stats</argument>
+      <argument type="collection"/>
+      <argument>Show the message count for one or more transports</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.messenger_stats"/>
     </service>
     <service id=".console.command.router_debug.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>debug:router</argument>
@@ -7123,7 +7676,7 @@
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.kFEryB2"/>
+      <argument type="service" id=".service_locator.5diaLmm"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -7141,6 +7694,11 @@
         <argument key="debug:autowiring">console.command.debug_autowiring</argument>
         <argument key="debug:dotenv">console.command.dotenv_debug</argument>
         <argument key="debug:event-dispatcher">console.command.event_dispatcher_debug</argument>
+        <argument key="messenger:consume">console.command.messenger_consume_messages</argument>
+        <argument key="messenger:setup-transports">console.command.messenger_setup_transports</argument>
+        <argument key="debug:messenger">console.command.messenger_debug</argument>
+        <argument key="messenger:stop-workers">console.command.messenger_stop_workers</argument>
+        <argument key="messenger:stats">console.command.messenger_stats</argument>
         <argument key="debug:router">console.command.router_debug</argument>
         <argument key="router:match">console.command.router_match</argument>
         <argument key="debug:serializer">console.command.serializer_debug</argument>
@@ -7220,7 +7778,7 @@
         <argument key="make:security:form-login">maker.auto_command.make_security_form_login</argument>
       </argument>
     </service>
-    <service id=".service_locator.kFEryB2" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.5diaLmm" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="Doctrine\DBAL\Tools\Console\Command\RunSqlCommand" type="service_closure" id="Doctrine\DBAL\Tools\Console\Command\RunSqlCommand"/>
@@ -7241,6 +7799,11 @@
         <argument key="console.command.dotenv_debug" type="service_closure" id=".console.command.dotenv_debug.lazy"/>
         <argument key="console.command.event_dispatcher_debug" type="service_closure" id=".console.command.event_dispatcher_debug.lazy"/>
         <argument key="console.command.form_debug" type="service_closure" id=".console.command.form_debug.lazy"/>
+        <argument key="console.command.messenger_consume_messages" type="service_closure" id=".console.command.messenger_consume_messages.lazy"/>
+        <argument key="console.command.messenger_debug" type="service_closure" id=".console.command.messenger_debug.lazy"/>
+        <argument key="console.command.messenger_setup_transports" type="service_closure" id=".console.command.messenger_setup_transports.lazy"/>
+        <argument key="console.command.messenger_stats" type="service_closure" id=".console.command.messenger_stats.lazy"/>
+        <argument key="console.command.messenger_stop_workers" type="service_closure" id=".console.command.messenger_stop_workers.lazy"/>
         <argument key="console.command.router_debug" type="service_closure" id=".console.command.router_debug.lazy"/>
         <argument key="console.command.router_match" type="service_closure" id=".console.command.router_match.lazy"/>
         <argument key="console.command.secrets_decrypt_to_local" type="service_closure" id=".console.command.secrets_decrypt_to_local.lazy"/>
@@ -7356,6 +7919,15 @@
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
+    <service id="cache.messenger.restart_workers_signal.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
+      <argument>kPkC2NCqM1</argument>
+      <argument>0</argument>
+      <argument>/var/www/librarify/var/cache/dev/pools/app</argument>
+      <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
+      <call method="setLogger">
+        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      </call>
+    </service>
     <service id="cache.validator_expression_language.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <argument>OQIFF2mz3o</argument>
       <argument>0</argument>
@@ -7393,6 +7965,7 @@
     </service>
     <service id="App\FileUploader\Domain\FileUploaderInterface" alias="App\FileUploader\Application\FileUploaderS3"/>
     <service id="App\Shared\Infrastructure\Symfony\HttpClientInterface" alias="App\Shared\Infrastructure\Symfony\HttpClient"/>
+    <service id="App\Books\Domain\BookRepository" alias="App\Books\Infrastructure\Persistence\DoctrineBookRepository"/>
     <service id="App\Kernel" alias="kernel" public="true"/>
     <service id="Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface" alias="parameter_bag"/>
     <service id="Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface" alias="parameter_bag"/>
@@ -7465,6 +8038,9 @@
     <service id="form.choice_list_factory" alias="form.choice_list_factory.cached"/>
     <service id="Symfony\Component\Validator\Validator\ValidatorInterface" alias="debug.validator"/>
     <service id="validator.mapping.class_metadata_factory" alias="debug.validator"/>
+    <service id="messenger.default_serializer" alias="messenger.transport.native_php_serializer"/>
+    <service id="messenger.default_bus" alias="debug.traced.messenger.bus.default" public="true"/>
+    <service id="Symfony\Component\Messenger\MessageBusInterface" alias="debug.traced.messenger.bus.default"/>
     <service id="logger" alias="monolog.logger"/>
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="Doctrine\DBAL\Connection" alias="doctrine.dbal.default_connection"/>
@@ -7513,9 +8089,10 @@
     <service id="League\Flysystem\FilesystemWriter $defaultStorage" alias="default.storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.bJ.4HC5" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.hHoT7Zh"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.vstswpC"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
     <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>
+    <service id="Psr\Log\LoggerInterface $messengerLogger" alias="monolog.logger.messenger"/>
     <service id="Psr\Log\LoggerInterface $cacheLogger" alias="monolog.logger.cache"/>
     <service id=".Psr\Log\LoggerInterface $http_clientLogger" alias="monolog.logger.http_client"/>
     <service id="Psr\Log\LoggerInterface $httpClientLogger" alias="monolog.logger.http_client"/>
@@ -7541,16 +8118,20 @@
     <service id="security.access.decision_manager" alias="debug.security.access.decision_manager"/>
     <service id="security.firewall.authenticator.api" alias="debug.security.firewall.authenticator.api"/>
     <service id="var_dumper.cli_dumper" alias="var_dumper.contextualized_cli_dumper"/>
+    <service id="messenger.bus.default" alias="debug.traced.messenger.bus.default"/>
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id="security.event_dispatcher.api" alias="debug.security.event_dispatcher.api"/>
+    <service id=".service_locator.Xbsa8iG" alias="messenger.retry_strategy_locator"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
+    <service id=".service_locator.ZtbvmWn" alias=".service_locator.QmvsV.i"/>
     <service id=".service_locator.9AemMx4" alias=".service_locator.Ppccw9C"/>
-    <service id=".service_locator.h56d6jO" alias=".service_locator.O7oC5Tw"/>
+    <service id=".service_locator.SfV5Ccn" alias=".service_locator.51QoQMd"/>
     <service id=".service_locator.as3kCtx" alias=".service_locator.Smwf69k"/>
     <service id=".service_locator.PnYQ3Cu" alias=".service_locator.wHVpYfE"/>
     <service id=".service_locator.WythZq." alias=".service_locator.0zdjA.7"/>
     <service id=".service_locator.ACiAlDY" alias=".service_locator.2aYyOJg"/>
-    <service id=".service_locator.B9_lAvC" alias=".service_locator.zKNIjhi"/>
+    <service id=".service_locator.3D4FTpp" alias=".service_locator.o_KbN5P"/>
+    <service id=".service_locator.Q8hp.5n" alias=".service_locator.XtLJX52"/>
     <service id=".service_locator.jjUOWgb" alias=".service_locator.bRBK_1."/>
     <service id=".service_locator.f60pbri" alias=".service_locator.kAci.x3"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.jUv.zyj"/>

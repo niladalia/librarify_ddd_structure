@@ -29,15 +29,6 @@ class DoctrineAuthorRepository extends ServiceEntityRepository
         return new Authors(...$all_authors);
     }
 
-    private function BookFindersSerializer(Author $author): array
-    {
-        $books = $author->BookFinders()->getValues();
-        $books_array = [];
-        foreach ($books as $book) {
-            $books_array[] = ['id' => $book->getId(), 'title' => $book->getTitle()];
-        }
-        return $books_array;
-    }
 
     public function save(Author $author): Author
     {
@@ -51,6 +42,13 @@ class DoctrineAuthorRepository extends ServiceEntityRepository
         $this->getEntityManager()->refresh($author);
         return $author;
     }
+
+    public function delete(Author $author): void
+    {
+        $this->getEntityManager()->remove($author);
+        $this->getEntityManager()->flush();
+    }
+
 
     //    /**
     //     * @return Author[] Returns an array of Author objects

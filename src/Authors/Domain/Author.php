@@ -4,6 +4,7 @@ namespace App\Authors\Domain;
 
 use App\Authors\Domain\AuthorName;
 use App\Books\Domain\Book;
+use App\Books\Domain\Books;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
@@ -58,7 +59,7 @@ class Author
     /**
      * @return Collection<int, Book>
      */
-    public function BookFinders(): Collection
+    public function getBooks(): Collection
     {
         return $this->books;
     }
@@ -73,10 +74,20 @@ class Author
         return $this;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
+        $books =  new Books(...$this->getBooks());
         return [
             "id" => $this->getId()->serialize(),
+            "name" => $this->getName()->getValue(),
+            "books" => $books->toSmallArray()
+        ];
+    }
+
+    public function toSmallArray(): array
+    {
+        return [
+            'id' => $this->getId()->serialize(),
             "name" => $this->getName()->getValue()
         ];
     }

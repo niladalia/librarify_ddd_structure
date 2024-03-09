@@ -3,26 +3,23 @@
 namespace App\Books\Application\Find;
 
 use App\Books\Domain\Book;
-use App\Books\Domain\BookNotFound;
-use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
-use Ramsey\Uuid\Uuid;
+use App\Books\Domain\BookFinder as DomainBookFinder;
+use App\Books\Domain\BookRepository;
 
 class BookFinder
 {
-    private $book_rep;
+    //private readonly DomainBookFinder $domainBookFinder;
 
-    public function __construct(DoctrineBookRepository $book_rep)
+    public function __construct(private DomainBookFinder $domainBookFinder)
     {
-        $this->book_rep = $book_rep;
+        // Segons codelyTV, aixó es el que seria millor, pero em sembla ja massa. Tot i que ens podria anar be per el testing !
+//     $this->domainBookFinder = new DomainBookFinder($book_rep);
+       $this->domainBookFinder = $domainBookFinder;
     }
 
 
-    public function __invoke(string $id): ?Book
+    public function __invoke(string $id): Book
     {
-        $book = $this->book_rep->find(Uuid::fromString($id));
-        if (!$book) {
-            BookNotFound::throw($id);
-        }
-        return $book;
+        return $this->domainBookFinder->__invoke($id);
     }
 }

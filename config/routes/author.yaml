@@ -7,3 +7,8 @@ author_controller_post:
     path: /api/author
     controller: App\Authors\Infrastructure\Controllers\AuthorsPostController
     methods:  [POST] 
+
+author_controller_delete:
+    path: /api/author/{id}
+    controller: App\Authors\Infrastructure\Controllers\AuthorsDeleteController
+    methods:  [DELETE] 

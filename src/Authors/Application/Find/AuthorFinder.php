@@ -17,7 +17,7 @@ class AuthorFinder
     }
 
 
-    public function __invoke(string $id): ?Author
+    public function __invoke(string $id): Author
     {
         $author = $this->author_rep->find(Uuid::fromString($id));
         if (!$author) {
