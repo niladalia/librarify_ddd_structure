@@ -3,9 +3,7 @@
 namespace App\Books\Domain;
 
 use App\Books\Domain\Book;
-use App\Categories\Domain\Categories;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints\Collection;
 
 final class Books extends ArrayCollection
 {
@@ -21,6 +19,18 @@ final class Books extends ArrayCollection
         foreach ($this as $book) {
             $books[] = $book->toArray();
         }
+
+        return $books;
+    }
+
+    public function toSmallArray(): array
+    {
+        $books = [];
+
+        foreach ($this as $book) {
+            $books[] = $book->toSmallArray();
+        }
+
 
         return $books;
     }

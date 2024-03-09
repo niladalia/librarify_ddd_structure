@@ -14,6 +14,7 @@ class BooksPutController extends AbstractController
     public function __invoke(Request $request, string $id, BookEditor $bookEditor): JsonResponse
     {
         $request_data = json_decode($request->getContent(), true);
+        
         $book = ($bookEditor)($request_data, $id);
 
         return new JsonResponse(

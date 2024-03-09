@@ -3,25 +3,27 @@
 namespace App\Authors\Infrastructure\Controllers;
 
 use App\Authors\Application\Create\AuthorCreator;
+use App\Authors\Application\Create\CreateAuthorCommand;
 use App\Authors\Application\Dto\AuthorDto;
 use App\Authors\Application\Find\AuthorsFinder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class AuthorsPostController extends AbstractController
 {
-    public function __invoke(HttpFoundationRequest $request, AuthorCreator $author_creator): JsonResponse
+
+    public function __invoke(Request $request,MessageBusInterface $commandBus): Response
     {
-        $params = json_decode($request->getContent(), true);
-
-        $author = $author_creator(
-            new AuthorDto($params['name'])
+        $data = json_decode($request->getContent(), true);
+        $commandBus->dispatch(
+            new CreateAuthorCommand(
+                (string) $data['name']
+            )
         );
 
-        return new JsonResponse(
-            $author->toArray()
-        );
+		return new Response('', Response::HTTP_CREATED);
     }
 }

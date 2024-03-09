@@ -9,15 +9,11 @@ use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
 
 class AuthorCreator
 {
-    public function __construct(
-        private DoctrineAuthorRepository $author_rep
-    ) {
-        $this->author_rep = $author_rep;
-    }
+    public function __construct(private DoctrineAuthorRepository $author_rep) {}
 
-    public function __invoke(AuthorDto $authorDto): Author
+    public function __invoke(AuthorName $name): Author
     {
-        $author = Author::create(new AuthorName($authorDto->name));
+        $author = Author::create($name);
 
         $this->author_rep->save($author);
 
