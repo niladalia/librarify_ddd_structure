@@ -1,22 +1,32 @@
 framework:
     messenger:
-        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        # failure_transport: failed
-
+        buses:
+            messenger.bus.event.async:
+                default_middleware: allow_no_handlers
         transports:
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
-            # async: '%env(MESSENGER_TRANSPORT_DSN)%'
-            # failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+            librarify_book_created_subscriber:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                serializer: App\Shared\Infrastructure\Event\BookCreatedDomainEventDecoder
+                options:    
+                    exchange:
+                        name: exchange_librarify
+                        type: topic                      
+                    queues:
+                        librarify.book.book_created:
+                            binding_keys: [ 'librarify.book.1.event.book.created' ]
+                retry_strategy:
+                    max_retries: 5                                  
+            amqp:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                serializer: serializer.amqp
+                options:
+                    exchange:
+                        name: exchange_librarify
+                        type: topic
+                    queues: [ ]       
+
 
         routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
-
-# when@test:
-#    framework:
-#        messenger:
-#            transports:
-#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-#                async: 'in-memory://'
+            '*': amqp
+#            'App\Books\Domain\BookCreatedDomainEvent': librarify_book_created_subscriber
+#            'App\Books\Domain\BookDeletedDomainEvent': notify_user_on_book_deleted

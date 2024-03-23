@@ -15,6 +15,7 @@ use App\FileUploader\Domain\FileUploaderInterface;
 use App\Shared\Domain\Exceptions\InvalidData;
 use App\Books\Application\Update\UpdateBookAuthor;
 use App\Books\Application\Update\UpdateBookCategory;
+use App\FileUploader\Application\FileUploader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -23,7 +24,7 @@ class BookEditor
     public function __construct(
         private BookRepository $book_rep,
         private FormFactoryInterface $formFactory,
-        private FileUploaderInterface $fileUploader,
+        private FileUploader $fileUploader,
         private BookFinder $BookFinder,
         private UpdateBookCategory $updateBookCategory,
         private UpdateBookAuthor $updateBookAuthor
@@ -90,7 +91,7 @@ class BookEditor
         $new_author = $bookDto->author_id ? ($this->updateBookAuthor)($bookDto->author_id, $book) : null;
         $book->update(
             new Title($bookDto->title),
-            $bookDto->base64Image ? $this->fileUploader->uploadFile($bookDto) : null,
+            $bookDto->base64Image ? $this->fileUploader->__invoke($bookDto) : null,
             $new_author ? $new_author : null,
             new Description($bookDto->description),
             new Score($bookDto->score)

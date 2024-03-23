@@ -7,8 +7,6 @@ use App\Books\Domain\Book;
 use App\Books\Domain\Books;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class Author
 {
@@ -20,7 +18,7 @@ class Author
 
     private Collection $books;
 
-    public function __construct(UuidInterface $uuid, ?AuthorName $name = new AuthorName())
+    public function __construct(AuthorId $uuid, ?AuthorName $name = new AuthorName())
     {
         $this->id = $uuid;
         $this->name = $name;
@@ -29,17 +27,18 @@ class Author
 
 
     public static function create(
+        AuthorId $id,
         AuthorName $name
     ): self {
         $author = new self(
-            Uuid::uuid4(),
+            $id,
             $name
         );
 
         return $author;
     }
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?AuthorId
     {
         return $this->id;
     }
@@ -78,7 +77,7 @@ class Author
     {
         $books =  new Books(...$this->getBooks());
         return [
-            "id" => $this->getId()->serialize(),
+            "id" => $this->getId()->getValue(),
             "name" => $this->getName()->getValue(),
             "books" => $books->toSmallArray()
         ];
@@ -87,7 +86,7 @@ class Author
     public function toSmallArray(): array
     {
         return [
-            'id' => $this->getId()->serialize(),
+            'id' => $this->getId()->getValue(),
             "name" => $this->getName()->getValue()
         ];
     }

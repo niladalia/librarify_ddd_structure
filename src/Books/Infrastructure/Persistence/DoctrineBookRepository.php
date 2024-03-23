@@ -3,6 +3,7 @@
 namespace App\Books\Infrastructure\Persistence;
 
 use App\Books\Domain\Book;
+use App\Books\Domain\BookId;
 use App\Books\Domain\BookRepository;
 use App\Books\Domain\Books;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -25,7 +26,7 @@ class DoctrineBookRepository extends ServiceEntityRepository implements BookRepo
         parent::__construct($registry, Book::class);
     }
 
-    public function search(UuidInterface $id): ?Book {
+    public function search(BookId $id): ?Book {
     
         return $this->getEntityManager()->find(Book::class,$id);
     }

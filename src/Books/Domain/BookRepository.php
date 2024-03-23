@@ -7,7 +7,7 @@ use Ramsey\Uuid\UuidInterface;
 interface BookRepository
 
 {
-    public function search(UuidInterface $id): ?Book;
+    public function search(BookId $id): ?Book;
 
     public function find_all(): ?Books;
 

@@ -2,8 +2,6 @@
 
 namespace App\FileUploader\Domain;
 
-use App\Books\Application\Dto\BookDto;
-
 interface FileUploaderInterface
 {
     /**
@@ -12,5 +10,5 @@ interface FileUploaderInterface
      * que puji a S3 i aquest espera un altre tipus de dades diferent a base64, simplement tindrem que modificar el DTO.
      * Pero en cap cas tocarem el cas d'us ni el controlador.
      */
-    public function uploadFile(BookDto $bookDto): string;
+    public function upload(string $extension,string $filename,string $data);
 }

@@ -4,7 +4,7 @@ author_controller_get:
     methods:  [GET] 
 
 author_controller_post:
-    path: /api/author
+    path: /api/author/{id}
     controller: App\Authors\Infrastructure\Controllers\AuthorsPostController
     methods:  [POST] 
 

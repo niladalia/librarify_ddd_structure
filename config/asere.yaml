@@ -1,0 +1,181 @@
+framework:
+  messenger:
+    buses:
+      command_bus:
+        middleware:
+          - doctrine_close_connection
+
+    failure_transport: failed
+    transports:
+      failed:
+        dsn: "%messenger_transport_dsn%/results.failed"
+        retry_strategy:
+          max_retries: 0
+
+      event_create_on_event_created:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\EventCreatedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.event.event_create_on_event_created:
+              binding_keys: [ 'dorna.toad.1.event.mgp.event.created' ]
+        retry_strategy:
+          max_retries: 0
+
+      event_delete_on_event_deleted:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\EventDeletedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.event.event_delete_on_event_deleted:
+              binding_keys: [ 'dorna.toad.1.event.mgp.event.deleted' ]
+        retry_strategy:
+          max_retries: 0
+
+      event_title_change_on_event_modified:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\EventModifiedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.event.event_title_change_on_event_modified:
+              binding_keys: [ 'dorna.toad.1.event.mgp.event.modified' ]
+        retry_strategy:
+          max_retries: 0
+
+      event_import_on_event_status_modified:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\EventStatusModifiedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.event.event_import_on_event_status_modified:
+              binding_keys: [ 'dorna.toad.1.event.mgp.event.status.modified' ]
+        retry_strategy:
+          max_retries: 0
+
+      session_create_on_broadcast_created:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\SessionCreatedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.session.session_create_on_broadcast_created:
+              binding_keys: [ 'dorna.toad.1.event.mgp.broadcast.created' ]
+        retry_strategy:
+          max_retries: 0
+
+      session_modify_on_broadcast_modified:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\SessionModifiedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.session.session_modify_on_broadcast_modified:
+              binding_keys: [ 'dorna.toad.1.event.mgp.broadcast.modified' ]
+        retry_strategy:
+          max_retries: 0
+
+      session_delete_on_broadcast_deleted:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\SessionDeletedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.session.session_delete_on_broadcast_deleted:
+              binding_keys: [ 'dorna.toad.1.event.mgp.broadcast.deleted' ]
+        retry_strategy:
+          max_retries: 0
+
+      statistics_import_on_session_status_modified:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\SessionStatusModifiedSerializer
+        options:
+          exchange:
+            name: ms_toad
+            type: topic
+          queues:
+            results.session.statistics_import_on_session_status_modified:
+              binding_keys: [ 'dorna.toad.1.event.mgp.broadcast.status.modified' ]
+        retry_strategy:
+          max_retries: 0
+
+      classification_create_on_file_created:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\FileCreatedSerializer
+        options:
+          exchange:
+            name: ms_asset
+            type: topic
+          queues:
+            results.classification.classification_create_on_file_created:
+              binding_keys: [ 'dorna.asset.1.event.file.created' ]
+        retry_strategy:
+          max_retries: 0
+
+      event_file_modify_on_file_created:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\EventFileModifiedSerializer
+        options:
+          exchange:
+            name: ms_asset
+            type: topic
+          queues:
+            results.event.event_file_modify_on_file_created:
+              binding_keys: [ 'dorna.asset.1.event.file.created' ]
+        retry_strategy:
+          max_retries: 0
+
+      session_file_modify_on_file_created:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\SessionFileModifiedSerializer
+        options:
+          exchange:
+            name: ms_asset
+            type: topic
+          queues:
+            results.session.session_file_modify_on_file_created:
+              binding_keys: [ 'dorna.asset.1.event.file.created' ]
+        retry_strategy:
+          max_retries: 0
+
+      event_category_file_create_on_file_created:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: Results\Infrastructure\Handler\Serializer\EventCategoryFileCreatedSerializer
+        options:
+          exchange:
+            name: ms_asset
+            type: topic
+          queues:
+            results.event_category_file.event_category_file_create_on_file_created:
+              binding_keys: [ 'dorna.asset.1.event.file.created' ]
+        retry_strategy:
+          max_retries: 0
+
+      amqp:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        serializer: serializer.amqp
+        options:
+          exchange:
+            name: ms_results
+            type: topic
+          queues: [ ]
+
+    routing:
+      '*': amqp

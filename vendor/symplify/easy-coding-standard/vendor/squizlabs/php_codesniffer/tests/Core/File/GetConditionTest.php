@@ -17,7 +17,7 @@ use PHP_CodeSniffer\Util\Tokens;
  * @covers \PHP_CodeSniffer\Files\File::getCondition
  * @covers \PHP_CodeSniffer\Files\File::hasCondition
  */
-class GetConditionTest extends AbstractMethodUnitTest
+final class GetConditionTest extends AbstractMethodUnitTest
 {
     /**
      * List of all the test markers with their target token in the test case file.

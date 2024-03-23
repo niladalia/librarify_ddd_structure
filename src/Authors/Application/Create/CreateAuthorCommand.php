@@ -2,10 +2,16 @@
 
 namespace App\Authors\Application\Create;
 
-final readonly class CreateAuthorCommand
-{
-    public function __construct(private ?string $name) {}
+use App\Shared\Domain\Bus\Command\CommandInterface;
 
+final readonly class CreateAuthorCommand implements CommandInterface
+{
+    public function __construct(private string $id,private ?string $name) {}
+
+    public function id(): ?string
+    {
+            return $this->id;
+    }
 
     public function name(): ?string
     {

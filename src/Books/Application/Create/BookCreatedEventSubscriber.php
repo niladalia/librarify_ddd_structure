@@ -23,7 +23,7 @@ class BookCreatedEventSubscriber implements EventSubscriberInterface
 
     public function logCreation(BookCreatedDomainEvent $event)
     {
-        $book = ($this->BookFinder)($event->bookId->toString());
+        $book = ($this->BookFinder)($event->getId());
         $this->logger->info(sprintf('Book Created: %s', $book->getTitle()->getValue()));
     }
 

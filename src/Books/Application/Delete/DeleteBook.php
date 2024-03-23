@@ -6,6 +6,8 @@ use App\Books\Domain\BookRepository;
 use App\Books\Domain\BookDeletedDomainEvent;
 use App\Books\Domain\BookFinder;
 use App\Shared\Application\DeleteFile;
+use App\Shared\Domain\Event\DomainEvent;
+use App\Shared\Domain\Event\EventBus;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DeleteBook
@@ -14,12 +16,12 @@ class DeleteBook
         private BookRepository $bookRep,
         private DeleteFile $file_deleter,
         private BookFinder $bookFinder,
-        private EventDispatcherInterface $eventDispatcher
+        private EventBus $bus
     ) {
         $this->bookRep = $bookRep;
         $this->file_deleter = $file_deleter;
         $this->bookFinder = $bookFinder;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->bus = $bus;
     }
 
 
@@ -30,13 +32,11 @@ class DeleteBook
 
         $book->addDomainEvent(
             new BookDeletedDomainEvent(
-                $book->getId(),
-                $book->getImage(),
-                $book->getAuthor() ? $book->getAuthor()->getId()->serialize() : null
+                $book->getId()->getValue()
             )
         );          
-        $this->bookRep->delete($book);
+       // $this->bookRep->delete($book);
 
-        $this->eventDispatcher->dispatch(...$book->pullDomainEvents());      
-    }   
+        $this->bus->publish(...$book->pullDomainEvents());      
+    }  
 }

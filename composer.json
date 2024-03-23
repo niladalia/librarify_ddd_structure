@@ -5,9 +5,11 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
+        "ext-amqp": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/core": "^3.2",
+        "broadway/broadway": "^2.5",
         "cap-collectif/id-to-uuid": "dev-update-doctrine",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.11",
@@ -18,6 +20,7 @@
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.25",
         "ramsey/uuid-doctrine": "^2.0",
+        "symfony/amqp-messenger": "7.0.*",
         "symfony/asset": "7.0.*",
         "symfony/console": "7.0.*",
         "symfony/dotenv": "7.0.*",
@@ -36,7 +39,8 @@
         "symfony/serializer": "7.0.*",
         "symfony/twig-bundle": "7.0.*",
         "symfony/validator": "7.0.*",
-        "symfony/yaml": "7.0.*"
+        "symfony/yaml": "7.0.*",
+        "ext-fileinfo": "*"
     },
     "require-dev": {
         "ekino/phpstan-banned-code": "^1.0",

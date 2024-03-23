@@ -3,7 +3,7 @@
 namespace App\Shared\Domain\ValueObject;
 
 // La fem abstract perque no volem que sigui instanciable i perque conté u metode abstracte a mes a mes de metodes implementats
-abstract class StringValueObject implements Field
+abstract class StringValueObject
 {
     protected ?string $value;
 

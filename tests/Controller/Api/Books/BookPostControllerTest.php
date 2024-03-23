@@ -4,6 +4,7 @@ namespace App\Test\Controller\Api;
 
 use App\Authors\Domain\AuthorNotFound;
 use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
+use App\Tests\Mother\AuthorIdMother;
 use App\Tests\Mother\AuthorMother;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -17,7 +18,7 @@ class BookPostControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Persistim un autor en BD perque pugui adjuntar el book a un author existent
-        $author = AuthorMother::create(Uuid::fromString("59aa8278-bd4a-4895-a9e1-5684c89a3627"));
+        $author = AuthorMother::create(AuthorIdMother::create("59aa8278-bd4a-4895-a9e1-5684c89a3627"));
 
         $authorRep = static::getContainer()->get(DoctrineAuthorRepository::class);
         

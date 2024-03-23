@@ -7,6 +7,9 @@ use App\Authors\Application\Dto\AuthorDto;
 use App\Shared\Domain\Exceptions\InvalidArgument;
 use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
 use App\Authors\Application\Create\AuthorCreator;
+use App\Tests\Mother\AuthorIdMother;
+use App\Tests\Mother\AuthorNameMother;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -29,9 +32,6 @@ class AuthorCreatorUnitTest extends KernelTestCase
     public function test_it_creates_an_author()
     {
         # $this->markTestSkipped('PHPUnit will skip this test method');
-        $authorDto = new AuthorDto(
-            "J.K. Rowling"
-        );
 
         $this->authorRep
         ->expects(self::exactly(1))
@@ -40,7 +40,7 @@ class AuthorCreatorUnitTest extends KernelTestCase
             return $authorCallback;
         });
 
-        $author = $this->authorCreator->__invoke($authorDto);
+        $author = $this->authorCreator->__invoke(AuthorIdMother::create(Uuid::uuid4()),AuthorNameMother::create("J.K. Rowling"));
 
         $this->assertEquals("J.K. Rowling", $author->getName()->getValue());
         $this->assertInstanceOf(Author::class, $author);
@@ -48,10 +48,8 @@ class AuthorCreatorUnitTest extends KernelTestCase
 
     public function test_it_throws_exception_when_data_is_invalid()
     {
-        $authorDto = new AuthorDto("A");
-
         $this->expectException(InvalidArgument::class);
 
-        $this->authorCreator->__invoke($authorDto);
+        $this->authorCreator->__invoke(AuthorNameMother::create("A"));
     }
 }

@@ -14,24 +14,18 @@ class BooksPostController extends ApiController
 
     public function __invoke(Request $request, BookCreator $bookCreator): JsonResponse
     {
-
-        $body = json_decode($request->getContent(), true);
+        $request_data = json_decode($request->getContent(), true);
+        $this->validate($request_data,$this->constraints());
         
-        $this->validate($body,$this->constraints());
-
-        $requestData = json_decode($request->getContent(), true);
-
         $bookDto = new BookDto(
-            $requestData['title'] ?? null,
-            $requestData['base64Image'] ?? null,
-            $requestData['categories'] ?? [],
-            $requestData['author_id'] ?? null,
-            $requestData['score'] ?? null,
-            $requestData['description'] ?? null
+            $request_data['title'] ?? null,
+            $request_data['base64Image'] ?? null,
+            $request_data['categories'] ?? [],
+            $request_data['author_id'] ?? null,
+            $request_data['score'] ?? null,
+            $request_data['description'] ?? null
         );
-    
         $book = ($bookCreator)($bookDto);
-
         return new JsonResponse(
             $book->toArray()
         );

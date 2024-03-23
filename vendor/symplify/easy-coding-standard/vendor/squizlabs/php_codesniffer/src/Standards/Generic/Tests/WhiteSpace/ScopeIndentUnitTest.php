@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ScopeIndentSniff
  */
-class ScopeIndentUnitTest extends AbstractSniffUnitTest
+final class ScopeIndentUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Get a list of CLI values to set before the file is tested.

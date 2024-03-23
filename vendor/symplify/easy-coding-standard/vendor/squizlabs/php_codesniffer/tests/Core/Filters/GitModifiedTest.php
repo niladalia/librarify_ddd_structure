@@ -18,7 +18,7 @@ use ReflectionMethod;
  *
  * @covers \PHP_CodeSniffer\Filters\GitModified
  */
-class GitModifiedTest extends AbstractFilterTestCase
+final class GitModifiedTest extends AbstractFilterTestCase
 {
     /**
      * Test filtering a file list for excluded paths.
@@ -82,6 +82,9 @@ class GitModifiedTest extends AbstractFilterTestCase
      */
     public function testExecAlwaysReturnsArray($cmd, $expected)
     {
+        if (\is_dir(__DIR__ . '/../../../.git') === \false) {
+            $this->markTestSkipped('Not a git repository');
+        }
         $fakeDI = new RecursiveArrayIterator(self::getFakeFileList());
         $filter = new GitModified($fakeDI, '/', self::$config, self::$ruleset);
         $reflMethod = new ReflectionMethod($filter, 'exec');

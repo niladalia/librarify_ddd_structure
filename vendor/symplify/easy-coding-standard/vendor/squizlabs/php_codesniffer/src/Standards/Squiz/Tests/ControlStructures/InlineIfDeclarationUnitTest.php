@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\ControlStructures\InlineIfDeclarationSniff
  */
-class InlineIfDeclarationUnitTest extends AbstractSniffUnitTest
+final class InlineIfDeclarationUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Get a list of CLI values to set before the file is tested.

@@ -9,15 +9,15 @@ use App\Books\Domain\Title;
 use App\Categories\Domain\Category;
 use App\Categories\Domain\Categories;
 use App\Books\Domain\BookCreatedDomainEvent;
+use App\Shared\Domain\Event\DomainEvent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface as UuidInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class Book
 {
-    private UuidInterface $id;
+    private BookId $id;
 
 
     private ?int $pages = null;
@@ -33,7 +33,7 @@ class Book
 
 
     public function __construct(
-        private UuidInterface $uuid,
+        private BookId $uuid,
         private Title $title,
         private ?string $image,
 
@@ -43,11 +43,6 @@ class Book
         private ?Score $score = new Score()
     ) {
         $this->id = $uuid;
-        $this->title = $title;
-        $this->image = $image;
-        $this->author = $author;
-        $this->description = $description;
-        $this->score = $score;
         $this->categories = new ArrayCollection();
     }
 
@@ -59,7 +54,7 @@ class Book
         ?Score $score
     ): self {
         $book = new self(
-            Uuid::uuid4(),
+            new BookId(Uuid::uuid4()),
             $title,
             $filename,
             $author,
@@ -67,7 +62,12 @@ class Book
             $score
         );
         // Aquí creem el Event de domini indicant el tipus (Book created Domain event)
-        $book->addDomainEvent(new BookCreatedDomainEvent($book->getId()));
+        $book->addDomainEvent(
+            new BookCreatedDomainEvent(
+                $book->getId()->getValue(),
+                $book->getTitle()->getValue()
+            )
+        );
         return $book;
     }
 
@@ -85,7 +85,7 @@ class Book
         $this->author = $author;
     }
 
-    public function addDomainEvent(Event $event): void
+    public function addDomainEvent(DomainEvent $event): void
     {
         $this->domainEvents[] = $event;
     }
@@ -94,7 +94,7 @@ class Book
     {
         return $this->domainEvents;
     }
-    public function getId(): UuidInterface
+    public function getId(): BookId
     {
         return $this->id;
     }
@@ -128,7 +128,7 @@ class Book
         $categories =  new Categories(...$this->getCategories());
 
         return [
-            'id' => $this->getId()->serialize(),
+            'id' => $this->getId()->getValue(),
             'title' => $this->getTitle()->getValue(),
             'image' => $this->getImage(),
             'score' => $this->getScore()->getValue(),
@@ -137,27 +137,6 @@ class Book
             'author' => $this->getAuthor() ? $this->getAuthor()->toSmallArray() : null
         ];
     }
-
-    public function toSmallArray(): array
-    {
-        return [
-            'id' => $this->getId()->serialize(),
-            'title' => $this->getTitle()->getValue()
-        ];
-    }
-
-    public function getPages(): ?int
-    {
-        return $this->pages;
-    }
-
-    public function setPages(?int $pages): static
-    {
-        $this->pages = $pages;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Category>
      */

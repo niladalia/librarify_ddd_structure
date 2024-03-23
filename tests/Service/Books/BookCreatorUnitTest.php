@@ -13,6 +13,9 @@ use App\FileUploader\Domain\FileUploaderInterface;
 use App\Authors\Domain\AuthorNotFound;
 use App\Authors\Application\Find\AuthorFinder;
 use App\Books\Application\Create\BookCreator;
+use App\FileUploader\Application\FileUploader;
+use App\Shared\Domain\Event\EventBus;
+use App\Tests\Mother\AuthorIdMother;
 use App\Tests\Mother\AuthorMother;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -30,10 +33,11 @@ class BookCreatorUnitTest extends KernelTestCase
     {
         parent::setUp();
 
-        $this->fileUploader = $this->createMock(FileUploaderInterface::class);
+        $this->fileUploader = $this->createMock(FileUploader::class);
+        // TODO : Cambiar el DoctrineBookRepository al BookRepository
         $this->bookRep = $this->createMock(DoctrineBookRepository::class);
         $this->bookFinder = $this->createMock(AuthorFinder::class);
-        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->eventDispatcher = $this->createMock(EventBus::class);
 
         $this->bookCreator = new BookCreator(
             $this->fileUploader,
@@ -60,13 +64,13 @@ class BookCreatorUnitTest extends KernelTestCase
 
     public function test_it_creates_a_full_book()
     {
-        $author = AuthorMother::create(Uuid::uuid4());
+        $author = AuthorMother::create(AuthorIdMother::create(Uuid::uuid4()));
 
         $bookDto = new BookDto(
             "Title",
             $this->base64Image(),
             [],
-            $author->id->serialize(),
+            $author->id->getValue(),
             3,
             "Description"
         );
@@ -74,11 +78,11 @@ class BookCreatorUnitTest extends KernelTestCase
 
         $this->bookFinder->expects(self::exactly(1))
         ->method('__invoke')
-        ->with($author->id->serialize())
+        ->with($author->id->getValue())
         ->willReturn($author);
 
         $this->fileUploader->expects(self::exactly(1))
-        ->method('uploadFile')
+        ->method('__invoke')
         ->with($bookDto);
 
         $this->eventDispatcher->expects(self::once())
