@@ -26,7 +26,7 @@ services:
             - { name: kernel.event_listener, event: kernel.exception }
 
     #Aquí li estem dient que qui implementi la Interface, sigui  S3
-    App\FileUploader\Domain\FileUploaderInterface: '@App\FileUploader\Infrastructure\S3FileUploader'
+    App\Books\Domain\BookFileUploaderInterface: '@App\Books\Infrastructure\Uploader\S3BookFileUploader'
 
     App\Shared\Infrastructure\Symfony\HttpClientInterface: '@App\Shared\Infrastructure\Symfony\HttpClient'
 

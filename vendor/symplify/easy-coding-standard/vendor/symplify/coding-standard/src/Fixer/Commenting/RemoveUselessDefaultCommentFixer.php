@@ -49,6 +49,11 @@ final class RemoveUselessDefaultCommentFixer extends AbstractSymplifyFixer imple
     {
         return $tokens->isAnyTokenKindsFound([\T_DOC_COMMENT, \T_COMMENT]);
     }
+    public function getPriority() : int
+    {
+        /** must run before @see \PhpCsFixer\Fixer\Basic\BracesFixer to cleanup spaces */
+        return 40;
+    }
     /**
      * @param Tokens<Token> $tokens
      */
@@ -59,13 +64,15 @@ final class RemoveUselessDefaultCommentFixer extends AbstractSymplifyFixer imple
             if (!$token->isGivenKind([\T_DOC_COMMENT, \T_COMMENT])) {
                 continue;
             }
-            $cleanedDocContent = $this->uselessDocBlockCleaner->clearDocTokenContent($reversedTokens, $index, $token);
-            if ($cleanedDocContent !== '') {
-                continue;
+            $originalContent = $token->getContent();
+            $cleanedDocContent = $this->uselessDocBlockCleaner->clearDocTokenContent($token);
+            if ($cleanedDocContent === '') {
+                // remove token
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            } elseif ($cleanedDocContent !== $originalContent) {
+                // update in case of other contents
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $cleanedDocContent]);
             }
-            // remove token
-            $tokens->clearAt($index);
-            $tokens->removeTrailingWhitespace($index, "\n");
         }
     }
     public function getRuleDefinition() : RuleDefinition

@@ -2,32 +2,31 @@
 
 namespace App\Books\Application\Edit;
 
+use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\BookFormType;
+use App\Books\Application\Find\BookFinder;
+use App\Books\Application\Update\UpdateBookAuthor;
+use App\Books\Application\Update\UpdateBookCategory;
+use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
+use App\Books\Domain\BookRepository;
 use App\Books\Domain\Description;
 use App\Books\Domain\Score;
 use App\Books\Domain\Title;
-use App\Books\Application\Dto\BookDto;
 use App\Categories\Application\Dto\CategoryDto;
-use App\Books\Domain\BookRepository;
-use App\Books\Application\Dto\BookFormType;
-use App\Books\Application\Find\BookFinder;
-use App\FileUploader\Domain\FileUploaderInterface;
 use App\Shared\Domain\Exceptions\InvalidData;
-use App\Books\Application\Update\UpdateBookAuthor;
-use App\Books\Application\Update\UpdateBookCategory;
-use App\FileUploader\Application\FileUploader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class BookEditor
 {
     public function __construct(
-        private BookRepository $book_rep,
+        private BookRepository       $book_rep,
         private FormFactoryInterface $formFactory,
-        private FileUploader $fileUploader,
-        private BookFinder $BookFinder,
-        private UpdateBookCategory $updateBookCategory,
-        private UpdateBookAuthor $updateBookAuthor
+        private BookFileUploader     $fileUploader,
+        private BookFinder           $BookFinder,
+        private UpdateBookCategory   $updateBookCategory,
+        private UpdateBookAuthor     $updateBookAuthor
     ) {
         $this->book_rep = $book_rep;
         $this->formFactory = $formFactory;

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\DisallowInlineIfSniff
  */
-class DisallowInlineIfUnitTest extends AbstractSniffUnitTest
+final class DisallowInlineIfUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

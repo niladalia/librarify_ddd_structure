@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterCastSniff
  */
-class SpaceAfterCastUnitTest extends AbstractSniffUnitTest
+final class SpaceAfterCastUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

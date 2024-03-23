@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff
  */
-class SuperfluousWhitespaceUnitTest extends AbstractSniffUnitTest
+final class SuperfluousWhitespaceUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

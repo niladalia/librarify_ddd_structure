@@ -313,8 +313,13 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                     }
                     //end if
                 } else {
-                    $error = 'Missing parameter name';
-                    $phpcsFile->addError($error, $tag, 'MissingParamName');
+                    if ($tokens[$tag + 2]['content'][0] === '$') {
+                        $error = 'Missing parameter type';
+                        $phpcsFile->addError($error, $tag, 'MissingParamType');
+                    } else {
+                        $error = 'Missing parameter name';
+                        $phpcsFile->addError($error, $tag, 'MissingParamName');
+                    }
                 }
                 //end if
             } else {
@@ -399,7 +404,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                         $suggestedTypeHint = 'mixed';
                     }
                 }
-                if ($suggestedTypeHint !== '' && isset($realParams[$pos]) === \true) {
+                if ($suggestedTypeHint !== '' && isset($realParams[$pos]) === \true && $param['var'] !== '') {
                     $typeHint = $realParams[$pos]['type_hint'];
                     // Remove namespace prefixes when comparing.
                     $compareTypeHint = \substr($suggestedTypeHint, \strlen($typeHint) * -1);

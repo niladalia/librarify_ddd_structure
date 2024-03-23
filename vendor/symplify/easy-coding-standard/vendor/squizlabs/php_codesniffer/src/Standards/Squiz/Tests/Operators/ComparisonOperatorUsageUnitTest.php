@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Operators\ComparisonOperatorUsageSniff
  */
-class ComparisonOperatorUsageUnitTest extends AbstractSniffUnitTest
+final class ComparisonOperatorUsageUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

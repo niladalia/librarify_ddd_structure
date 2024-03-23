@@ -14,7 +14,7 @@ $loader = (static function () {
     // Restore the backup and ensure the excluded files are properly marked as loaded
     $GLOBALS['__composer_autoload_files'] = \array_merge(
         $existingComposerAutoloadFiles,
-        \array_fill_keys(['0e6d7bf4a5811bfa5cf40c5ccd6fae6a', '5928a00fa978807cf85d90ec3f4b0147', 'a4a119a56e50fbb293281d9a48007e0e', '23c18046f52bef3eea034657bafda50f', 'f49032536fdd06afd9df7191c3f21453', '51421aa3e5e8003b70a289762d146a2a', '18e965175c6bcd96deba6bc791a44373', '7bdb062931f6e7102434c3ad28423eb6', '7edcabe1b67fbb38f4972a722bbbb429', '7b0b5d7b98f96ad751222ae5cc98cfcb', 'd1fb64fd99fc22e28e29a95cc0ea533a'], true)
+        \array_fill_keys(['0e6d7bf4a5811bfa5cf40c5ccd6fae6a', '5928a00fa978807cf85d90ec3f4b0147', 'a4a119a56e50fbb293281d9a48007e0e', '23c18046f52bef3eea034657bafda50f', '51421aa3e5e8003b70a289762d146a2a', 'f49032536fdd06afd9df7191c3f21453', '7edcabe1b67fbb38f4972a722bbbb429', '7bdb062931f6e7102434c3ad28423eb6', '18e965175c6bcd96deba6bc791a44373', '7b0b5d7b98f96ad751222ae5cc98cfcb', 'd1fb64fd99fc22e28e29a95cc0ea533a'], true)
     );
 
     return $loader;
@@ -30,7 +30,7 @@ if (!function_exists('humbug_phpscoper_expose_class')) {
     }
 }
 humbug_phpscoper_expose_class('AutoloadIncluder', 'ECSPrefix202402\AutoloadIncluder');
-humbug_phpscoper_expose_class('ComposerAutoloaderInitb010bd939c83fb89e0e0f3f66dee1700', 'ECSPrefix202402\ComposerAutoloaderInitb010bd939c83fb89e0e0f3f66dee1700');
+humbug_phpscoper_expose_class('ComposerAutoloaderInit6d2ad21689b39b16d19b4cc70cd1de6f', 'ECSPrefix202402\ComposerAutoloaderInit6d2ad21689b39b16d19b4cc70cd1de6f');
 humbug_phpscoper_expose_class('Attribute', 'ECSPrefix202402\Attribute');
 humbug_phpscoper_expose_class('PhpToken', 'ECSPrefix202402\PhpToken');
 humbug_phpscoper_expose_class('Stringable', 'ECSPrefix202402\Stringable');

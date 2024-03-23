@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Config;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Debug\JavaScriptLintSniff
  */
-class JavaScriptLintUnitTest extends AbstractSniffUnitTest
+final class JavaScriptLintUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Should this test be skipped for some reason.

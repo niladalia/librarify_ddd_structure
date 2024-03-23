@@ -12,15 +12,14 @@
  */
 namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 use PHP_CodeSniffer\Util\Tokens;
-class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
+final class StableCommentWhitespaceWinTest extends \PHP_CodeSniffer\Tests\Core\Tokenizer\AbstractTokenizerTestCase
 {
     /**
      * Test that comment tokenization with new lines at the end of the comment is stable.
      *
-     * @param string $testMarker     The comment prefacing the test.
-     * @param array  $expectedTokens The tokenization expected.
+     * @param string                       $testMarker     The comment prefacing the test.
+     * @param array<array<string, string>> $expectedTokens The tokenization expected.
      *
      * @dataProvider dataCommentTokenization
      * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
@@ -29,11 +28,11 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
      */
     public function testCommentTokenization($testMarker, $expectedTokens)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         $comment = $this->getTargetToken($testMarker, Tokens::$commentTokens);
         foreach ($expectedTokens as $key => $tokenInfo) {
-            $this->assertSame(\constant($tokenInfo['type']), $tokens[$comment]['code']);
-            $this->assertSame($tokenInfo['type'], $tokens[$comment]['type']);
+            $this->assertSame(\constant($tokenInfo['type']), $tokens[$comment]['code'], 'Token tokenized as ' . Tokens::tokenName($tokens[$comment]['code']) . ', not ' . $tokenInfo['type'] . ' (code)');
+            $this->assertSame($tokenInfo['type'], $tokens[$comment]['type'], 'Token tokenized as ' . $tokens[$comment]['type'] . ', not ' . $tokenInfo['type'] . ' (type)');
             $this->assertSame($tokenInfo['content'], $tokens[$comment]['content']);
             ++$comment;
         }
@@ -44,51 +43,51 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
      *
      * @see testCommentTokenization()
      *
-     * @return array
+     * @return array<string, array<string, string|array<array<string, string>>>>
      */
-    public function dataCommentTokenization()
+    public static function dataCommentTokenization()
     {
-        return [['/* testSingleLineSlashComment */', [['type' => 'T_COMMENT', 'content' => '// Comment
+        return ['slash comment, single line' => ['testMarker' => '/* testSingleLineSlashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineSlashCommentTrailing */', [['type' => 'T_COMMENT', 'content' => '// Comment
+']]], 'slash comment, single line, trailing' => ['testMarker' => '/* testSingleLineSlashCommentTrailing */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineSlashAnnotation */', [['type' => 'T_PHPCS_DISABLE', 'content' => '// phpcs:disable Stnd.Cat
+']]], 'slash ignore annotation, single line' => ['testMarker' => '/* testSingleLineSlashAnnotation */', 'expectedTokens' => [['type' => 'T_PHPCS_DISABLE', 'content' => '// phpcs:disable Stnd.Cat
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashComment */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line' => ['testMarker' => '/* testMultiLineSlashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithIndent */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line, indented' => ['testMarker' => '/* testMultiLineSlashCommentWithIndent */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithAnnotationStart */', [['type' => 'T_PHPCS_IGNORE', 'content' => '// phpcs:ignore Stnd.Cat
+']]], 'slash comment, multi-line, ignore annotation as first line' => ['testMarker' => '/* testMultiLineSlashCommentWithAnnotationStart */', 'expectedTokens' => [['type' => 'T_PHPCS_IGNORE', 'content' => '// phpcs:ignore Stnd.Cat
 '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithAnnotationMiddle */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line, ignore annotation as middle line' => ['testMarker' => '/* testMultiLineSlashCommentWithAnnotationMiddle */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_PHPCS_IGNORE', 'content' => '// @phpcs:ignore Stnd.Cat
 '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithAnnotationEnd */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line, ignore annotation as last line' => ['testMarker' => '/* testMultiLineSlashCommentWithAnnotationEnd */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_PHPCS_IGNORE', 'content' => '// phpcs:ignore Stnd.Cat
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineSlashCommentNoNewLineAtEnd */', [['type' => 'T_COMMENT', 'content' => '// Slash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
-']]], ['/* testSingleLineHashComment */', [['type' => 'T_COMMENT', 'content' => '# Comment
+']]], 'slash comment, single line, without new line at end' => ['testMarker' => '/* testSingleLineSlashCommentNoNewLineAtEnd */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Slash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
+']]], 'hash comment, single line' => ['testMarker' => '/* testSingleLineHashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineHashCommentTrailing */', [['type' => 'T_COMMENT', 'content' => '# Comment
+']]], 'hash comment, single line, trailing' => ['testMarker' => '/* testSingleLineHashCommentTrailing */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineHashComment */', [['type' => 'T_COMMENT', 'content' => '# Comment1
+']]], 'hash comment, multi-line' => ['testMarker' => '/* testMultiLineHashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment1
 '], ['type' => 'T_COMMENT', 'content' => '# Comment2
 '], ['type' => 'T_COMMENT', 'content' => '# Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineHashCommentWithIndent */', [['type' => 'T_COMMENT', 'content' => '# Comment1
+']]], 'hash comment, multi-line, indented' => ['testMarker' => '/* testMultiLineHashCommentWithIndent */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment1
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '# Comment2
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '# Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineHashCommentNoNewLineAtEnd */', [['type' => 'T_COMMENT', 'content' => '# Hash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
-']]], ['/* testCommentAtEndOfFile */', [['type' => 'T_COMMENT', 'content' => '/* Comment']]]];
+']]], 'hash comment, single line, without new line at end' => ['testMarker' => '/* testSingleLineHashCommentNoNewLineAtEnd */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Hash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
+']]], 'unclosed star comment at end of file' => ['testMarker' => '/* testCommentAtEndOfFile */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Comment']]]];
     }
     //end dataCommentTokenization()
 }

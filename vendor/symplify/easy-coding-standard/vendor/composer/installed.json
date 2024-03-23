@@ -346,17 +346,17 @@
         },
         {
             "name": "fidry\/cpu-core-counter",
-            "version": "0.5.1",
-            "version_normalized": "0.5.1.0",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/theofidry\/cpu-core-counter.git",
-                "reference": "b58e5a3933e541dc286cc91fc4f3898bbc6f1623"
+                "reference": "f92996c4d5c1a696a6a970e20f7c4216200fcc42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/theofidry\/cpu-core-counter\/zipball\/b58e5a3933e541dc286cc91fc4f3898bbc6f1623",
-                "reference": "b58e5a3933e541dc286cc91fc4f3898bbc6f1623",
+                "url": "https:\/\/api.github.com\/repos\/theofidry\/cpu-core-counter\/zipball\/f92996c4d5c1a696a6a970e20f7c4216200fcc42",
+                "reference": "f92996c4d5c1a696a6a970e20f7c4216200fcc42",
                 "shasum": ""
             },
             "require": {
@@ -364,16 +364,16 @@
             },
             "require-dev": {
                 "fidry\/makefile": "^0.2.0",
+                "fidry\/php-cs-fixer-config": "^1.1.2",
                 "phpstan\/extension-installer": "^1.2.0",
                 "phpstan\/phpstan": "^1.9.2",
                 "phpstan\/phpstan-deprecation-rules": "^1.0.0",
                 "phpstan\/phpstan-phpunit": "^1.2.2",
                 "phpstan\/phpstan-strict-rules": "^1.4.4",
-                "phpunit\/phpunit": "^9.5.26 || ^8.5.31",
-                "theofidry\/php-cs-fixer-config": "^1.0",
+                "phpunit\/phpunit": "^8.5.31 || ^9.5.26",
                 "webmozarts\/strict-phpunit": "^7.5"
             },
-            "time": "2022-12-24T12:35:10+00:00",
+            "time": "2024-02-07T09:43:46+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -398,7 +398,7 @@
             ],
             "support": {
                 "issues": "https:\/\/github.com\/theofidry\/cpu-core-counter\/issues",
-                "source": "https:\/\/github.com\/theofidry\/cpu-core-counter\/tree\/0.5.1"
+                "source": "https:\/\/github.com\/theofidry\/cpu-core-counter\/tree\/1.1.0"
             },
             "funding": [
                 {
@@ -504,8 +504,8 @@
         },
         {
             "name": "illuminate\/container",
-            "version": "v10.43.0",
-            "version_normalized": "10.43.0.0",
+            "version": "v10.45.1",
+            "version_normalized": "10.45.1.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/illuminate\/container.git",
@@ -561,8 +561,8 @@
         },
         {
             "name": "illuminate\/contracts",
-            "version": "v10.43.0",
-            "version_normalized": "10.43.0.0",
+            "version": "v10.45.1",
+            "version_normalized": "10.45.1.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/illuminate\/contracts.git",
@@ -1485,17 +1485,17 @@
         },
         {
             "name": "squizlabs\/php_codesniffer",
-            "version": "3.8.1",
-            "version_normalized": "3.8.1.0",
+            "version": "3.9.0",
+            "version_normalized": "3.9.0.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/PHPCSStandards\/PHP_CodeSniffer.git",
-                "reference": "14f5fff1e64118595db5408e946f3a22c75807f7"
+                "reference": "d63cee4890a8afaf86a22e51ad4d97c91dd4579b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/PHPCSStandards\/PHP_CodeSniffer\/zipball\/14f5fff1e64118595db5408e946f3a22c75807f7",
-                "reference": "14f5fff1e64118595db5408e946f3a22c75807f7",
+                "url": "https:\/\/api.github.com\/repos\/PHPCSStandards\/PHP_CodeSniffer\/zipball\/d63cee4890a8afaf86a22e51ad4d97c91dd4579b",
+                "reference": "d63cee4890a8afaf86a22e51ad4d97c91dd4579b",
                 "shasum": ""
             },
             "require": {
@@ -1507,7 +1507,7 @@
             "require-dev": {
                 "phpunit\/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4"
             },
-            "time": "2024-01-11T20:47:48+00:00",
+            "time": "2024-02-16T15:06:51+00:00",
             "bin": [
                 "bin\/phpcbf",
                 "bin\/phpcs"
@@ -1943,17 +1943,17 @@
         },
         {
             "name": "symfony\/polyfill-mbstring",
-            "version": "v1.28.0",
-            "version_normalized": "1.28.0.0",
+            "version": "v1.29.0",
+            "version_normalized": "1.29.0.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/symfony\/polyfill-mbstring.git",
-                "reference": "42292d99c55abe617799667f454222c54c60e229"
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/symfony\/polyfill-mbstring\/zipball\/42292d99c55abe617799667f454222c54c60e229",
-                "reference": "42292d99c55abe617799667f454222c54c60e229",
+                "url": "https:\/\/api.github.com\/repos\/symfony\/polyfill-mbstring\/zipball\/9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
+                "reference": "9773676c8a1bb1f8d4340a62efe641cf76eda7ec",
                 "shasum": ""
             },
             "require": {
@@ -1965,12 +1965,9 @@
             "suggest": {
                 "ext-mbstring": "For best performance"
             },
-            "time": "2023-07-28T09:04:16+00:00",
+            "time": "2024-01-29T20:11:03+00:00",
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony\/polyfill",
                     "url": "https:\/\/github.com\/symfony\/polyfill"
@@ -2009,7 +2006,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https:\/\/github.com\/symfony\/polyfill-mbstring\/tree\/v1.28.0"
+                "source": "https:\/\/github.com\/symfony\/polyfill-mbstring\/tree\/v1.29.0"
             },
             "funding": [
                 {
@@ -2029,28 +2026,25 @@
         },
         {
             "name": "symfony\/polyfill-php80",
-            "version": "v1.28.0",
-            "version_normalized": "1.28.0.0",
+            "version": "v1.29.0",
+            "version_normalized": "1.29.0.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/symfony\/polyfill-php80.git",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5"
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/symfony\/polyfill-php80\/zipball\/6caa57379c4aec19c0a12a38b59b26487dcfe4b5",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5",
+                "url": "https:\/\/api.github.com\/repos\/symfony\/polyfill-php80\/zipball\/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2023-01-26T09:26:14+00:00",
+            "time": "2024-01-29T20:11:03+00:00",
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony\/polyfill",
                     "url": "https:\/\/github.com\/symfony\/polyfill"
@@ -2095,7 +2089,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https:\/\/github.com\/symfony\/polyfill-php80\/tree\/v1.28.0"
+                "source": "https:\/\/github.com\/symfony\/polyfill-php80\/tree\/v1.29.0"
             },
             "funding": [
                 {
@@ -2115,28 +2109,25 @@
         },
         {
             "name": "symfony\/polyfill-php81",
-            "version": "v1.28.0",
-            "version_normalized": "1.28.0.0",
+            "version": "v1.29.0",
+            "version_normalized": "1.29.0.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/symfony\/polyfill-php81.git",
-                "reference": "7581cd600fa9fd681b797d00b02f068e2f13263b"
+                "reference": "c565ad1e63f30e7477fc40738343c62b40bc672d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/symfony\/polyfill-php81\/zipball\/7581cd600fa9fd681b797d00b02f068e2f13263b",
-                "reference": "7581cd600fa9fd681b797d00b02f068e2f13263b",
+                "url": "https:\/\/api.github.com\/repos\/symfony\/polyfill-php81\/zipball\/c565ad1e63f30e7477fc40738343c62b40bc672d",
+                "reference": "c565ad1e63f30e7477fc40738343c62b40bc672d",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2023-01-26T09:26:14+00:00",
+            "time": "2024-01-29T20:11:03+00:00",
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony\/polyfill",
                     "url": "https:\/\/github.com\/symfony\/polyfill"
@@ -2177,7 +2168,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https:\/\/github.com\/symfony\/polyfill-php81\/tree\/v1.28.0"
+                "source": "https:\/\/github.com\/symfony\/polyfill-php81\/tree\/v1.29.0"
             },
             "funding": [
                 {
@@ -2282,38 +2273,38 @@
         },
         {
             "name": "symplify\/coding-standard",
-            "version": "12.1.0",
-            "version_normalized": "12.1.0.0",
+            "version": "12.1.4",
+            "version_normalized": "12.1.4.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/symplify\/coding-standard.git",
-                "reference": "c40feb15f925b3fae518fb448a336b2e2bbe36f0"
+                "reference": "1a591e18c64e7367b243729a43a70c2e92025468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/symplify\/coding-standard\/zipball\/c40feb15f925b3fae518fb448a336b2e2bbe36f0",
-                "reference": "c40feb15f925b3fae518fb448a336b2e2bbe36f0",
+                "url": "https:\/\/api.github.com\/repos\/symplify\/coding-standard\/zipball\/1a591e18c64e7367b243729a43a70c2e92025468",
+                "reference": "1a591e18c64e7367b243729a43a70c2e92025468",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp\/php-cs-fixer": "^3.45",
+                "friendsofphp\/php-cs-fixer": "^3.49",
                 "nette\/utils": "^3.2",
                 "php": ">=8.2",
                 "symplify\/rule-doc-generator-contracts": "^11.1"
             },
             "require-dev": {
                 "phpstan\/extension-installer": "^1.3",
-                "phpstan\/phpstan": "^1.10.50",
+                "phpstan\/phpstan": "^1.10.58",
                 "phpunit\/phpunit": "^10.5",
-                "rector\/rector": "^0.18",
-                "squizlabs\/php_codesniffer": "^3.8.0",
-                "symplify\/easy-coding-standard": "^12.0.11",
-                "symplify\/phpstan-extensions": "^11.2",
+                "rector\/rector": "^1.0",
+                "squizlabs\/php_codesniffer": "^3.8.1",
+                "symplify\/easy-coding-standard": "^12.1",
+                "symplify\/phpstan-extensions": "^11.4",
                 "symplify\/rule-doc-generator": "^12.0",
                 "tomasvotruba\/class-leak": "^0.2",
                 "tracy\/tracy": "^2.10"
             },
-            "time": "2024-01-03T19:11:44+00:00",
+            "time": "2024-02-23T13:07:31+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2328,7 +2319,7 @@
             "description": "Set of Symplify rules for PHP_CodeSniffer and PHP CS Fixer.",
             "support": {
                 "issues": "https:\/\/github.com\/symplify\/coding-standard\/issues",
-                "source": "https:\/\/github.com\/symplify\/coding-standard\/tree\/12.1.0"
+                "source": "https:\/\/github.com\/symplify\/coding-standard\/tree\/12.1.4"
             },
             "funding": [
                 {
@@ -2344,38 +2335,36 @@
         },
         {
             "name": "symplify\/easy-parallel",
-            "version": "11.2.0",
-            "version_normalized": "11.2.0.0",
+            "version": "11.2.2",
+            "version_normalized": "11.2.2.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/symplify\/easy-parallel.git",
-                "reference": "472a324ea02fd7b8769452cef5f56cc9808798ea"
+                "reference": "8586c18bb8efb31cd192a4e5cc94ae7813f72ed9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/symplify\/easy-parallel\/zipball\/472a324ea02fd7b8769452cef5f56cc9808798ea",
-                "reference": "472a324ea02fd7b8769452cef5f56cc9808798ea",
+                "url": "https:\/\/api.github.com\/repos\/symplify\/easy-parallel\/zipball\/8586c18bb8efb31cd192a4e5cc94ae7813f72ed9",
+                "reference": "8586c18bb8efb31cd192a4e5cc94ae7813f72ed9",
                 "shasum": ""
             },
             "require": {
                 "clue\/ndjson-react": "^1.3",
-                "fidry\/cpu-core-counter": "^0.4.0 || ^0.5.1",
+                "fidry\/cpu-core-counter": "^0.5.1|^1.1",
                 "nette\/utils": "^3.2|^4.0",
                 "php": ">=8.1",
                 "react\/child-process": "^0.6.5",
-                "react\/event-loop": "^1.3",
-                "react\/socket": "^1.12",
+                "react\/event-loop": "^1.5",
+                "react\/socket": "^1.15",
                 "symfony\/console": "^6.2|^7.0"
             },
             "require-dev": {
-                "phpstan\/extension-installer": "^1.3",
                 "phpunit\/phpunit": "^10.5",
-                "rector\/rector": "^0.18.13",
-                "symplify\/easy-coding-standard": "^12.0",
-                "symplify\/phpstan-extensions": "^11.4",
+                "rector\/rector": "^1.0",
+                "symplify\/easy-coding-standard": "^12.1",
                 "tomasvotruba\/class-leak": "^0.2.6"
             },
-            "time": "2024-01-01T22:10:11+00:00",
+            "time": "2024-02-08T04:56:53+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2390,7 +2379,7 @@
             "description": "Helper package for easier CLI project parallelization",
             "support": {
                 "issues": "https:\/\/github.com\/symplify\/easy-parallel\/issues",
-                "source": "https:\/\/github.com\/symplify\/easy-parallel\/tree\/11.2.0"
+                "source": "https:\/\/github.com\/symplify\/easy-parallel\/tree\/11.2.2"
             },
             "funding": [
                 {

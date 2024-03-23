@@ -16,7 +16,7 @@ use ECSPrefix202402\PHPUnit\Framework\TestCase;
  *
  * @covers \PHP_CodeSniffer\Autoload::determineLoadedClass
  */
-class DetermineLoadedClassTest extends TestCase
+final class DetermineLoadedClassTest extends TestCase
 {
     /**
      * Load the test files.

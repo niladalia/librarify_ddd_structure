@@ -2,29 +2,24 @@
 
 namespace App\Books\Application\Create;
 
+use App\Authors\Application\Find\AuthorFinder;
+use App\Books\Application\Dto\BookDto;
+use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
+use App\Books\Domain\BookRepository;
 use App\Books\Domain\Description;
 use App\Books\Domain\Score;
 use App\Books\Domain\Title;
-use App\Books\Application\Dto\BookDto;
-use App\Books\Domain\BookRepository;
-use App\Authors\Application\Find\AuthorFinder;
-use App\FileUploader\Application\FileUploader;
 use App\Shared\Domain\Event\EventBus;
 
-class   BookCreator
+class BookCreator
 {
     public function __construct(
-        private FileUploader $fileUploader,
-        private BookRepository $book_rep,
-        private AuthorFinder $authorFinder,
-        private EventBus $bus
-    ) {
-        $this->fileUploader = $fileUploader;
-        $this->book_rep = $book_rep;
-        $this->authorFinder = $authorFinder;
-        $this->bus = $bus;
-    }
+        private BookFileUploader $fileUploader,
+        private BookRepository   $book_rep,
+        private AuthorFinder     $authorFinder,
+        private EventBus         $bus
+    ) { }
 
     public function __invoke(BookDto $bookDto): Book
     {

@@ -1,9 +1,22 @@
 version: '3'
 
 services:
+    rabbitmq:
+        container_name: rabbitmq
+        image: 'rabbitmq:3.10.5-management'
+        restart: unless-stopped
+        ports:
+            - 5672:15672
+        environment:
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+        networks:
+            - shared_network
+            - librarify_network
+            
     php:
-#        user: "root:root"
         container_name: librarify_php
+        user: "${UID}:${GID}"
         build:
             context: .
             dockerfile: .docker/php/Dockerfile
@@ -11,8 +24,11 @@ services:
                 TIMEZONE: Europe/Madrid
         volumes:
             - ./:/var/www/librarify/
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
         networks:
-            - symfony
+            - librarify_network
+            
     nginx:
         container_name: librarify_nginx
         build:
@@ -23,7 +39,8 @@ services:
         ports:
             - 81:80
         networks:
-            - symfony
+            - librarify_network
+            
     db:
         container_name: librarify_db
         image: mysql:8.0.20
@@ -38,12 +55,17 @@ services:
         ports:
             - 3307:3306
         networks:
-            - symfony
+            - librarify_network
+            
 
 volumes:
     librarifyback_app_sync:
         external: true
     db_library:
+    rabbitmq:
 
 networks:
-    symfony:
+    librarify_network:
+    shared_network:
+        name: librarify_shared_network  
+        driver: bridge

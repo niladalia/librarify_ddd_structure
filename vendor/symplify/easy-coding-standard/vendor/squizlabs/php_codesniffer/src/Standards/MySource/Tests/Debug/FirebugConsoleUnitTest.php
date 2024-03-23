@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHP_CodeSniffer\Standards\MySource\Sniffs\Debug\FirebugConsoleSniff
  */
-class FirebugConsoleUnitTest extends AbstractSniffUnitTest
+final class FirebugConsoleUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

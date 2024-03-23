@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\TraitNameSuffixSniff
  */
-class TraitNameSuffixUnitTest extends AbstractSniffUnitTest
+final class TraitNameSuffixUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

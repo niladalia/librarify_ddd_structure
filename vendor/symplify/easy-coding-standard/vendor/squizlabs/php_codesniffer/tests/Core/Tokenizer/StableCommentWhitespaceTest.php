@@ -15,15 +15,14 @@
  */
 namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 use PHP_CodeSniffer\Util\Tokens;
-class StableCommentWhitespaceTest extends AbstractMethodUnitTest
+final class StableCommentWhitespaceTest extends \PHP_CodeSniffer\Tests\Core\Tokenizer\AbstractTokenizerTestCase
 {
     /**
      * Test that comment tokenization with new lines at the end of the comment is stable.
      *
-     * @param string $testMarker     The comment prefacing the test.
-     * @param array  $expectedTokens The tokenization expected.
+     * @param string                       $testMarker     The comment prefacing the test.
+     * @param array<array<string, string>> $expectedTokens The tokenization expected.
      *
      * @dataProvider dataCommentTokenization
      * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
@@ -32,11 +31,11 @@ class StableCommentWhitespaceTest extends AbstractMethodUnitTest
      */
     public function testCommentTokenization($testMarker, $expectedTokens)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         $comment = $this->getTargetToken($testMarker, Tokens::$commentTokens);
         foreach ($expectedTokens as $key => $tokenInfo) {
-            $this->assertSame(\constant($tokenInfo['type']), $tokens[$comment]['code']);
-            $this->assertSame($tokenInfo['type'], $tokens[$comment]['type']);
+            $this->assertSame(\constant($tokenInfo['type']), $tokens[$comment]['code'], 'Token tokenized as ' . Tokens::tokenName($tokens[$comment]['code']) . ', not ' . $tokenInfo['type'] . ' (code)');
+            $this->assertSame($tokenInfo['type'], $tokens[$comment]['type'], 'Token tokenized as ' . $tokens[$comment]['type'] . ', not ' . $tokenInfo['type'] . ' (type)');
             $this->assertSame($tokenInfo['content'], $tokens[$comment]['content']);
             ++$comment;
         }
@@ -47,96 +46,96 @@ class StableCommentWhitespaceTest extends AbstractMethodUnitTest
      *
      * @see testCommentTokenization()
      *
-     * @return array
+     * @return array<string, array<string, string|array<array<string, string>>>>
      */
-    public function dataCommentTokenization()
+    public static function dataCommentTokenization()
     {
-        return [['/* testSingleLineSlashComment */', [['type' => 'T_COMMENT', 'content' => '// Comment
+        return ['slash comment, single line' => ['testMarker' => '/* testSingleLineSlashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineSlashCommentTrailing */', [['type' => 'T_COMMENT', 'content' => '// Comment
+']]], 'slash comment, single line, trailing' => ['testMarker' => '/* testSingleLineSlashCommentTrailing */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineSlashAnnotation */', [['type' => 'T_PHPCS_DISABLE', 'content' => '// phpcs:disable Stnd.Cat
+']]], 'slash ignore annotation, single line' => ['testMarker' => '/* testSingleLineSlashAnnotation */', 'expectedTokens' => [['type' => 'T_PHPCS_DISABLE', 'content' => '// phpcs:disable Stnd.Cat
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashComment */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line' => ['testMarker' => '/* testMultiLineSlashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithIndent */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line, indented' => ['testMarker' => '/* testMultiLineSlashCommentWithIndent */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithAnnotationStart */', [['type' => 'T_PHPCS_IGNORE', 'content' => '// phpcs:ignore Stnd.Cat
+']]], 'slash comment, multi-line, ignore annotation as first line' => ['testMarker' => '/* testMultiLineSlashCommentWithAnnotationStart */', 'expectedTokens' => [['type' => 'T_PHPCS_IGNORE', 'content' => '// phpcs:ignore Stnd.Cat
 '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithAnnotationMiddle */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line, ignore annotation as middle line' => ['testMarker' => '/* testMultiLineSlashCommentWithAnnotationMiddle */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_PHPCS_IGNORE', 'content' => '// @phpcs:ignore Stnd.Cat
 '], ['type' => 'T_COMMENT', 'content' => '// Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineSlashCommentWithAnnotationEnd */', [['type' => 'T_COMMENT', 'content' => '// Comment1
+']]], 'slash comment, multi-line, ignore annotation as last line' => ['testMarker' => '/* testMultiLineSlashCommentWithAnnotationEnd */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Comment1
 '], ['type' => 'T_COMMENT', 'content' => '// Comment2
 '], ['type' => 'T_PHPCS_IGNORE', 'content' => '// phpcs:ignore Stnd.Cat
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineStarComment */', [['type' => 'T_COMMENT', 'content' => '/* Single line star comment */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineStarCommentTrailing */', [['type' => 'T_COMMENT', 'content' => '/* Comment */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineStarAnnotation */', [['type' => 'T_PHPCS_IGNORE', 'content' => '/* phpcs:ignore Stnd.Cat */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineStarComment */', [['type' => 'T_COMMENT', 'content' => '/* Comment1
+']]], 'star comment, single line' => ['testMarker' => '/* testSingleLineStarComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Single line star comment */'], ['type' => 'T_WHITESPACE', 'content' => '
+']]], 'star comment, single line, trailing' => ['testMarker' => '/* testSingleLineStarCommentTrailing */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Comment */'], ['type' => 'T_WHITESPACE', 'content' => '
+']]], 'star ignore annotation, single line' => ['testMarker' => '/* testSingleLineStarAnnotation */', 'expectedTokens' => [['type' => 'T_PHPCS_IGNORE', 'content' => '/* phpcs:ignore Stnd.Cat */'], ['type' => 'T_WHITESPACE', 'content' => '
+']]], 'star comment, multi-line' => ['testMarker' => '/* testMultiLineStarComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Comment1
 '], ['type' => 'T_COMMENT', 'content' => ' * Comment2
 '], ['type' => 'T_COMMENT', 'content' => ' * Comment3 */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineStarCommentWithIndent */', [['type' => 'T_COMMENT', 'content' => '/* Comment1
+']]], 'star comment, multi-line, indented' => ['testMarker' => '/* testMultiLineStarCommentWithIndent */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Comment1
 '], ['type' => 'T_COMMENT', 'content' => '         * Comment2
 '], ['type' => 'T_COMMENT', 'content' => '         * Comment3 */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineStarCommentWithAnnotationStart */', [['type' => 'T_PHPCS_IGNORE', 'content' => '/* @phpcs:ignore Stnd.Cat
+']]], 'star comment, multi-line, ignore annotation as first line' => ['testMarker' => '/* testMultiLineStarCommentWithAnnotationStart */', 'expectedTokens' => [['type' => 'T_PHPCS_IGNORE', 'content' => '/* @phpcs:ignore Stnd.Cat
 '], ['type' => 'T_COMMENT', 'content' => ' * Comment2
 '], ['type' => 'T_COMMENT', 'content' => ' * Comment3 */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineStarCommentWithAnnotationMiddle */', [['type' => 'T_COMMENT', 'content' => '/* Comment1
+']]], 'star comment, multi-line, ignore annotation as middle line' => ['testMarker' => '/* testMultiLineStarCommentWithAnnotationMiddle */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Comment1
 '], ['type' => 'T_PHPCS_IGNORE', 'content' => ' * phpcs:ignore Stnd.Cat
 '], ['type' => 'T_COMMENT', 'content' => ' * Comment3 */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineStarCommentWithAnnotationEnd */', [['type' => 'T_COMMENT', 'content' => '/* Comment1
+']]], 'star comment, multi-line, ignore annotation as last line' => ['testMarker' => '/* testMultiLineStarCommentWithAnnotationEnd */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Comment1
 '], ['type' => 'T_COMMENT', 'content' => ' * Comment2
 '], ['type' => 'T_PHPCS_IGNORE', 'content' => ' * phpcs:ignore Stnd.Cat */'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineDocblockComment */', [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineDocblockCommentTrailing */', [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineDocblockAnnotation */', [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_PHPCS_IGNORE', 'content' => 'phpcs:ignore Stnd.Cat.Sniff '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineDocblockComment */', [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
+']]], 'docblock comment, single line' => ['testMarker' => '/* testSingleLineDocblockComment */', 'expectedTokens' => [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
+']]], 'docblock comment, single line, trailing' => ['testMarker' => '/* testSingleLineDocblockCommentTrailing */', 'expectedTokens' => [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
+']]], 'docblock ignore annotation, single line' => ['testMarker' => '/* testSingleLineDocblockAnnotation */', 'expectedTokens' => [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_PHPCS_IGNORE', 'content' => 'phpcs:ignore Stnd.Cat.Sniff '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
+']]], 'docblock comment, multi-line' => ['testMarker' => '/* testMultiLineDocblockComment */', 'expectedTokens' => [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment1'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment2'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_TAG', 'content' => '@tag'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineDocblockCommentWithIndent */', [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
+']]], 'docblock comment, multi-line, indented' => ['testMarker' => '/* testMultiLineDocblockCommentWithIndent */', 'expectedTokens' => [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '     '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment1'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '     '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment2'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '     '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '     '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_TAG', 'content' => '@tag'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '     '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineDocblockCommentWithAnnotation */', [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
+']]], 'docblock comment, multi-line, ignore annotation' => ['testMarker' => '/* testMultiLineDocblockCommentWithAnnotation */', 'expectedTokens' => [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_PHPCS_IGNORE', 'content' => 'phpcs:ignore Stnd.Cat'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_TAG', 'content' => '@tag'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineDocblockCommentWithTagAnnotation */', [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
+']]], 'docblock comment, multi-line, ignore annotation as tag' => ['testMarker' => '/* testMultiLineDocblockCommentWithTagAnnotation */', 'expectedTokens' => [['type' => 'T_DOC_COMMENT_OPEN_TAG', 'content' => '/**'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_PHPCS_IGNORE', 'content' => '@phpcs:ignore Stnd.Cat'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STAR', 'content' => '*'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_TAG', 'content' => '@tag'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_STRING', 'content' => 'Comment'], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => '
 '], ['type' => 'T_DOC_COMMENT_WHITESPACE', 'content' => ' '], ['type' => 'T_DOC_COMMENT_CLOSE_TAG', 'content' => '*/'], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineHashComment */', [['type' => 'T_COMMENT', 'content' => '# Comment
+']]], 'hash comment, single line' => ['testMarker' => '/* testSingleLineHashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineHashCommentTrailing */', [['type' => 'T_COMMENT', 'content' => '# Comment
+']]], 'hash comment, single line, trailing' => ['testMarker' => '/* testSingleLineHashCommentTrailing */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineHashComment */', [['type' => 'T_COMMENT', 'content' => '# Comment1
+']]], 'hash comment, multi-line' => ['testMarker' => '/* testMultiLineHashComment */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment1
 '], ['type' => 'T_COMMENT', 'content' => '# Comment2
 '], ['type' => 'T_COMMENT', 'content' => '# Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testMultiLineHashCommentWithIndent */', [['type' => 'T_COMMENT', 'content' => '# Comment1
+']]], 'hash comment, multi-line, indented' => ['testMarker' => '/* testMultiLineHashCommentWithIndent */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Comment1
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '# Comment2
 '], ['type' => 'T_WHITESPACE', 'content' => '    '], ['type' => 'T_COMMENT', 'content' => '# Comment3
 '], ['type' => 'T_WHITESPACE', 'content' => '
-']]], ['/* testSingleLineSlashCommentNoNewLineAtEnd */', [['type' => 'T_COMMENT', 'content' => '// Slash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
-']]], ['/* testSingleLineHashCommentNoNewLineAtEnd */', [['type' => 'T_COMMENT', 'content' => '# Hash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
-']]], ['/* testCommentAtEndOfFile */', [['type' => 'T_COMMENT', 'content' => '/* Comment']]]];
+']]], 'slash comment, single line, without new line at end' => ['testMarker' => '/* testSingleLineSlashCommentNoNewLineAtEnd */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '// Slash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
+']]], 'hash comment, single line, without new line at end' => ['testMarker' => '/* testSingleLineHashCommentNoNewLineAtEnd */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '# Hash '], ['type' => 'T_CLOSE_TAG', 'content' => '?>
+']]], 'unclosed star comment at end of file' => ['testMarker' => '/* testCommentAtEndOfFile */', 'expectedTokens' => [['type' => 'T_COMMENT', 'content' => '/* Comment']]]];
     }
     //end dataCommentTokenization()
 }

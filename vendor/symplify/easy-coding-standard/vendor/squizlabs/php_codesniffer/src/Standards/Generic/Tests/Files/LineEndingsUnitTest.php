@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineEndingsSniff
  */
-class LineEndingsUnitTest extends AbstractSniffUnitTest
+final class LineEndingsUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Get a list of CLI values to set before the file is tested.

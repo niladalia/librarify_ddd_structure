@@ -17,7 +17,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Files\File::getMethodParameters
  */
-class GetMethodParametersTest extends AbstractMethodUnitTest
+final class GetMethodParametersTest extends AbstractMethodUnitTest
 {
     /**
      * Test receiving an expected exception when a non function/use token is passed.
@@ -103,7 +103,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public static function dataNoParams()
     {
-        return ['FunctionNoParams' => ['/* testFunctionNoParams */'], 'ClosureNoParams' => ['/* testClosureNoParams */'], 'ClosureUseNoParams' => ['/* testClosureUseNoParams */', \T_USE]];
+        return ['FunctionNoParams' => ['commentString' => '/* testFunctionNoParams */'], 'ClosureNoParams' => ['commentString' => '/* testClosureNoParams */'], 'ClosureUseNoParams' => ['commentString' => '/* testClosureUseNoParams */', 'targetTokenType' => \T_USE]];
     }
     //end dataNoParams()
     /**

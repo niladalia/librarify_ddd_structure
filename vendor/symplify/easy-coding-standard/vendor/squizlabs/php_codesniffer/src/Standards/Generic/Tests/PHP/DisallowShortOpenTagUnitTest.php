@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff
  */
-class DisallowShortOpenTagUnitTest extends AbstractSniffUnitTest
+final class DisallowShortOpenTagUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Get a list of all test files to check.

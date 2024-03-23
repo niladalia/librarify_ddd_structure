@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PEAR\Sniffs\Commenting\FileCommentSniff
  */
-class FileCommentUnitTest extends AbstractSniffUnitTest
+final class FileCommentUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

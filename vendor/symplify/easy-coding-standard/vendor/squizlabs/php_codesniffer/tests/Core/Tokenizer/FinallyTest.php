@@ -9,8 +9,7 @@
  */
 namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
-class FinallyTest extends AbstractMethodUnitTest
+final class FinallyTest extends \PHP_CodeSniffer\Tests\Core\Tokenizer\AbstractTokenizerTestCase
 {
     /**
      * Test that the finally keyword is tokenized as such.
@@ -24,10 +23,11 @@ class FinallyTest extends AbstractMethodUnitTest
      */
     public function testFinallyKeyword($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         $target = $this->getTargetToken($testMarker, [\T_FINALLY, \T_STRING]);
-        $this->assertSame(\T_FINALLY, $tokens[$target]['code']);
-        $this->assertSame('T_FINALLY', $tokens[$target]['type']);
+        $tokenArray = $tokens[$target];
+        $this->assertSame(\T_FINALLY, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_FINALLY (code)');
+        $this->assertSame('T_FINALLY', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_FINALLY (type)');
     }
     //end testFinallyKeyword()
     /**
@@ -35,11 +35,11 @@ class FinallyTest extends AbstractMethodUnitTest
      *
      * @see testFinallyKeyword()
      *
-     * @return array
+     * @return array<string, array<string>>
      */
-    public function dataFinallyKeyword()
+    public static function dataFinallyKeyword()
     {
-        return [['/* testTryCatchFinally */'], ['/* testTryFinallyCatch */'], ['/* testTryFinally */']];
+        return ['finally after try and catch' => ['/* testTryCatchFinally */'], 'finally between try and catch' => ['/* testTryFinallyCatch */'], 'finally after try, no catch' => ['/* testTryFinally */']];
     }
     //end dataFinallyKeyword()
     /**
@@ -54,10 +54,11 @@ class FinallyTest extends AbstractMethodUnitTest
      */
     public function testFinallyNonKeyword($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         $target = $this->getTargetToken($testMarker, [\T_FINALLY, \T_STRING]);
-        $this->assertSame(\T_STRING, $tokens[$target]['code']);
-        $this->assertSame('T_STRING', $tokens[$target]['type']);
+        $tokenArray = $tokens[$target];
+        $this->assertSame(\T_STRING, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (code)');
+        $this->assertSame('T_STRING', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (type)');
     }
     //end testFinallyNonKeyword()
     /**
@@ -65,11 +66,11 @@ class FinallyTest extends AbstractMethodUnitTest
      *
      * @see testFinallyNonKeyword()
      *
-     * @return array
+     * @return array<string, array<string>>
      */
-    public function dataFinallyNonKeyword()
+    public static function dataFinallyNonKeyword()
     {
-        return [['/* testFinallyUsedAsClassConstantName */'], ['/* testFinallyUsedAsMethodName */'], ['/* testFinallyUsedAsPropertyName */']];
+        return ['finally used as class constant name' => ['/* testFinallyUsedAsClassConstantName */'], 'finally used as method name' => ['/* testFinallyUsedAsMethodName */'], 'finally used as property name' => ['/* testFinallyUsedAsPropertyName */']];
     }
     //end dataFinallyNonKeyword()
 }

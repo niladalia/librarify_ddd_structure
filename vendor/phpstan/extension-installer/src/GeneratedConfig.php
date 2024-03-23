@@ -35,7 +35,7 @@ final class GeneratedConfig
         1 => 'rules.neon',
       ),
     ),
-    'version' => '1.3.60',
+    'version' => '1.3.64',
   ),
   'phpstan/phpstan-symfony' => 
   array (
@@ -49,7 +49,7 @@ final class GeneratedConfig
         1 => 'rules.neon',
       ),
     ),
-    'version' => '1.3.7',
+    'version' => '1.3.9',
   ),
 );
 

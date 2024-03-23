@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Files\File::getDeclarationName
  */
-class GetDeclarationNameJSTest extends AbstractMethodUnitTest
+final class GetDeclarationNameJSTest extends AbstractMethodUnitTest
 {
     /**
      * The file extension of the test case file (without leading dot).

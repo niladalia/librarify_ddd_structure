@@ -3,12 +3,8 @@
 namespace App\Test\Service\FileUploader;
 
 use App\Books\Application\Dto\BookDto;
-use App\Books\Domain\Title;
-use App\Books\Domain\BookNotFound;
-use App\FileUploader\Application\FileUploader;
-use App\FileUploader\Infrastructure\LocalFileUploader;
-use App\Tests\Mother\BookMother;
-use Ramsey\Uuid\Uuid;
+use App\Books\Application\UploadFile\BookFileUploader;
+use App\Books\Infrastructure\Uploader\LocalBookFileUploader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class FileUploaderUnitTest extends KernelTestCase
@@ -19,9 +15,9 @@ class FileUploaderUnitTest extends KernelTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->localFileUploader = $this->createMock(LocalFileUploader::class);
+        $this->localFileUploader = $this->createMock(LocalBookFileUploader::class);
 
-        $this->fileUploader = new FileUploader(
+        $this->fileUploader = new BookFileUploader(
             $this->localFileUploader
         );
     }

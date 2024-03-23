@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\DisallowTabIndentSniff
  */
-class DisallowTabIndentUnitTest extends AbstractSniffUnitTest
+final class DisallowTabIndentUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Get a list of CLI values to set before the file is tested.

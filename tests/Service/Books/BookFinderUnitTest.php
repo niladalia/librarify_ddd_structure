@@ -2,6 +2,7 @@
 
 namespace App\Test\Service\FileUploader;
 
+use App\Books\Domain\BookId;
 use App\Books\Domain\Title;
 use App\Books\Domain\BookNotFound;
 use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
@@ -29,9 +30,13 @@ class BookFinderUnitTest extends KernelTestCase
     public function test_it_find_existing_book()
     {
         $id_uuid = Uuid::uuid4();
-        $existingBook = BookMother::create($id_uuid, new Title("Title"));
+        $existingBook = BookMother::create(new BookId($id_uuid), new Title("Title"));
 
-        bookDto->
+        $this->bookRep->expects(self::exactly(1))
+            ->method('search')
+            ->willReturn($existingBook);
+
+        $book = ($this->BookFinder)($id_uuid->serialize());
 
         $this->assertNotEmpty($book);
         $this->assertSame($existingBook, $book);

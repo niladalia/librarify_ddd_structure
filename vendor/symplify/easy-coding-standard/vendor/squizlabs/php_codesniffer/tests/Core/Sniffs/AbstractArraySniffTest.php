@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Sniffs\AbstractArraySniff
  */
-class AbstractArraySniffTest extends AbstractMethodUnitTest
+final class AbstractArraySniffTest extends AbstractMethodUnitTest
 {
     /**
      * The sniff objects we are testing.

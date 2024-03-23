@@ -70,7 +70,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
      */
     public const OPENAPI_DEFINITION_NAME = 'openapi_definition_name';
 
-    public function __construct(private readonly ResourceNameCollectionFactoryInterface $resourceNameCollectionFactory, private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataFactory, private readonly PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, private readonly PropertyMetadataFactoryInterface $propertyMetadataFactory, private readonly SchemaFactoryInterface $jsonSchemaFactory, private readonly TypeFactoryInterface $jsonSchemaTypeFactory, ContainerInterface $filterLocator, private readonly array $formats = [], Options $openApiOptions = null, PaginationOptions $paginationOptions = null, private readonly ?RouterInterface $router = null)
+    public function __construct(private readonly ResourceNameCollectionFactoryInterface $resourceNameCollectionFactory, private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataFactory, private readonly PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, private readonly PropertyMetadataFactoryInterface $propertyMetadataFactory, private readonly SchemaFactoryInterface $jsonSchemaFactory, private readonly TypeFactoryInterface $jsonSchemaTypeFactory, ContainerInterface $filterLocator, private readonly array $formats = [], ?Options $openApiOptions = null, ?PaginationOptions $paginationOptions = null, private readonly ?RouterInterface $router = null)
     {
         $this->filterLocator = $filterLocator;
         $this->openApiOptions = $openApiOptions ?: new Options('API Platform');
@@ -265,7 +265,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     continue;
                 }
 
-                $parameter = new Parameter($parameterName, 'path', (new \ReflectionClass($uriVariable->getFromClass()))->getShortName().' identifier', true, false, false, ['type' => 'string']);
+                $parameter = new Parameter($parameterName, 'path', "$resourceShortName identifier", true, false, false, ['type' => 'string']);
                 if ($this->hasParameter($openapiOperation, $parameter)) {
                     continue;
                 }
@@ -347,7 +347,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     'The "openapiContext" option is deprecated, use "openapi" instead.'
                 );
                 $openapiOperation = $openapiOperation->withRequestBody(new RequestBody($contextRequestBody['description'] ?? '', new \ArrayObject($contextRequestBody['content']), $contextRequestBody['required'] ?? false));
-            } elseif (null === $openapiOperation->getRequestBody() && \in_array($method, ['PATCH', 'PUT', 'POST'], true)) {
+            } elseif (
+                null === $openapiOperation->getRequestBody() && \in_array($method, ['PATCH', 'PUT', 'POST'], true)
+                && !(false === ($input = $operation->getInput()) || (\is_array($input) && null === $input['class']))
+            ) {
                 $operationInputSchemas = [];
                 foreach ($requestMimeTypes as $operationFormat) {
                     $operationInputSchema = $this->jsonSchemaFactory->buildSchema($resourceClass, $operationFormat, Schema::TYPE_INPUT, $operation, $schema, null, $forceSchemaCollection);
@@ -388,7 +391,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         }
     }
 
-    private function buildOpenApiResponse(array $existingResponses, int|string $status, string $description, Model\Operation $openapiOperation = null, HttpOperation $operation = null, array $responseMimeTypes = null, array $operationOutputSchemas = null, ResourceMetadataCollection $resourceMetadataCollection = null): Model\Operation
+    private function buildOpenApiResponse(array $existingResponses, int|string $status, string $description, ?Model\Operation $openapiOperation = null, ?HttpOperation $operation = null, ?array $responseMimeTypes = null, ?array $operationOutputSchemas = null, ?ResourceMetadataCollection $resourceMetadataCollection = null): Model\Operation
     {
         if (isset($existingResponses[$status])) {
             return $openapiOperation;

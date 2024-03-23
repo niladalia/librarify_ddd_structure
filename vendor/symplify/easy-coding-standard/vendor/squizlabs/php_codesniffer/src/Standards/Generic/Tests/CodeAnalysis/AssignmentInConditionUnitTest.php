@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff
  */
-class AssignmentInConditionUnitTest extends AbstractSniffUnitTest
+final class AssignmentInConditionUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

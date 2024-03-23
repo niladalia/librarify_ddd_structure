@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\LowerCaseKeywordSniff
  */
-class LowerCaseKeywordUnitTest extends AbstractSniffUnitTest
+final class LowerCaseKeywordUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

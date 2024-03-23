@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHP_CodeSniffer\Standards\MySource\Sniffs\PHP\GetRequestDataSniff
  */
-class GetRequestDataUnitTest extends AbstractSniffUnitTest
+final class GetRequestDataUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

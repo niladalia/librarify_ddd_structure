@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\FunctionCallSignatureSniff
  */
-class FunctionCallSignatureUnitTest extends AbstractSniffUnitTest
+final class FunctionCallSignatureUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

@@ -16,7 +16,7 @@ use ECSPrefix202402\PHPUnit\Framework\TestCase;
  *
  * @covers \PHP_CodeSniffer\Util\Common::isCamelCaps
  */
-class IsCamelCapsTest extends TestCase
+final class IsCamelCapsTest extends TestCase
 {
     /**
      * Test valid public function/method names.

@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Config;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Debug\ClosureLinterSniff
  */
-class ClosureLinterUnitTest extends AbstractSniffUnitTest
+final class ClosureLinterUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Should this test be skipped for some reason.

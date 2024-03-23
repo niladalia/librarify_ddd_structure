@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Zend\Sniffs\Files\ClosingTagSniff
  */
-class ClosingTagUnitTest extends AbstractSniffUnitTest
+final class ClosingTagUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

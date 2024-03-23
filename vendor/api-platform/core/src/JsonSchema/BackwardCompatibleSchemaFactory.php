@@ -33,7 +33,7 @@ final class BackwardCompatibleSchemaFactory implements SchemaFactoryInterface, S
     /**
      * {@inheritDoc}
      */
-    public function buildSchema(string $className, string $format = 'json', string $type = Schema::TYPE_OUTPUT, Operation $operation = null, Schema $schema = null, array $serializerContext = null, bool $forceCollection = false): Schema
+    public function buildSchema(string $className, string $format = 'json', string $type = Schema::TYPE_OUTPUT, ?Operation $operation = null, ?Schema $schema = null, ?array $serializerContext = null, bool $forceCollection = false): Schema
     {
         $schema = $this->decorated->buildSchema($className, $format, $type, $operation, $schema, $serializerContext, $forceCollection);
 
@@ -43,7 +43,15 @@ final class BackwardCompatibleSchemaFactory implements SchemaFactoryInterface, S
 
         foreach ($schema->getDefinitions() as $definition) {
             foreach ($definition['properties'] ?? [] as $property) {
-                if (isset($property['type']) && \in_array($property['type'], ['integer', 'number'], true)) {
+                if (!isset($property['type'])) {
+                    continue;
+                }
+
+                foreach ((array) $property['type'] as $type) {
+                    if ('integer' !== $type && 'number' !== $type) {
+                        continue;
+                    }
+
                     if (isset($property['exclusiveMinimum'])) {
                         $property['minimum'] = $property['exclusiveMinimum'];
                         $property['exclusiveMinimum'] = true;
@@ -52,6 +60,8 @@ final class BackwardCompatibleSchemaFactory implements SchemaFactoryInterface, S
                         $property['maximum'] = $property['exclusiveMaximum'];
                         $property['exclusiveMaximum'] = true;
                     }
+
+                    break;
                 }
             }
         }

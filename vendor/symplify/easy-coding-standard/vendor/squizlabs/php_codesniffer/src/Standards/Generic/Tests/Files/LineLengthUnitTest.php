@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff
  */
-class LineLengthUnitTest extends AbstractSniffUnitTest
+final class LineLengthUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Get a list of CLI values to set before the file is tested.

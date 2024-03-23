@@ -16,7 +16,7 @@ use ECSPrefix202402\PHPUnit\Framework\TestCase;
  *
  * @covers \PHP_CodeSniffer\Util\Common::suggestType
  */
-class SuggestTypeTest extends TestCase
+final class SuggestTypeTest extends TestCase
 {
     /**
      * Test passing an empty type to the suggestType() method.
@@ -50,7 +50,7 @@ class SuggestTypeTest extends TestCase
      *
      * @return array<string, array<string>>
      */
-    public function dataSuggestTypeAllowedType()
+    public static function dataSuggestTypeAllowedType()
     {
         $data = [];
         foreach (Common::$allowedTypes as $type) {
@@ -82,7 +82,7 @@ class SuggestTypeTest extends TestCase
      *
      * @return array<string, array<string, string>>
      */
-    public function dataSuggestTypeAllowedTypeWrongCase()
+    public static function dataSuggestTypeAllowedTypeWrongCase()
     {
         $data = [];
         foreach (Common::$allowedTypes as $type) {
@@ -115,7 +115,7 @@ class SuggestTypeTest extends TestCase
      *
      * @return array<string, array<string, string>>
      */
-    public function dataSuggestTypeOther()
+    public static function dataSuggestTypeOther()
     {
         return [
             // Short forms.

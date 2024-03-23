@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Classes\OpeningBraceSameLineSniff
  */
-class OpeningBraceSameLineUnitTest extends AbstractSniffUnitTest
+final class OpeningBraceSameLineUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

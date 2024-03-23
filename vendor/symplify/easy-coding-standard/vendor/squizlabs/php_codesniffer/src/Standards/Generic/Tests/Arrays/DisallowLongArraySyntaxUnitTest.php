@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
  */
-class DisallowLongArraySyntaxUnitTest extends AbstractSniffUnitTest
+final class DisallowLongArraySyntaxUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ScopeKeywordSpacingSniff
  */
-class ScopeKeywordSpacingUnitTest extends AbstractSniffUnitTest
+final class ScopeKeywordSpacingUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -31,7 +31,7 @@ class ScopeKeywordSpacingUnitTest extends AbstractSniffUnitTest
     {
         switch ($testFile) {
             case 'ScopeKeywordSpacingUnitTest.1.inc':
-                return [7 => 2, 8 => 1, 13 => 1, 14 => 1, 15 => 1, 17 => 2, 26 => 1, 28 => 1, 29 => 1, 64 => 1, 67 => 1, 71 => 1, 103 => 1, 106 => 1, 111 => 1, 119 => 1, 121 => 1, 127 => 2, 134 => 2, 138 => 2, 140 => 3];
+                return [7 => 2, 8 => 1, 13 => 1, 14 => 1, 15 => 1, 17 => 2, 26 => 1, 28 => 1, 29 => 1, 64 => 1, 67 => 1, 71 => 1, 103 => 1, 106 => 1, 111 => 1, 119 => 1, 121 => 1, 127 => 2, 134 => 2, 138 => 2, 140 => 3, 145 => 1, 149 => 1];
             case 'ScopeKeywordSpacingUnitTest.3.inc':
                 return [6 => 1];
             default:

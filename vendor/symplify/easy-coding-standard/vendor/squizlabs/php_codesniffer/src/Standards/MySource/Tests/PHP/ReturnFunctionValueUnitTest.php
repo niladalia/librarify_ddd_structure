@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHP_CodeSniffer\Standards\MySource\Sniffs\PHP\ReturnFunctionValueSniff
  */
-class ReturnFunctionValueUnitTest extends AbstractSniffUnitTest
+final class ReturnFunctionValueUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

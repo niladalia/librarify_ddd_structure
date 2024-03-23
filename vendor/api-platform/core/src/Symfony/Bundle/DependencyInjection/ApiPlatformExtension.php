@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Symfony\Bundle\DependencyInjection;
 
+use ApiPlatform\Api\FilterInterface as LegacyFilterInterface;
 use ApiPlatform\Doctrine\Odm\Extension\AggregationCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Odm\Extension\AggregationItemExtensionInterface;
 use ApiPlatform\Doctrine\Odm\Filter\AbstractFilter as DoctrineMongoDbOdmAbstractFilter;
@@ -31,6 +32,7 @@ use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
 use ApiPlatform\GraphQl\Type\Definition\TypeInterface as GraphQlTypeInterface;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\FilterInterface;
+use ApiPlatform\Metadata\UriVariableTransformerInterface;
 use ApiPlatform\Metadata\UrlGeneratorInterface;
 use ApiPlatform\Metadata\Util\Inflector;
 use ApiPlatform\State\ApiResource\Error;
@@ -167,10 +169,14 @@ final class ApiPlatformExtension extends Extension implements PrependExtensionIn
 
         $container->registerForAutoconfiguration(FilterInterface::class)
             ->addTag('api_platform.filter');
+        $container->registerForAutoconfiguration(LegacyFilterInterface::class)
+            ->addTag('api_platform.filter');
         $container->registerForAutoconfiguration(ProviderInterface::class)
             ->addTag('api_platform.state_provider');
         $container->registerForAutoconfiguration(ProcessorInterface::class)
             ->addTag('api_platform.state_processor');
+        $container->registerForAutoconfiguration(UriVariableTransformerInterface::class)
+            ->addTag('api_platform.uri_variables.transformer');
 
         if (!$container->has('api_platform.state.item_provider')) {
             $container->setAlias('api_platform.state.item_provider', 'api_platform.state_provider.object');

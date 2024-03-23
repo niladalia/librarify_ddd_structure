@@ -9,8 +9,7 @@
  */
 namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
-class BackfillExplicitOctalNotationTest extends AbstractMethodUnitTest
+final class BackfillExplicitOctalNotationTest extends \PHP_CodeSniffer\Tests\Core\Tokenizer\AbstractTokenizerTestCase
 {
     /**
      * Test that explicitly-defined octal values are tokenized as a single number and not as a number and a string.
@@ -27,7 +26,7 @@ class BackfillExplicitOctalNotationTest extends AbstractMethodUnitTest
      */
     public function testExplicitOctalNotation($marker, $value, $nextToken, $nextContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         $number = $this->getTargetToken($marker, [\T_LNUMBER]);
         $this->assertSame($value, $tokens[$number]['content'], 'Content of integer token does not match expectation');
         $this->assertSame($nextToken, $tokens[$number + 1]['code'], 'Next token is not the expected type, but ' . $tokens[$number + 1]['type']);
@@ -39,11 +38,11 @@ class BackfillExplicitOctalNotationTest extends AbstractMethodUnitTest
      *
      * @see testExplicitOctalNotation()
      *
-     * @return array
+     * @return array<string, array<string, int|string>>
      */
-    public function dataExplicitOctalNotation()
+    public static function dataExplicitOctalNotation()
     {
-        return [['marker' => '/* testExplicitOctal */', 'value' => '0o137041', 'nextToken' => \T_SEMICOLON, 'nextContent' => ';'], ['marker' => '/* testExplicitOctalCapitalised */', 'value' => '0O137041', 'nextToken' => \T_SEMICOLON, 'nextContent' => ';'], ['marker' => '/* testExplicitOctalWithNumericSeparator */', 'value' => '0o137_041', 'nextToken' => \T_SEMICOLON, 'nextContent' => ';'], ['marker' => '/* testInvalid1 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'o_137'], ['marker' => '/* testInvalid2 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'O_41'], ['marker' => '/* testInvalid3 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'o91'], ['marker' => '/* testInvalid4 */', 'value' => '0O2', 'nextToken' => \T_LNUMBER, 'nextContent' => '82'], ['marker' => '/* testInvalid5 */', 'value' => '0o2', 'nextToken' => \T_LNUMBER, 'nextContent' => '8_2'], ['marker' => '/* testInvalid6 */', 'value' => '0o2', 'nextToken' => \T_STRING, 'nextContent' => '_82'], ['marker' => '/* testInvalid7 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'o']];
+        return ['Explicit octal' => ['marker' => '/* testExplicitOctal */', 'value' => '0o137041', 'nextToken' => \T_SEMICOLON, 'nextContent' => ';'], 'Explicit octal - capitalized O' => ['marker' => '/* testExplicitOctalCapitalised */', 'value' => '0O137041', 'nextToken' => \T_SEMICOLON, 'nextContent' => ';'], 'Explicit octal - with numeric literal separator' => ['marker' => '/* testExplicitOctalWithNumericSeparator */', 'value' => '0o137_041', 'nextToken' => \T_SEMICOLON, 'nextContent' => ';'], 'Invalid explicit octal - numeric literal separator directly after "0o"' => ['marker' => '/* testInvalid1 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'o_137'], 'Invalid explicit octal - numeric literal separator directly after "0O" (capitalized O)' => ['marker' => '/* testInvalid2 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'O_41'], 'Invalid explicit octal - number out of octal range' => ['marker' => '/* testInvalid3 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'o91'], 'Invalid explicit octal - part of the number out of octal range' => ['marker' => '/* testInvalid4 */', 'value' => '0O2', 'nextToken' => \T_LNUMBER, 'nextContent' => '82'], 'Invalid explicit octal - part of the number out of octal range with numeric literal separator after' => ['marker' => '/* testInvalid5 */', 'value' => '0o2', 'nextToken' => \T_LNUMBER, 'nextContent' => '8_2'], 'Invalid explicit octal - part of the number out of octal range with numeric literal separator before' => ['marker' => '/* testInvalid6 */', 'value' => '0o2', 'nextToken' => \T_STRING, 'nextContent' => '_82'], 'Invalid explicit octal - explicit notation without number' => ['marker' => '/* testInvalid7 */', 'value' => '0', 'nextToken' => \T_STRING, 'nextContent' => 'o']];
     }
     //end dataExplicitOctalNotation()
 }

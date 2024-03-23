@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Classes\OpeningBraceSpaceSniff
  */
-class OpeningBraceSpaceUnitTest extends AbstractSniffUnitTest
+final class OpeningBraceSpaceUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

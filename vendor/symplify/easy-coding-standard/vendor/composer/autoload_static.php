@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb010bd939c83fb89e0e0f3f66dee1700
+class ComposerStaticInit6d2ad21689b39b16d19b4cc70cd1de6f
 {
     public static $files = array (
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
@@ -229,6 +229,8 @@ class ComposerStaticInitb010bd939c83fb89e0e0f3f66dee1700
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Diagnoser' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Diagnoser.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Executor\\ProcOpenExecutor' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Executor/ProcOpenExecutor.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Executor\\ProcessExecutor' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Executor/ProcessExecutor.php',
+        'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\CmiCmdletLogicalFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/CmiCmdletLogicalFinder.php',
+        'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\CmiCmdletPhysicalFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/CmiCmdletPhysicalFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\CpuCoreFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/CpuCoreFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\CpuInfoFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/CpuInfoFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\DummyCpuCoreFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/DummyCpuCoreFinder.php',
@@ -240,9 +242,11 @@ class ComposerStaticInitb010bd939c83fb89e0e0f3f66dee1700
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\NProcFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/NProcFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\NProcessorFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/NProcessorFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\NullCpuCoreFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/NullCpuCoreFinder.php',
+        'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\OnlyInPowerShellFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/OnlyInPowerShellFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\OnlyOnOSFamilyFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/OnlyOnOSFamilyFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\ProcOpenBasedFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/ProcOpenBasedFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\SkipOnOSFamilyFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/SkipOnOSFamilyFinder.php',
+        'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\WindowsRegistryLogicalFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/WindowsRegistryLogicalFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\WmicLogicalFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/WmicLogicalFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\WmicPhysicalFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/WmicPhysicalFinder.php',
         'ECSPrefix202402\\Fidry\\CpuCoreCounter\\Finder\\_NProcessorFinder' => __DIR__ . '/..' . '/fidry/cpu-core-counter/src/Finder/_NProcessorFinder.php',
@@ -1457,9 +1461,9 @@ class ComposerStaticInitb010bd939c83fb89e0e0f3f66dee1700
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb010bd939c83fb89e0e0f3f66dee1700::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb010bd939c83fb89e0e0f3f66dee1700::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb010bd939c83fb89e0e0f3f66dee1700::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6d2ad21689b39b16d19b4cc70cd1de6f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6d2ad21689b39b16d19b4cc70cd1de6f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6d2ad21689b39b16d19b4cc70cd1de6f::$classMap;
 
         }, null, ClassLoader::class);
     }

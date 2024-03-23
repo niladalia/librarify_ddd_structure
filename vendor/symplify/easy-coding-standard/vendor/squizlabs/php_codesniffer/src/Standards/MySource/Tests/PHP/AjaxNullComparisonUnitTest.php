@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHP_CodeSniffer\Standards\MySource\Sniffs\PHP\AjaxNullComparisonSniff
  */
-class AjaxNullComparisonUnitTest extends AbstractSniffUnitTest
+final class AjaxNullComparisonUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

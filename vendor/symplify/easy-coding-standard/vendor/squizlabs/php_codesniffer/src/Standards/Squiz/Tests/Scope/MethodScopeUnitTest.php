@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\MethodScopeSniff
  */
-class MethodScopeUnitTest extends AbstractSniffUnitTest
+final class MethodScopeUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

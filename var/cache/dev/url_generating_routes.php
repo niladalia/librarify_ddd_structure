@@ -4,7 +4,7 @@
 
 return [
     'author_controller_get' => [[], ['_controller' => 'App\\Authors\\Infrastructure\\Controllers\\AuthorsGetController'], [], [['text', '/api/author']], [], [], []],
-    'author_controller_post' => [[], ['_controller' => 'App\\Authors\\Infrastructure\\Controllers\\AuthorsPostController'], [], [['text', '/api/author']], [], [], []],
+    'author_controller_post' => [['id'], ['_controller' => 'App\\Authors\\Infrastructure\\Controllers\\AuthorsPostController'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/author']], [], [], []],
     'author_controller_delete' => [['id'], ['_controller' => 'App\\Authors\\Infrastructure\\Controllers\\AuthorsDeleteController'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/author']], [], [], []],
     'book_controller_get' => [[], ['_controller' => 'App\\Books\\Infrastructure\\Controllers\\BooksGetController'], [], [['text', '/api/books']], [], [], []],
     'book_controller_get_id' => [['id'], ['_controller' => 'App\\Books\\Infrastructure\\Controllers\\BookGetController'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/books']], [], [], []],

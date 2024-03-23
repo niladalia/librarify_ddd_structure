@@ -83,7 +83,7 @@ class ArbitraryParenthesesSpacingSniff implements Sniff
             $opener = $tokens[$stackPtr]['parenthesis_opener'];
         }
         $preOpener = $phpcsFile->findPrevious(Tokens::$emptyTokens, $opener - 1, null, \true);
-        if ($preOpener !== \false && isset($this->ignoreTokens[$tokens[$preOpener]['code']]) === \true && isset($tokens[$preOpener]['scope_condition']) === \false) {
+        if ($preOpener !== \false && isset($this->ignoreTokens[$tokens[$preOpener]['code']]) === \true && ($tokens[$preOpener]['code'] !== \T_CLOSE_CURLY_BRACKET || isset($tokens[$preOpener]['scope_condition']) === \false)) {
             // Function or language construct call.
             return;
         }

@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Config;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Debug\JSLintSniff
  */
-class JSLintUnitTest extends AbstractSniffUnitTest
+final class JSLintUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Should this test be skipped for some reason.

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PEAR\Sniffs\Classes\ClassDeclarationSniff
  */
-class ClassDeclarationUnitTest extends AbstractSniffUnitTest
+final class ClassDeclarationUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Get a list of CLI values to set before the file is tested.

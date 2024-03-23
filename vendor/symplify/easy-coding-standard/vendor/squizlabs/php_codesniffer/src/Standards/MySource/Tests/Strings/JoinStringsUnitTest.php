@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHP_CodeSniffer\Standards\MySource\Sniffs\Strings\JoinStringsSniff
  */
-class JoinStringsUnitTest extends AbstractSniffUnitTest
+final class JoinStringsUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

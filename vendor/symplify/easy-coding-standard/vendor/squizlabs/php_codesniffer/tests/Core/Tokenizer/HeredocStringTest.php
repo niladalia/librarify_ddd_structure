@@ -10,8 +10,7 @@
  */
 namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
-class HeredocStringTest extends AbstractMethodUnitTest
+final class HeredocStringTest extends \PHP_CodeSniffer\Tests\Core\Tokenizer\AbstractTokenizerTestCase
 {
     /**
      * Test that heredoc strings contain the complete interpolated string.
@@ -26,7 +25,7 @@ class HeredocStringTest extends AbstractMethodUnitTest
      */
     public function testHeredocString($testMarker, $expectedContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         $target = $this->getTargetToken($testMarker, \T_HEREDOC);
         $this->assertSame($expectedContent . "\n", $tokens[$target]['content']);
     }
@@ -44,7 +43,7 @@ class HeredocStringTest extends AbstractMethodUnitTest
      */
     public function testHeredocStringWrapped($testMarker, $expectedContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = $this->phpcsFile->getTokens();
         $testMarker = \substr($testMarker, 0, -3) . 'Wrapped */';
         $target = $this->getTargetToken($testMarker, \T_HEREDOC);
         $this->assertSame('Do ' . $expectedContent . " Something\n", $tokens[$target]['content']);
@@ -53,13 +52,21 @@ class HeredocStringTest extends AbstractMethodUnitTest
     /**
      * Data provider.
      *
+     * Type reference:
+     * 1. Directly embedded variables.
+     * 2. Braces outside the variable.
+     * 3. Braces after the dollar sign.
+     * 4. Variable variables and expressions.
+     *
+     * @link https://wiki.php.net/rfc/deprecate_dollar_brace_string_interpolation
+     *
      * @see testHeredocString()
      *
-     * @return array
+     * @return array<string, array<string, string>>
      */
-    public function dataHeredocString()
+    public static function dataHeredocString()
     {
-        return [['testMarker' => '/* testSimple1 */', 'expectedContent' => '$foo'], ['testMarker' => '/* testSimple2 */', 'expectedContent' => '{$foo}'], ['testMarker' => '/* testSimple3 */', 'expectedContent' => '${foo}'], ['testMarker' => '/* testDIM1 */', 'expectedContent' => '$foo[bar]'], ['testMarker' => '/* testDIM2 */', 'expectedContent' => '{$foo[\'bar\']}'], ['testMarker' => '/* testDIM3 */', 'expectedContent' => '${foo[\'bar\']}'], ['testMarker' => '/* testProperty1 */', 'expectedContent' => '$foo->bar'], ['testMarker' => '/* testProperty2 */', 'expectedContent' => '{$foo->bar}'], ['testMarker' => '/* testMethod1 */', 'expectedContent' => '{$foo->bar()}'], ['testMarker' => '/* testClosure1 */', 'expectedContent' => '{$foo()}'], ['testMarker' => '/* testChain1 */', 'expectedContent' => '{$foo[\'bar\']->baz()()}'], ['testMarker' => '/* testVariableVar1 */', 'expectedContent' => '${$bar}'], ['testMarker' => '/* testVariableVar2 */', 'expectedContent' => '${(foo)}'], ['testMarker' => '/* testVariableVar3 */', 'expectedContent' => '${foo->bar}'], ['testMarker' => '/* testNested1 */', 'expectedContent' => '${foo["${bar}"]}'], ['testMarker' => '/* testNested2 */', 'expectedContent' => '${foo["${bar[\'baz\']}"]}'], ['testMarker' => '/* testNested3 */', 'expectedContent' => '${foo->{$baz}}'], ['testMarker' => '/* testNested4 */', 'expectedContent' => '${foo->{${\'a\'}}}'], ['testMarker' => '/* testNested5 */', 'expectedContent' => '${foo->{"${\'a\'}"}}']];
+        return ['Type 1: simple variable' => ['testMarker' => '/* testSimple1 */', 'expectedContent' => '$foo'], 'Type 2: simple variable' => ['testMarker' => '/* testSimple2 */', 'expectedContent' => '{$foo}'], 'Type 3: simple variable' => ['testMarker' => '/* testSimple3 */', 'expectedContent' => '${foo}'], 'Type 1: array offset' => ['testMarker' => '/* testDIM1 */', 'expectedContent' => '$foo[bar]'], 'Type 2: array offset' => ['testMarker' => '/* testDIM2 */', 'expectedContent' => '{$foo[\'bar\']}'], 'Type 3: array offset' => ['testMarker' => '/* testDIM3 */', 'expectedContent' => '${foo[\'bar\']}'], 'Type 1: object property' => ['testMarker' => '/* testProperty1 */', 'expectedContent' => '$foo->bar'], 'Type 2: object property' => ['testMarker' => '/* testProperty2 */', 'expectedContent' => '{$foo->bar}'], 'Type 2: object method call' => ['testMarker' => '/* testMethod1 */', 'expectedContent' => '{$foo->bar()}'], 'Type 2: closure function call' => ['testMarker' => '/* testClosure1 */', 'expectedContent' => '{$foo()}'], 'Type 2: chaining various syntaxes' => ['testMarker' => '/* testChain1 */', 'expectedContent' => '{$foo[\'bar\']->baz()()}'], 'Type 4: variable variables' => ['testMarker' => '/* testVariableVar1 */', 'expectedContent' => '${$bar}'], 'Type 4: variable constants' => ['testMarker' => '/* testVariableVar2 */', 'expectedContent' => '${(foo)}'], 'Type 4: object property' => ['testMarker' => '/* testVariableVar3 */', 'expectedContent' => '${foo->bar}'], 'Type 4: variable variable nested in array offset' => ['testMarker' => '/* testNested1 */', 'expectedContent' => '${foo["${bar}"]}'], 'Type 4: variable array offset nested in array offset' => ['testMarker' => '/* testNested2 */', 'expectedContent' => '${foo["${bar[\'baz\']}"]}'], 'Type 4: variable object property' => ['testMarker' => '/* testNested3 */', 'expectedContent' => '${foo->{$baz}}'], 'Type 4: variable object property - complex with single quotes' => ['testMarker' => '/* testNested4 */', 'expectedContent' => '${foo->{${\'a\'}}}'], 'Type 4: variable object property - complex with single and double quotes' => ['testMarker' => '/* testNested5 */', 'expectedContent' => '${foo->{"${\'a\'}"}}']];
     }
     //end dataHeredocString()
 }

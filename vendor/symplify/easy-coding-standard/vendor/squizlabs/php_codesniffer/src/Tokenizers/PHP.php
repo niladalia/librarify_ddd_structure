@@ -78,6 +78,7 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
         $lastNotEmptyToken = 0;
         $insideInlineIf = [];
         $insideUseGroup = \false;
+        $insideConstDeclaration = \false;
         $commentTokenizer = new \PHP_CodeSniffer\Tokenizers\Comment();
         for ($stackPtr = 0; $stackPtr < $numTokens; $stackPtr++) {
             // Special case for tokens we have needed to blank out.
@@ -139,12 +140,23 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
             /*
                 Tokenize context sensitive keyword as string when it should be string.
             */
-            if ($tokenIsArray === \true && isset(Util\Tokens::$contextSensitiveKeywords[$token[0]]) === \true && (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \true || $finalTokens[$lastNotEmptyToken]['content'] === '&')) {
+            if ($tokenIsArray === \true && isset(Util\Tokens::$contextSensitiveKeywords[$token[0]]) === \true && (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \true || $finalTokens[$lastNotEmptyToken]['content'] === '&' || $insideConstDeclaration === \true)) {
                 if (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \true) {
                     $preserveKeyword = \false;
                     // `new class`, and `new static` should be preserved.
                     if ($finalTokens[$lastNotEmptyToken]['code'] === \T_NEW && ($token[0] === \T_CLASS || $token[0] === \T_STATIC)) {
                         $preserveKeyword = \true;
+                    }
+                    // `new readonly class` should be preserved.
+                    if ($finalTokens[$lastNotEmptyToken]['code'] === \T_NEW && \strtolower($token[1]) === 'readonly') {
+                        for ($i = $stackPtr + 1; $i < $numTokens; $i++) {
+                            if (\is_array($tokens[$i]) === \false || isset(Util\Tokens::$emptyTokens[$tokens[$i][0]]) === \false) {
+                                break;
+                            }
+                        }
+                        if (\is_array($tokens[$i]) === \true && $tokens[$i][0] === \T_CLASS) {
+                            $preserveKeyword = \true;
+                        }
                     }
                     // `new class extends` `new class implements` should be preserved
                     if (($token[0] === \T_EXTENDS || $token[0] === \T_IMPLEMENTS) && $finalTokens[$lastNotEmptyToken]['code'] === \T_CLASS) {
@@ -164,6 +176,22 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
                             }
                             break;
                         }
+                    }
+                }
+                //end if
+                // Types in typed constants should not be touched, but the constant name should be.
+                if (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \true && $finalTokens[$lastNotEmptyToken]['code'] === \T_CONST || $insideConstDeclaration === \true) {
+                    $preserveKeyword = \true;
+                    // Find the next non-empty token.
+                    for ($i = $stackPtr + 1; $i < $numTokens; $i++) {
+                        if (\is_array($tokens[$i]) === \true && isset(Util\Tokens::$emptyTokens[$tokens[$i][0]]) === \true) {
+                            continue;
+                        }
+                        break;
+                    }
+                    if ($tokens[$i] === '=' || $tokens[$i] === ';') {
+                        $preserveKeyword = \false;
+                        $insideConstDeclaration = \false;
                     }
                 }
                 //end if
@@ -190,6 +218,19 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
                 }
             }
             //end if
+            /*
+                Mark the start of a constant declaration to allow for handling keyword to T_STRING
+                convertion for constant names using reserved keywords.
+            */
+            if ($tokenIsArray === \true && $token[0] === \T_CONST) {
+                $insideConstDeclaration = \true;
+            }
+            /*
+                Close an open "inside constant declaration" marker when no keyword convertion was needed.
+            */
+            if ($insideConstDeclaration === \true && $tokenIsArray === \false && ($token[0] === '=' || $token[0] === ';')) {
+                $insideConstDeclaration = \false;
+            }
             /*
                 Special case for `static` used as a function name, i.e. `static()`.
             */
@@ -642,7 +683,7 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
             /*
                 "readonly" keyword for PHP < 8.1
             */
-            if ($tokenIsArray === \true && \strtolower($token[1]) === 'readonly' && isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \false) {
+            if ($tokenIsArray === \true && \strtolower($token[1]) === 'readonly' && (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \false || $finalTokens[$lastNotEmptyToken]['code'] === \T_NEW)) {
                 // Get the next non-whitespace token.
                 for ($i = $stackPtr + 1; $i < $numTokens; $i++) {
                     if (\is_array($tokens[$i]) === \false || isset(Util\Tokens::$emptyTokens[$tokens[$i][0]]) === \false) {
@@ -889,7 +930,7 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
                     break;
                 }
                 //end for
-                if ($newType === \T_LNUMBER && (\stripos($newContent, '0x') === 0 && \hexdec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || \stripos($newContent, '0b') === 0 && \bindec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || \stripos($newContent, '0o') === 0 && \octdec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || (\stripos($newContent, '0x') !== 0 && \stripos($newContent, 'e') !== \false || \strpos($newContent, '.') !== \false) || \strpos($newContent, '0') === 0 && \stripos($newContent, '0x') !== 0 && \stripos($newContent, '0b') !== 0 && \octdec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || \strpos($newContent, '0') !== 0 && \str_replace('_', '', $newContent) > \PHP_INT_MAX)) {
+                if ($newType === \T_LNUMBER && (\stripos($newContent, '0x') === 0 && \hexdec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || \stripos($newContent, '0b') === 0 && \bindec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || \stripos($newContent, '0o') === 0 && \octdec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || \stripos($newContent, '0x') !== 0 && (\stripos($newContent, 'e') !== \false || \strpos($newContent, '.') !== \false) || \strpos($newContent, '0') === 0 && \stripos($newContent, '0x') !== 0 && \stripos($newContent, '0b') !== 0 && \octdec(\str_replace('_', '', $newContent)) > \PHP_INT_MAX || \strpos($newContent, '0') !== 0 && \str_replace('_', '', $newContent) > \PHP_INT_MAX)) {
                     $newType = \T_DNUMBER;
                 }
                 $newToken = [];
@@ -1001,6 +1042,17 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
             if ($tokenIsArray === \false && $token[0] === '?') {
                 $newToken = [];
                 $newToken['content'] = '?';
+                // For typed constants, we only need to check the token before the ? to be sure.
+                if ($finalTokens[$lastNotEmptyToken]['code'] === \T_CONST) {
+                    $newToken['code'] = \T_NULLABLE;
+                    $newToken['type'] = 'T_NULLABLE';
+                    if (\PHP_CODESNIFFER_VERBOSITY > 1) {
+                        echo "\t\t* token {$stackPtr} changed from ? to T_NULLABLE" . \PHP_EOL;
+                    }
+                    $finalTokens[$newStackPtr] = $newToken;
+                    $newStackPtr++;
+                    continue;
+                }
                 /*
                  * Check if the next non-empty token is one of the tokens which can be used
                  * in type declarations. If not, it's definitely a ternary.
@@ -1249,36 +1301,52 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
                 // Some T_STRING tokens should remain that way due to their context.
                 if ($tokenIsArray === \true && $token[0] === \T_STRING) {
                     $preserveTstring = \false;
-                    if (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \true) {
-                        $preserveTstring = \true;
-                        // Special case for syntax like: return new self/new parent
-                        // where self/parent should not be a string.
-                        $tokenContentLower = \strtolower($token[1]);
-                        if ($finalTokens[$lastNotEmptyToken]['code'] === \T_NEW && ($tokenContentLower === 'self' || $tokenContentLower === 'parent')) {
-                            $preserveTstring = \false;
+                    // True/false/parent/self/static in typed constants should be fixed to their own token,
+                    // but the constant name should not be.
+                    if (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \true && $finalTokens[$lastNotEmptyToken]['code'] === \T_CONST || $insideConstDeclaration === \true) {
+                        // Find the next non-empty token.
+                        for ($i = $stackPtr + 1; $i < $numTokens; $i++) {
+                            if (\is_array($tokens[$i]) === \true && isset(Util\Tokens::$emptyTokens[$tokens[$i][0]]) === \true) {
+                                continue;
+                            }
+                            break;
+                        }
+                        if ($tokens[$i] === '=') {
+                            $preserveTstring = \true;
+                            $insideConstDeclaration = \false;
                         }
                     } else {
-                        if ($finalTokens[$lastNotEmptyToken]['content'] === '&') {
-                            // Function names for functions declared to return by reference.
-                            for ($i = $lastNotEmptyToken - 1; $i >= 0; $i--) {
-                                if (isset(Util\Tokens::$emptyTokens[$finalTokens[$i]['code']]) === \true) {
-                                    continue;
-                                }
-                                if ($finalTokens[$i]['code'] === \T_FUNCTION) {
-                                    $preserveTstring = \true;
-                                }
-                                break;
+                        if (isset($this->tstringContexts[$finalTokens[$lastNotEmptyToken]['code']]) === \true && $finalTokens[$lastNotEmptyToken]['code'] !== \T_CONST) {
+                            $preserveTstring = \true;
+                            // Special case for syntax like: return new self/new parent
+                            // where self/parent should not be a string.
+                            $tokenContentLower = \strtolower($token[1]);
+                            if ($finalTokens[$lastNotEmptyToken]['code'] === \T_NEW && ($tokenContentLower === 'self' || $tokenContentLower === 'parent')) {
+                                $preserveTstring = \false;
                             }
                         } else {
-                            // Keywords with special PHPCS token when used as a function call.
-                            for ($i = $stackPtr + 1; $i < $numTokens; $i++) {
-                                if (\is_array($tokens[$i]) === \true && isset(Util\Tokens::$emptyTokens[$tokens[$i][0]]) === \true) {
-                                    continue;
+                            if ($finalTokens[$lastNotEmptyToken]['content'] === '&') {
+                                // Function names for functions declared to return by reference.
+                                for ($i = $lastNotEmptyToken - 1; $i >= 0; $i--) {
+                                    if (isset(Util\Tokens::$emptyTokens[$finalTokens[$i]['code']]) === \true) {
+                                        continue;
+                                    }
+                                    if ($finalTokens[$i]['code'] === \T_FUNCTION) {
+                                        $preserveTstring = \true;
+                                    }
+                                    break;
                                 }
-                                if ($tokens[$i][0] === '(') {
-                                    $preserveTstring = \true;
+                            } else {
+                                // Keywords with special PHPCS token when used as a function call.
+                                for ($i = $stackPtr + 1; $i < $numTokens; $i++) {
+                                    if (\is_array($tokens[$i]) === \true && isset(Util\Tokens::$emptyTokens[$tokens[$i][0]]) === \true) {
+                                        continue;
+                                    }
+                                    if ($tokens[$i][0] === '(') {
+                                        $preserveTstring = \true;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
@@ -1816,6 +1884,11 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
                                         if ($this->tokens[$x]['code'] === \T_OPEN_CURLY_BRACKET && isset($this->tokens[$x]['scope_condition']) === \true && $this->tokens[$this->tokens[$x]['scope_condition']]['code'] === \T_FUNCTION) {
                                             $suspectedType = 'return';
                                         }
+                                        if ($this->tokens[$x]['code'] === \T_EQUAL) {
+                                            // Possible constant declaration, the `T_STRING` name will have been skipped over already.
+                                            $suspectedType = 'constant';
+                                            break;
+                                        }
                                         break;
                                     }
                                     //end for
@@ -1846,6 +1919,10 @@ class PHP extends \PHP_CodeSniffer\Tokenizers\Tokenizer
                                             continue;
                                         }
                                         if ($suspectedType === 'return' && $this->tokens[$x]['code'] === \T_COLON) {
+                                            $confirmed = \true;
+                                            break;
+                                        }
+                                        if ($suspectedType === 'constant' && $this->tokens[$x]['code'] === \T_CONST) {
                                             $confirmed = \true;
                                             break;
                                         }

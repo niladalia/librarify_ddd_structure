@@ -1,5 +1,44 @@
 # Changelog
 
+## v3.2.17
+
+### Bug fixes
+
+* [2819d56c8](https://github.com/api-platform/core/commit/2819d56c80f39a53f2e3d5fd7119566ad96b4075) fix(hydra): hydra:view with absolute iris (#6208)
+* [98f4b8fca](https://github.com/api-platform/core/commit/98f4b8fcab39b1d09110cc133206e27782ea4791) fix(metadata): Operations priority sort (#6206)
+* [a1309bbf2](https://github.com/api-platform/core/commit/a1309bbf2f678081a82290818a91f0a376b3c94c) fix(serializer): skip symfony validation exception (#6220)
+
+## v3.2.16
+
+### Bug fixes
+
+* [56744dcfa](https://github.com/api-platform/core/commit/56744dcfa07f79ca58926cb199356e849ddb3a93) fix(serializer): fix union types on collection denormalization (#6192)
+* [d8e2d0c5e](https://github.com/api-platform/core/commit/d8e2d0c5e9b48c15d60a734086b0102b6ecf95c8) fix(doctrine): doctrine/orm:^3.0 support (#6193)
+* [f891f16d5](https://github.com/api-platform/core/commit/f891f16d50b665f25e4699291526161e16ce0fa7) fix(doctrine): isAssociationInverseSide before getMappedBy (#6197)
+
+## v3.2.15
+
+### Bug fixes
+
+* [09aacf98a](https://github.com/api-platform/core/commit/09aacf98a2e4d0ffa00fbefa59cb2b31f35fbb54) fix(symfony): revert breaking change on attributes extractor (#6170)
+* [4138cb7c0](https://github.com/api-platform/core/commit/4138cb7c031b38731162d99b3d43754251fc5913) fix(openapi): resource name parameter description (#6178)
+* [5e4b6312a](https://github.com/api-platform/core/commit/5e4b6312a057ba4d1f45c395c7a215dc393acd80) fix(jsonschema): multiple type support (draft4) (#6171)
+* [8535f9def](https://github.com/api-platform/core/commit/8535f9def6fbd2baff9cedc79c34103940eb4fca) fix(doctrine): read parent class properties on PUT (#6176)
+* [a188c9473](https://github.com/api-platform/core/commit/a188c947396e0400ba6e1aadaa262d2e785fd941) fix(symfony): autoconfigure legacy alias fixes #6177 (#6181)
+* [e7b442149](https://github.com/api-platform/core/commit/e7b4421496b58f7c3db414d11dd357a8dc759323) fix(validator): stop considering properties marked with NotBlank(allowNull=true) as required (#6184)
+
+## v3.2.14
+
+### Bug fixes
+
+* [26295392d](https://github.com/api-platform/core/commit/26295392d5e70075b2951d27c633cf29d6fdf542) fix: use normalisation context when none is provided in ApiTestAssertionsTrait (#6157)
+* [2999d9ef1](https://github.com/api-platform/core/commit/2999d9ef14416b4cb8728ad713a9edd367df9816) fix: return null instead of exception for GraphQL Query operation (#6118)
+* [30f3f353e](https://github.com/api-platform/core/commit/30f3f353e2022ad6ec80733e90f209f326dc3225) fix(openapi): skip requestBody if input is false (#6163)
+* [507edba82](https://github.com/api-platform/core/commit/507edba822d80005345794cec1a946f9a7e0c12c) fix(symfony): autoconfiguration on UriVariableTransformerInterface (#6159)
+* [643cff2db](https://github.com/api-platform/core/commit/643cff2db8dbab050aa125eb32a347ad37a95e08) fix(symfony): throw metadata exception (#6164)
+* [a987469e0](https://github.com/api-platform/core/commit/a987469e09608d91afd4507ec1f6ceacbd8653b2) fix(openapi): method OpenApi::getComponents must always return a Components object (#6158)
+* [c08f1e164](https://github.com/api-platform/core/commit/c08f1e1642f4427269a7f684f0b3def34ba4c433) fix(doctrine): test array type existence before using it (#6161)
+
 ## v3.2.13
 
 ### Bug fixes

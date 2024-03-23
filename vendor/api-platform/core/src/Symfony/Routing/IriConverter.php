@@ -16,12 +16,12 @@ namespace ApiPlatform\Symfony\Routing;
 use ApiPlatform\Api\IdentifiersExtractorInterface as LegacyIdentifiersExtractorInterface;
 use ApiPlatform\Api\ResourceClassResolverInterface as LegacyResourceClassResolverInterface;
 use ApiPlatform\Api\UriVariablesConverterInterface as LegacyUriVariablesConverterInterface;
-use ApiPlatform\Exception\InvalidArgumentException;
-use ApiPlatform\Exception\InvalidIdentifierException;
-use ApiPlatform\Exception\ItemNotFoundException;
-use ApiPlatform\Exception\OperationNotFoundException;
-use ApiPlatform\Exception\RuntimeException;
 use ApiPlatform\Metadata\CollectionOperationInterface;
+use ApiPlatform\Metadata\Exception\InvalidArgumentException;
+use ApiPlatform\Metadata\Exception\InvalidIdentifierException;
+use ApiPlatform\Metadata\Exception\ItemNotFoundException;
+use ApiPlatform\Metadata\Exception\OperationNotFoundException;
+use ApiPlatform\Metadata\Exception\RuntimeException;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\HttpOperation;
@@ -55,7 +55,7 @@ final class IriConverter implements IriConverterInterface
     private $localOperationCache = [];
     private $localIdentifiersExtractorOperationCache = [];
 
-    public function __construct(private readonly ProviderInterface $provider, private readonly RouterInterface $router, private readonly IdentifiersExtractorInterface|LegacyIdentifiersExtractorInterface $identifiersExtractor, ResourceClassResolverInterface|LegacyResourceClassResolverInterface $resourceClassResolver, private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory, UriVariablesConverterInterface|LegacyUriVariablesConverterInterface $uriVariablesConverter = null, private readonly ?IriConverterInterface $decorated = null, private readonly ?OperationMetadataFactoryInterface $operationMetadataFactory = null)
+    public function __construct(private readonly ProviderInterface $provider, private readonly RouterInterface $router, private readonly IdentifiersExtractorInterface|LegacyIdentifiersExtractorInterface $identifiersExtractor, ResourceClassResolverInterface|LegacyResourceClassResolverInterface $resourceClassResolver, private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory, UriVariablesConverterInterface|LegacyUriVariablesConverterInterface|null $uriVariablesConverter = null, private readonly ?IriConverterInterface $decorated = null, private readonly ?OperationMetadataFactoryInterface $operationMetadataFactory = null)
     {
         $this->resourceClassResolver = $resourceClassResolver;
         $this->uriVariablesConverter = $uriVariablesConverter;
@@ -64,7 +64,7 @@ final class IriConverter implements IriConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function getResourceFromIri(string $iri, array $context = [], Operation $operation = null): object
+    public function getResourceFromIri(string $iri, array $context = [], ?Operation $operation = null): object
     {
         try {
             $parameters = $this->router->match($iri);
@@ -105,7 +105,7 @@ final class IriConverter implements IriConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function getIriFromResource(object|string $resource, int $referenceType = UrlGeneratorInterface::ABS_PATH, Operation $operation = null, array $context = []): ?string
+    public function getIriFromResource(object|string $resource, int $referenceType = UrlGeneratorInterface::ABS_PATH, ?Operation $operation = null, array $context = []): ?string
     {
         $resourceClass = $context['force_resource_class'] ?? (\is_string($resource) ? $resource : $this->getObjectClass($resource));
 
@@ -160,7 +160,7 @@ final class IriConverter implements IriConverterInterface
         return $this->generateSymfonyRoute($resource, $referenceType, $operation, $context, $identifiersExtractorOperation);
     }
 
-    private function generateSkolemIri(object|string $resource, int $referenceType = UrlGeneratorInterface::ABS_PATH, Operation $operation = null, array $context = [], string $resourceClass = null): string
+    private function generateSkolemIri(object|string $resource, int $referenceType = UrlGeneratorInterface::ABS_PATH, ?Operation $operation = null, array $context = [], ?string $resourceClass = null): string
     {
         if (!$this->decorated) {
             throw new InvalidArgumentException(sprintf('Unable to generate an IRI for the item of type "%s"', $resourceClass));
@@ -170,7 +170,7 @@ final class IriConverter implements IriConverterInterface
         return $this->decorated->getIriFromResource($resource, $referenceType, $operation, $context);
     }
 
-    private function generateSymfonyRoute(object|string $resource, int $referenceType = UrlGeneratorInterface::ABS_PATH, Operation $operation = null, array $context = [], Operation $identifiersExtractorOperation = null): string
+    private function generateSymfonyRoute(object|string $resource, int $referenceType = UrlGeneratorInterface::ABS_PATH, ?Operation $operation = null, array $context = [], ?Operation $identifiersExtractorOperation = null): string
     {
         $identifiers = $context['uri_variables'] ?? [];
 

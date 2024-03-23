@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Files\File::getMethodProperties
  */
-class GetMethodPropertiesTest extends AbstractMethodUnitTest
+final class GetMethodPropertiesTest extends AbstractMethodUnitTest
 {
     /**
      * Test receiving an expected exception when a non function token is passed.
@@ -268,6 +268,18 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
     }
     //end testReturnTypeStatic()
+    /**
+     * Test a function with return type "?static".
+     *
+     * @return void
+     */
+    public function testReturnTypeNullableStatic()
+    {
+        // Offsets are relative to the T_FUNCTION token.
+        $expected = ['scope' => 'public', 'scope_specified' => \false, 'return_type' => '?static', 'return_type_token' => 8, 'return_type_end_token' => 8, 'nullable_return_type' => \true, 'is_abstract' => \false, 'is_final' => \false, 'is_static' => \false, 'has_body' => \true];
+        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
+    }
+    //end testReturnTypeNullableStatic()
     /**
      * Test a function with return type "mixed".
      *

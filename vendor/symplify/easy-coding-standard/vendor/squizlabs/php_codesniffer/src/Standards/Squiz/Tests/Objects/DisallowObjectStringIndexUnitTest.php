@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Objects\DisallowObjectStringIndexSniff
  */
-class DisallowObjectStringIndexUnitTest extends AbstractSniffUnitTest
+final class DisallowObjectStringIndexUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

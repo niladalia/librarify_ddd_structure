@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Classes\AnonClassDeclarationSniff
  */
-class AnonClassDeclarationUnitTest extends AbstractSniffUnitTest
+final class AnonClassDeclarationUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -27,7 +27,7 @@ class AnonClassDeclarationUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList()
     {
-        return [28 => 3, 30 => 1, 31 => 4, 32 => 1, 33 => 1, 34 => 1, 35 => 1, 36 => 1, 37 => 3, 39 => 1, 40 => 1, 43 => 3, 44 => 4, 45 => 1, 48 => 1, 52 => 3, 53 => 1, 54 => 1, 55 => 1, 56 => 2, 63 => 1, 75 => 1, 87 => 1, 88 => 1];
+        return [28 => 3, 30 => 1, 31 => 4, 32 => 1, 33 => 1, 34 => 1, 35 => 1, 36 => 1, 37 => 3, 39 => 1, 40 => 1, 43 => 3, 44 => 4, 45 => 1, 48 => 1, 52 => 3, 53 => 1, 54 => 1, 55 => 1, 56 => 2, 63 => 1, 75 => 1, 87 => 1, 88 => 1, 94 => 1, 96 => 1];
     }
     //end getErrorList()
     /**

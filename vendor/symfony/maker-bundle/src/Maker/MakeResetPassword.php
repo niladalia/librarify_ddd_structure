@@ -26,6 +26,7 @@ use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
 use Symfony\Bundle\MakerBundle\FileManager;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
+use Symfony\Bundle\MakerBundle\Maker\Common\UidTrait;
 use Symfony\Bundle\MakerBundle\Security\InteractiveSecurityHelper;
 use Symfony\Bundle\MakerBundle\Util\ClassNameDetails;
 use Symfony\Bundle\MakerBundle\Util\ClassSourceManipulator;
@@ -53,6 +54,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -78,6 +81,8 @@ use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
  */
 class MakeResetPassword extends AbstractMaker
 {
+    use UidTrait;
+
     private string $fromEmailAddress;
     private string $fromEmailName;
     private string $controllerResetSuccessRedirect;
@@ -108,6 +113,8 @@ class MakeResetPassword extends AbstractMaker
         $command
             ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeResetPassword.txt'))
         ;
+
+        $this->addWithUuidOption($command);
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void
@@ -131,6 +138,8 @@ class MakeResetPassword extends AbstractMaker
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         $io->title('Let\'s make a password reset feature!');
+
+        $this->checkIsUsingUid($input);
 
         $interactiveSecurityHelper = new InteractiveSecurityHelper();
 
@@ -160,7 +169,7 @@ class MakeResetPassword extends AbstractMaker
         $this->controllerResetSuccessRedirect = $io->ask(
             'What route should users be redirected to after their password has been successfully reset?',
             'app_home',
-            [Validator::class, 'notBlank']
+            Validator::notBlank(...)
         );
 
         $io->section('- Email -');
@@ -170,13 +179,13 @@ class MakeResetPassword extends AbstractMaker
         $this->fromEmailAddress = $io->ask(
             'What email address will be used to send reset confirmations? e.g. mailer@your-domain.com',
             null,
-            [Validator::class, 'validateEmailAddress']
+            Validator::validateEmailAddress(...)
         );
 
         $this->fromEmailName = $io->ask(
             'What "name" should be associated with that email address? e.g. "Acme Mail Bot"',
             null,
-            [Validator::class, 'notBlank']
+            Validator::notBlank(...)
         );
     }
 
@@ -292,6 +301,8 @@ class MakeResetPassword extends AbstractMaker
             OptionsResolver::class,
             Length::class,
             NotBlank::class,
+            NotCompromisedPassword::class,
+            PasswordStrength::class,
         ]);
 
         $generator->generateClass(
@@ -396,7 +407,12 @@ class MakeResetPassword extends AbstractMaker
 
     private function generateRequestEntity(Generator $generator, ClassNameDetails $requestClassNameDetails, ClassNameDetails $repositoryClassNameDetails): void
     {
-        $requestEntityPath = $this->entityClassGenerator->generateEntityClass($requestClassNameDetails, false, false, false);
+        $requestEntityPath = $this->entityClassGenerator->generateEntityClass(
+            entityClassDetails: $requestClassNameDetails,
+            apiResource: false,
+            generateRepositoryClass: false,
+            useUuidIdentifier: $this->getIdType()
+        );
 
         $generator->writeChanges();
 

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\CSS\OpacitySniff
  */
-class OpacityUnitTest extends AbstractSniffUnitTest
+final class OpacityUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

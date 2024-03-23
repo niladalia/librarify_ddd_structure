@@ -3,10 +3,9 @@
 namespace App\Tests\Infrastructure\FileUploader;
 
 use App\Books\Application\Dto\BookDto;
+use App\Books\Infrastructure\Uploader\LocalBookFileUploader;
 use App\FileUploader\Application\FileUploaderLocal;
-use App\FileUploader\Infrastructure\LocalFileUploader;
 use League\Flysystem\FilesystemOperator;
-use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class FileUploaderLocalUnitTest extends KernelTestCase
@@ -19,12 +18,15 @@ class FileUploaderLocalUnitTest extends KernelTestCase
 
         #Aquí mokejem la interface necesaria per al constructor.
         #Ja que no podem utilitzar la interfaz real perque sino escriuria el fitxer en el servidor
+
         $fileSystem = $this->createMock(FilesystemOperator::class);
+
         /*Aquí mokejem els metodes que s'utilitxen del FileSystem
             expects() indica que nomes espera una crida
             method() indica el nom del metode
             with() indica els parametres que espera el metode
         */
+
         $fileSystem->expects(self::exactly(1))
             ->method('write')
             ->with($this->isType('string'), base64_decode($data[1]));
@@ -33,7 +35,7 @@ class FileUploaderLocalUnitTest extends KernelTestCase
         //$container = static::getContainer();
         //$container->set(FilesystemOperator::class, $fileSystem);
 
-        $fileUploader = new LocalFileUploader($fileSystem);
+        $fileUploader = new LocalBookFileUploader($fileSystem);
         $filename = $fileUploader->upload();
 
         #El test només revisara aquests dos aspectes

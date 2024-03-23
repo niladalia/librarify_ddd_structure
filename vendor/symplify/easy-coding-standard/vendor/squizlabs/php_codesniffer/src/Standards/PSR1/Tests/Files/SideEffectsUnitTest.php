@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PSR1\Sniffs\Files\SideEffectsSniff
  */
-class SideEffectsUnitTest extends AbstractSniffUnitTest
+final class SideEffectsUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Set CLI values before the file is tested.

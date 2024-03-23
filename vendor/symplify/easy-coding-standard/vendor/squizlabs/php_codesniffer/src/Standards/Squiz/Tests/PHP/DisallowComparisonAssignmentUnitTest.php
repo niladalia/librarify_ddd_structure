@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\DisallowComparisonAssignmentSniff
  */
-class DisallowComparisonAssignmentUnitTest extends AbstractSniffUnitTest
+final class DisallowComparisonAssignmentUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

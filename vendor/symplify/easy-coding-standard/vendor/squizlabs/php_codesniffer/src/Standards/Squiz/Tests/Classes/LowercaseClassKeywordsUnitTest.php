@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\LowercaseClassKeywordsSniff
  */
-class LowercaseClassKeywordsUnitTest extends AbstractSniffUnitTest
+final class LowercaseClassKeywordsUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -27,7 +27,7 @@ class LowercaseClassKeywordsUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList()
     {
-        $errors = [2 => 3, 3 => 3, 4 => 1, 5 => 1, 6 => 2, 8 => 1, 10 => 1, 11 => 1, 14 => 1];
+        $errors = [2 => 3, 3 => 3, 4 => 1, 5 => 1, 6 => 2, 8 => 1, 10 => 1, 11 => 1, 14 => 1, 16 => 1];
         return $errors;
     }
     //end getErrorList()

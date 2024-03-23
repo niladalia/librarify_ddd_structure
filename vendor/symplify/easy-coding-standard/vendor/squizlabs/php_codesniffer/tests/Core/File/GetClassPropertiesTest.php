@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Files\File::getClassProperties
  */
-class GetClassPropertiesTest extends AbstractMethodUnitTest
+final class GetClassPropertiesTest extends AbstractMethodUnitTest
 {
     /**
      * Test receiving an expected exception when a non class token is passed.
@@ -41,7 +41,7 @@ class GetClassPropertiesTest extends AbstractMethodUnitTest
      *
      * @return array<string, array<string, string|int>>
      */
-    public function dataNotAClassException()
+    public static function dataNotAClassException()
     {
         return ['interface' => ['testMarker' => '/* testNotAClass */', 'tokenType' => \T_INTERFACE], 'anon-class' => ['testMarker' => '/* testAnonClass */', 'tokenType' => \T_ANON_CLASS], 'enum' => ['testMarker' => '/* testEnum */', 'tokenType' => \T_ENUM]];
     }
@@ -70,7 +70,7 @@ class GetClassPropertiesTest extends AbstractMethodUnitTest
      *
      * @return array<string, array<string, string|array<string, bool|int>>>
      */
-    public function dataGetClassProperties()
+    public static function dataGetClassProperties()
     {
         return ['no-properties' => ['testMarker' => '/* testClassWithoutProperties */', 'expected' => ['is_abstract' => \false, 'is_final' => \false, 'is_readonly' => \false]], 'abstract' => ['testMarker' => '/* testAbstractClass */', 'expected' => ['is_abstract' => \true, 'is_final' => \false, 'is_readonly' => \false]], 'final' => ['testMarker' => '/* testFinalClass */', 'expected' => ['is_abstract' => \false, 'is_final' => \true, 'is_readonly' => \false]], 'readonly' => ['testMarker' => '/* testReadonlyClass */', 'expected' => ['is_abstract' => \false, 'is_final' => \false, 'is_readonly' => \true]], 'final-readonly' => ['testMarker' => '/* testFinalReadonlyClass */', 'expected' => ['is_abstract' => \false, 'is_final' => \true, 'is_readonly' => \true]], 'readonly-final' => ['testMarker' => '/* testReadonlyFinalClass */', 'expected' => ['is_abstract' => \false, 'is_final' => \true, 'is_readonly' => \true]], 'abstract-readonly' => ['testMarker' => '/* testAbstractReadonlyClass */', 'expected' => ['is_abstract' => \true, 'is_final' => \false, 'is_readonly' => \true]], 'readonly-abstract' => ['testMarker' => '/* testReadonlyAbstractClass */', 'expected' => ['is_abstract' => \true, 'is_final' => \false, 'is_readonly' => \true]], 'comments-and-new-lines' => ['testMarker' => '/* testWithCommentsAndNewLines */', 'expected' => ['is_abstract' => \true, 'is_final' => \false, 'is_readonly' => \false]], 'no-properties-with-docblock' => ['testMarker' => '/* testWithDocblockWithoutProperties */', 'expected' => ['is_abstract' => \false, 'is_final' => \false, 'is_readonly' => \false]], 'abstract-final-parse-error' => ['testMarker' => '/* testParseErrorAbstractFinal */', 'expected' => ['is_abstract' => \true, 'is_final' => \true, 'is_readonly' => \false]]];
     }

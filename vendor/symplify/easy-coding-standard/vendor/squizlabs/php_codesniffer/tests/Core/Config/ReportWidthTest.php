@@ -17,7 +17,7 @@ use ReflectionProperty;
  *
  * @covers \PHP_CodeSniffer\Config::__get
  */
-class ReportWidthTest extends TestCase
+final class ReportWidthTest extends TestCase
 {
     /**
      * Set static properties in the Config class to prevent tests influencing each other.
@@ -203,9 +203,9 @@ class ReportWidthTest extends TestCase
     /**
      * Data provider.
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public function dataReportWidthInputHandling()
+    public static function dataReportWidthInputHandling()
     {
         return ['No value (empty string)' => ['value' => '', 'expected' => Config::DEFAULT_REPORT_WIDTH], 'Value: invalid input type null' => ['value' => null, 'expected' => Config::DEFAULT_REPORT_WIDTH], 'Value: invalid input type false' => ['value' => \false, 'expected' => Config::DEFAULT_REPORT_WIDTH], 'Value: invalid input type float' => ['value' => 100.5, 'expected' => Config::DEFAULT_REPORT_WIDTH], 'Value: invalid string value "invalid"' => ['value' => 'invalid', 'expected' => Config::DEFAULT_REPORT_WIDTH], 'Value: invalid string value, non-integer string "50.25"' => ['value' => '50.25', 'expected' => Config::DEFAULT_REPORT_WIDTH], 'Value: valid numeric string value' => ['value' => '250', 'expected' => 250], 'Value: valid int value' => ['value' => 220, 'expected' => 220], 'Value: negative int value becomes positive int' => ['value' => -180, 'expected' => 180]];
     }

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\DuplicatePropertySniff
  */
-class DuplicatePropertyUnitTest extends AbstractSniffUnitTest
+final class DuplicatePropertyUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.

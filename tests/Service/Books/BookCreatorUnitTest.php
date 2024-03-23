@@ -2,24 +2,20 @@
 
 namespace App\Test\Service\Book;
 
-use App\Authors\Domain\Author;
+use App\Authors\Application\Find\AuthorFinder;
+use App\Authors\Domain\AuthorNotFound;
+use App\Books\Application\Create\BookCreator;
+use App\Books\Application\Dto\BookDto;
+use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
 use App\Books\Domain\Description;
 use App\Books\Domain\Score;
-use App\Books\Domain\Title;
-use App\Books\Application\Dto\BookDto;
 use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
-use App\FileUploader\Domain\FileUploaderInterface;
-use App\Authors\Domain\AuthorNotFound;
-use App\Authors\Application\Find\AuthorFinder;
-use App\Books\Application\Create\BookCreator;
-use App\FileUploader\Application\FileUploader;
 use App\Shared\Domain\Event\EventBus;
 use App\Tests\Mother\AuthorIdMother;
 use App\Tests\Mother\AuthorMother;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class BookCreatorUnitTest extends KernelTestCase
 {
@@ -33,7 +29,7 @@ class BookCreatorUnitTest extends KernelTestCase
     {
         parent::setUp();
 
-        $this->fileUploader = $this->createMock(FileUploader::class);
+        $this->fileUploader = $this->createMock(BookFileUploader::class);
         // TODO : Cambiar el DoctrineBookRepository al BookRepository
         $this->bookRep = $this->createMock(DoctrineBookRepository::class);
         $this->bookFinder = $this->createMock(AuthorFinder::class);

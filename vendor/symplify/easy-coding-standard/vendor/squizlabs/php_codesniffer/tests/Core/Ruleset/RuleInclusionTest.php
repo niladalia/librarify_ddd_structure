@@ -9,8 +9,8 @@
  */
 namespace PHP_CodeSniffer\Tests\Core\Ruleset;
 
-use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Ruleset;
+use PHP_CodeSniffer\Tests\ConfigDouble;
 use ECSPrefix202402\PHPUnit\Framework\TestCase;
 use ReflectionObject;
 /**
@@ -18,7 +18,7 @@ use ReflectionObject;
  *
  * @covers \PHP_CodeSniffer\Ruleset
  */
-class RuleInclusionTest extends TestCase
+final class RuleInclusionTest extends TestCase
 {
     /**
      * The Ruleset object.
@@ -62,7 +62,7 @@ class RuleInclusionTest extends TestCase
         if (\file_put_contents($standard, $adjusted) === \false) {
             self::markTestSkipped('On the fly ruleset adjustment failed');
         }
-        $config = new Config(["--standard={$standard}"]);
+        $config = new ConfigDouble(["--standard={$standard}"]);
         self::$ruleset = new Ruleset($config);
     }
     //end initializeConfigAndRuleset()
@@ -109,9 +109,9 @@ class RuleInclusionTest extends TestCase
      *
      * @see self::testRegisteredSniffCodes()
      *
-     * @return array
+     * @return array<array<string>>
      */
-    public function dataRegisteredSniffCodes()
+    public static function dataRegisteredSniffCodes()
     {
         return [['PSR2.Classes.ClassDeclaration', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Classes\\ClassDeclarationSniff'], ['PSR2.Classes.PropertyDeclaration', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Classes\\PropertyDeclarationSniff'], ['PSR2.ControlStructures.ControlStructureSpacing', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\ControlStructures\\ControlStructureSpacingSniff'], ['PSR2.ControlStructures.ElseIfDeclaration', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\ControlStructures\\ElseIfDeclarationSniff'], ['PSR2.ControlStructures.SwitchDeclaration', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\ControlStructures\\SwitchDeclarationSniff'], ['PSR2.Files.ClosingTag', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Files\\ClosingTagSniff'], ['PSR2.Files.EndFileNewline', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Files\\EndFileNewlineSniff'], ['PSR2.Methods.FunctionCallSignature', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Methods\\FunctionCallSignatureSniff'], ['PSR2.Methods.FunctionClosingBrace', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Methods\\FunctionClosingBraceSniff'], ['PSR2.Methods.MethodDeclaration', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Methods\\MethodDeclarationSniff'], ['PSR2.Namespaces.NamespaceDeclaration', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Namespaces\\NamespaceDeclarationSniff'], ['PSR2.Namespaces.UseDeclaration', 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Namespaces\\UseDeclarationSniff'], ['PSR1.Classes.ClassDeclaration', 'PHP_CodeSniffer\\Standards\\PSR1\\Sniffs\\Classes\\ClassDeclarationSniff'], ['PSR1.Files.SideEffects', 'PHP_CodeSniffer\\Standards\\PSR1\\Sniffs\\Files\\SideEffectsSniff'], ['PSR1.Methods.CamelCapsMethodName', 'PHP_CodeSniffer\\Standards\\PSR1\\Sniffs\\Methods\\CamelCapsMethodNameSniff'], ['Generic.PHP.DisallowAlternativePHPTags', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\DisallowAlternativePHPTagsSniff'], ['Generic.PHP.DisallowShortOpenTag', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\DisallowShortOpenTagSniff'], ['Generic.Files.ByteOrderMark', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\ByteOrderMarkSniff'], ['Squiz.Classes.ValidClassName', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\Classes\\ValidClassNameSniff'], ['Generic.NamingConventions.UpperCaseConstantName', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\NamingConventions\\UpperCaseConstantNameSniff'], ['Generic.Files.LineEndings', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineEndingsSniff'], ['Generic.Files.LineLength', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineLengthSniff'], ['Squiz.WhiteSpace.SuperfluousWhitespace', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\WhiteSpace\\SuperfluousWhitespaceSniff'], ['Generic.Formatting.DisallowMultipleStatements', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Formatting\\DisallowMultipleStatementsSniff'], ['Generic.WhiteSpace.ScopeIndent', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\WhiteSpace\\ScopeIndentSniff'], ['Generic.WhiteSpace.DisallowTabIndent', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\WhiteSpace\\DisallowTabIndentSniff'], ['Generic.PHP.LowerCaseKeyword', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\LowerCaseKeywordSniff'], ['Generic.PHP.LowerCaseConstant', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\LowerCaseConstantSniff'], ['Squiz.Scope.MethodScope', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\Scope\\MethodScopeSniff'], ['Squiz.WhiteSpace.ScopeKeywordSpacing', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\WhiteSpace\\ScopeKeywordSpacingSniff'], ['Squiz.Functions.FunctionDeclaration', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\Functions\\FunctionDeclarationSniff'], ['Squiz.Functions.LowercaseFunctionKeywords', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\Functions\\LowercaseFunctionKeywordsSniff'], ['Squiz.Functions.FunctionDeclarationArgumentSpacing', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\Functions\\FunctionDeclarationArgumentSpacingSniff'], ['PEAR.Functions.ValidDefaultValue', 'PHP_CodeSniffer\\Standards\\PEAR\\Sniffs\\Functions\\ValidDefaultValueSniff'], ['Squiz.Functions.MultiLineFunctionDeclaration', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\Functions\\MultiLineFunctionDeclarationSniff'], ['Generic.Functions.FunctionCallArgumentSpacing', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Functions\\FunctionCallArgumentSpacingSniff'], ['Squiz.ControlStructures.ControlSignature', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\ControlStructures\\ControlSignatureSniff'], ['Squiz.WhiteSpace.ControlStructureSpacing', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\WhiteSpace\\ControlStructureSpacingSniff'], ['Squiz.WhiteSpace.ScopeClosingBrace', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\WhiteSpace\\ScopeClosingBraceSniff'], ['Squiz.ControlStructures.ForEachLoopDeclaration', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\ControlStructures\\ForEachLoopDeclarationSniff'], ['Squiz.ControlStructures.ForLoopDeclaration', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\ControlStructures\\ForLoopDeclarationSniff'], ['Squiz.ControlStructures.LowercaseDeclaration', 'PHP_CodeSniffer\\Standards\\Squiz\\Sniffs\\ControlStructures\\LowercaseDeclarationSniff'], ['Generic.ControlStructures.InlineControlStructure', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\ControlStructures\\InlineControlStructureSniff'], ['PSR12.Operators.OperatorSpacing', 'PHP_CodeSniffer\\Standards\\PSR12\\Sniffs\\Operators\\OperatorSpacingSniff'], ['Generic.Arrays.ArrayIndent', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Arrays\\ArrayIndentSniff'], ['Generic.Metrics.CyclomaticComplexity', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\CyclomaticComplexitySniff'], ['Generic.NamingConventions.CamelCapsFunctionName', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\NamingConventions\\CamelCapsFunctionNameSniff'], ['Generic.Metrics.NestingLevel', 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\NestingLevelSniff']];
     }
@@ -120,9 +120,9 @@ class RuleInclusionTest extends TestCase
      * Test that setting properties for standards, categories, sniffs works for all supported rule
      * inclusion methods.
      *
-     * @param string $sniffClass    The name of the sniff class.
-     * @param string $propertyName  The name of the changed property.
-     * @param mixed  $expectedValue The value expected for the property.
+     * @param string          $sniffClass    The name of the sniff class.
+     * @param string          $propertyName  The name of the changed property.
+     * @param string|int|bool $expectedValue The value expected for the property.
      *
      * @dataProvider dataSettingProperties
      *
@@ -143,22 +143,22 @@ class RuleInclusionTest extends TestCase
      *
      * @see self::testSettingProperties()
      *
-     * @return array
+     * @return array<string, array<string, string|int|bool>>
      */
-    public function dataSettingProperties()
+    public static function dataSettingProperties()
     {
         return [
-            'Set property for complete standard: PSR2 ClassDeclaration' => ['PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Classes\\ClassDeclarationSniff', 'indent', '20'],
-            'Set property for complete standard: PSR2 SwitchDeclaration' => ['PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\ControlStructures\\SwitchDeclarationSniff', 'indent', '20'],
-            'Set property for complete standard: PSR2 FunctionCallSignature' => ['PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Methods\\FunctionCallSignatureSniff', 'indent', '20'],
-            'Set property for complete category: PSR12 OperatorSpacing' => ['PHP_CodeSniffer\\Standards\\PSR12\\Sniffs\\Operators\\OperatorSpacingSniff', 'ignoreSpacingBeforeAssignments', \false],
-            'Set property for individual sniff: Generic ArrayIndent' => ['PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Arrays\\ArrayIndentSniff', 'indent', '2'],
-            'Set property for individual sniff using sniff file inclusion: Generic LineLength' => ['PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineLengthSniff', 'lineLimit', '10'],
-            'Set property for individual sniff using sniff file inclusion: CamelCapsFunctionName' => ['PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\NamingConventions\\CamelCapsFunctionNameSniff', 'strict', \false],
-            'Set property for individual sniff via included ruleset: NestingLevel - nestingLevel' => ['PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\NestingLevelSniff', 'nestingLevel', '2'],
-            'Set property for all sniffs in an included ruleset: NestingLevel - absoluteNestingLevel' => ['PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\NestingLevelSniff', 'absoluteNestingLevel', \true],
+            'Set property for complete standard: PSR2 ClassDeclaration' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Classes\\ClassDeclarationSniff', 'propertyName' => 'indent', 'expectedValue' => '20'],
+            'Set property for complete standard: PSR2 SwitchDeclaration' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\ControlStructures\\SwitchDeclarationSniff', 'propertyName' => 'indent', 'expectedValue' => '20'],
+            'Set property for complete standard: PSR2 FunctionCallSignature' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Methods\\FunctionCallSignatureSniff', 'propertyName' => 'indent', 'expectedValue' => '20'],
+            'Set property for complete category: PSR12 OperatorSpacing' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\PSR12\\Sniffs\\Operators\\OperatorSpacingSniff', 'propertyName' => 'ignoreSpacingBeforeAssignments', 'expectedValue' => \false],
+            'Set property for individual sniff: Generic ArrayIndent' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Arrays\\ArrayIndentSniff', 'propertyName' => 'indent', 'expectedValue' => '2'],
+            'Set property for individual sniff using sniff file inclusion: Generic LineLength' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineLengthSniff', 'propertyName' => 'lineLimit', 'expectedValue' => '10'],
+            'Set property for individual sniff using sniff file inclusion: CamelCapsFunctionName' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\NamingConventions\\CamelCapsFunctionNameSniff', 'propertyName' => 'strict', 'expectedValue' => \false],
+            'Set property for individual sniff via included ruleset: NestingLevel - nestingLevel' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\NestingLevelSniff', 'propertyName' => 'nestingLevel', 'expectedValue' => '2'],
+            'Set property for all sniffs in an included ruleset: NestingLevel - absoluteNestingLevel' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\NestingLevelSniff', 'propertyName' => 'absoluteNestingLevel', 'expectedValue' => \true],
             // Testing that setting a property at error code level does *not* work.
-            'Set property for error code will not change the sniff property value: CyclomaticComplexity' => ['PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\CyclomaticComplexitySniff', 'complexity', 10],
+            'Set property for error code will not change the sniff property value: CyclomaticComplexity' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Metrics\\CyclomaticComplexitySniff', 'propertyName' => 'complexity', 'expectedValue' => 10],
         ];
     }
     //end dataSettingProperties()
@@ -187,11 +187,11 @@ class RuleInclusionTest extends TestCase
      *
      * @see self::testSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
      *
-     * @return array
+     * @return array<string, array>string, string>>
      */
-    public function dataSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
+    public static function dataSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
     {
-        return ['Set property for complete standard: PSR2 ClassDeclaration' => ['PHP_CodeSniffer\\Standards\\PSR1\\Sniffs\\Classes\\ClassDeclarationSniff', 'setforallsniffs'], 'Set property for complete standard: PSR2 FunctionCallSignature' => ['PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Methods\\FunctionCallSignatureSniff', 'setforallsniffs'], 'Set property for complete category: PSR12 OperatorSpacing' => ['PHP_CodeSniffer\\Standards\\PSR12\\Sniffs\\Operators\\OperatorSpacingSniff', 'setforallincategory']];
+        return ['Set property for complete standard: PSR2 ClassDeclaration' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\PSR1\\Sniffs\\Classes\\ClassDeclarationSniff', 'propertyName' => 'setforallsniffs'], 'Set property for complete standard: PSR2 FunctionCallSignature' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\PSR2\\Sniffs\\Methods\\FunctionCallSignatureSniff', 'propertyName' => 'setforallsniffs'], 'Set property for complete category: PSR12 OperatorSpacing' => ['sniffClass' => 'PHP_CodeSniffer\\Standards\\PSR12\\Sniffs\\Operators\\OperatorSpacingSniff', 'propertyName' => 'setforallincategory']];
     }
     //end dataSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
 }

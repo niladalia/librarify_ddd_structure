@@ -16,6 +16,7 @@ class ComposerStaticInit4a471fb8b987032f40564c24288c5726
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
         '2203a247e6fda86070a5e4e07aed533a' => __DIR__ . '/..' . '/symfony/clock/Resources/now.php',
+        'a4ecaeafb8cfb009ad0e052c90355e98' => __DIR__ . '/..' . '/beberlei/assert/lib/Assert/functions.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
@@ -69,6 +70,7 @@ class ComposerStaticInit4a471fb8b987032f40564c24288c5726
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\PasswordHasher\\' => 33,
             'Symfony\\Component\\OptionsResolver\\' => 34,
+            'Symfony\\Component\\Messenger\\Bridge\\Amqp\\' => 40,
             'Symfony\\Component\\Messenger\\' => 28,
             'Symfony\\Component\\HttpKernel\\' => 29,
             'Symfony\\Component\\HttpFoundation\\' => 33,
@@ -166,10 +168,13 @@ class ComposerStaticInit4a471fb8b987032f40564c24288c5726
         ),
         'B' => 
         array (
+            'Broadway\\UuidGenerator\\' => 23,
+            'Broadway\\' => 9,
             'Brick\\Math\\' => 11,
         ),
         'A' => 
         array (
+            'Assert\\' => 7,
             'App\\Tests\\' => 10,
             'App\\' => 4,
             'ApiPlatform\\' => 12,
@@ -310,6 +315,10 @@ class ComposerStaticInit4a471fb8b987032f40564c24288c5726
         'Symfony\\Component\\OptionsResolver\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
+        'Symfony\\Component\\Messenger\\Bridge\\Amqp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/amqp-messenger',
         ),
         'Symfony\\Component\\Messenger\\' => 
         array (
@@ -583,7 +592,7 @@ class ComposerStaticInit4a471fb8b987032f40564c24288c5726
         ),
         'Doctrine\\Bundle\\DoctrineBundle\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle',
+            0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle/src',
         ),
         'DeepCopy\\' => 
         array (
@@ -593,9 +602,21 @@ class ComposerStaticInit4a471fb8b987032f40564c24288c5726
         array (
             0 => __DIR__ . '/..' . '/cap-collectif/id-to-uuid/src',
         ),
+        'Broadway\\UuidGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/broadway/uuid-generator/src/Broadway/UuidGenerator',
+        ),
+        'Broadway\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/broadway/broadway/src/Broadway',
+        ),
         'Brick\\Math\\' => 
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
+        ),
+        'Assert\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/beberlei/assert/lib/Assert',
         ),
         'App\\Tests\\' => 
         array (
@@ -1018,6 +1039,7 @@ class ComposerStaticInit4a471fb8b987032f40564c24288c5726
         'PharIo\\Manifest\\ManifestLoader' => __DIR__ . '/..' . '/phar-io/manifest/src/ManifestLoader.php',
         'PharIo\\Manifest\\ManifestLoaderException' => __DIR__ . '/..' . '/phar-io/manifest/src/exceptions/ManifestLoaderException.php',
         'PharIo\\Manifest\\ManifestSerializer' => __DIR__ . '/..' . '/phar-io/manifest/src/ManifestSerializer.php',
+        'PharIo\\Manifest\\NoEmailAddressException' => __DIR__ . '/..' . '/phar-io/manifest/src/exceptions/NoEmailAddressException.php',
         'PharIo\\Manifest\\PhpElement' => __DIR__ . '/..' . '/phar-io/manifest/src/xml/PhpElement.php',
         'PharIo\\Manifest\\PhpExtensionRequirement' => __DIR__ . '/..' . '/phar-io/manifest/src/values/PhpExtensionRequirement.php',
         'PharIo\\Manifest\\PhpVersionRequirement' => __DIR__ . '/..' . '/phar-io/manifest/src/values/PhpVersionRequirement.php',

@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff
  */
-class UpperCaseConstantNameUnitTest extends AbstractSniffUnitTest
+final class UpperCaseConstantNameUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -27,7 +27,7 @@ class UpperCaseConstantNameUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList()
     {
-        return [8 => 1, 10 => 1, 12 => 1, 14 => 1, 19 => 1, 28 => 1, 30 => 1];
+        return [8 => 1, 10 => 1, 12 => 1, 14 => 1, 19 => 1, 28 => 1, 30 => 1, 40 => 1, 41 => 1];
     }
     //end getErrorList()
     /**

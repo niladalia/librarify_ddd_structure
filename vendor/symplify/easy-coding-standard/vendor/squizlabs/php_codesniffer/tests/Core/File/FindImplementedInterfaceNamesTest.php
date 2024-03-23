@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Files\File::findImplementedInterfaceNames
  */
-class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
+final class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
 {
     /**
      * Test getting a `false` result when a non-existent token is passed.
@@ -64,7 +64,7 @@ class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
      *
      * @return array<string, array<string, string|array<string>>>
      */
-    public function dataImplementedInterface()
+    public static function dataImplementedInterface()
     {
         return ['interface declaration, no implements' => ['identifier' => '/* testPlainInterface */', 'expected' => \false], 'class does not implement' => ['identifier' => '/* testNonImplementedClass */', 'expected' => \false], 'class implements single interface, unqualified' => ['identifier' => '/* testClassImplementsSingle */', 'expected' => ['testFIINInterface']], 'class implements multiple interfaces' => ['identifier' => '/* testClassImplementsMultiple */', 'expected' => ['testFIINInterface', 'testFIINInterface2']], 'class implements single interface, fully qualified' => ['identifier' => '/* testImplementsFullyQualified */', 'expected' => ['\\PHP_CodeSniffer\\Tests\\Core\\File\\testFIINInterface']], 'class implements single interface, partially qualified' => ['identifier' => '/* testImplementsPartiallyQualified */', 'expected' => ['ECSPrefix202402\\Core\\File\\RelativeInterface']], 'class extends and implements' => ['identifier' => '/* testClassThatExtendsAndImplements */', 'expected' => ['InterfaceA', 'ECSPrefix202402\\NameSpaced\\Cat\\InterfaceB']], 'class implements and extends' => ['identifier' => '/* testClassThatImplementsAndExtends */', 'expected' => ['\\InterfaceA', 'InterfaceB']], 'enum does not implement' => ['identifier' => '/* testBackedEnumWithoutImplements */', 'expected' => \false], 'enum implements single interface, unqualified' => ['identifier' => '/* testEnumImplementsSingle */', 'expected' => ['Colorful']], 'enum implements multiple interfaces, unqualified + fully qualified' => ['identifier' => '/* testBackedEnumImplementsMulti */', 'expected' => ['Colorful', '\\Deck']], 'anon class implements single interface, unqualified' => ['identifier' => '/* testAnonClassImplementsSingle */', 'expected' => ['testFIINInterface']], 'parse error - implements keyword, but no interface name' => ['identifier' => '/* testMissingImplementsName */', 'expected' => \false], 'parse error - live coding - no curly braces' => ['identifier' => '/* testParseError */', 'expected' => \false]];
     }
