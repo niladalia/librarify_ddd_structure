@@ -7,17 +7,12 @@ use App\Shared\Domain\Event\DomainEvent;
 class BookCreatedDomainEvent extends DomainEvent 
 {
     public function __construct(
-        private string $bookId,
-		private ?string $title,
+        private readonly string $bookId,
+		private readonly ?string $title,
         string $eventId = null,
 		string $occurred_on = null
     ) {
         parent::__construct($bookId,$eventId,$occurred_on);
-    }
-
-    public function getId(): string
-    {
-        return $this->bookId;
     }
 
     public function getTitle(): ?string
@@ -25,14 +20,19 @@ class BookCreatedDomainEvent extends DomainEvent
         return $this->title;
     }
 
+    public function id(): ?string
+    {
+        return $this->bookId;
+    }
+
 	// TODO : Not correct
 	public static function deserialize(
-		string $bookId,
-		array $body,
+		string $aggregateId,
+		array  $body,
 		string $eventId,
-		string $occurred_on
+		string $occurredOn
 	): DomainEvent {
-		return new self($bookId, $body['title'], $eventId, $occurred_on);
+		return new self($aggregateId, $body['title'], $eventId, $occurredOn);
 	}
 
 	public function serialize(): array

@@ -13,17 +13,15 @@ class BookDeletedDomainEvent extends DomainEvent
         )
     {
         parent::__construct($bookId,$eventId,$occurredOn);
-
-        $this->bookId = $bookId;
     }
     
 	public static function deserialize(
-		string $bookId,
-        array $body = [],
+		string $aggregateId,
+        array  $body,
 		string $eventId,
 		string $occurredOn
 	): DomainEvent {
-		return new self($bookId, $eventId, $occurredOn);
+		return new self($aggregateId, $eventId, $occurredOn);
 	}
 
 	public function serialize(): array

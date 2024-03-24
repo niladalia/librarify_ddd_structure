@@ -4,6 +4,7 @@ namespace App\Books\Application\Create;
 
 use App\Books\Domain\BookCreatedDomainEvent;
 use App\Books\Application\Find\BookFinder;
+use App\Books\Domain\BookId;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -23,7 +24,7 @@ class BookCreatedEventSubscriber implements EventSubscriberInterface
 
     public function logCreation(BookCreatedDomainEvent $event)
     {
-        $book = ($this->BookFinder)($event->getId());
+        $book = ($this->BookFinder)(new BookId($event->id()));
         $this->logger->info(sprintf('Book Created: %s', $book->getTitle()->getValue()));
     }
 
