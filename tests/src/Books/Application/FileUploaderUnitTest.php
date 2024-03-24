@@ -2,7 +2,7 @@
 
 namespace App\Test\Service\FileUploader;
 
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Infrastructure\Uploader\LocalBookFileUploader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -33,14 +33,20 @@ class FileUploaderUnitTest extends KernelTestCase
         $filename = $this->fileUploader->__invoke($bookDto);
 
         $this->assertEquals('book_Random_Title.jpeg',$filename);
+        /*
+            $this->assertFileExists(
+                '/var/www/librarify/public/storage/default/local_book_'.preg_replace('/\s+/', '_', $bookDto->title()).'.jpeg',
+                "given filename doesn't exists"
+            );
+        */
     }
 
-    private function bookDto(): BookDto
+    private function bookDto(): CreateBookRequest
     {
-        $book = new BookDto();
-        $book->title = 'Random Title';
-        $book->base64Image = $this->base64Image();
-        return $book;
+        return new CreateBookRequest(
+            'Random Title',
+            $this->base64Image()
+        );
     }
 
     private function base64Image(): string

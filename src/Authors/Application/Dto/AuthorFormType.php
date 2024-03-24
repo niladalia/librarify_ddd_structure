@@ -3,7 +3,7 @@
 namespace App\Form\Type;
 
 use App\Authors\Application\Dto\AuthorDto;
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Categories\Application\Dto\CategoryDto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

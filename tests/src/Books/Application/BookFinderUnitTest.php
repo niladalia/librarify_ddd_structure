@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Test\Service\FileUploader;
+namespace App\Tests\src\Books\Application;
 
-use App\Books\Domain\BookId;
-use App\Books\Domain\Title;
-use App\Books\Domain\BookNotFound;
-use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
 use App\Books\Domain\BookFinder;
-use App\Tests\Mother\BookMother;
+use App\Books\Domain\BookId;
+use App\Books\Domain\BookNotFound;
+use App\Books\Domain\Title;
+use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
+use App\Tests\src\Books\Domain\BookMother;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

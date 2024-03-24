@@ -4,6 +4,7 @@ namespace App\Books\Application\Update;
 
 use App\Books\Application\Find\BookFinder;
 use App\Books\Domain\Book;
+use App\Books\Domain\BookId;
 use App\Books\Domain\Description;
 use App\Books\Domain\Score;
 use App\Books\Domain\Title;
@@ -27,7 +28,8 @@ class BookFieldUpdater
 
     public function __invoke(array $data, string $id): Book
     {
-        $book = ($this->bookFinder)($id);
+        // Aquest BookId TE MOLTA MALA PINTA
+        $book = ($this->bookFinder)(new BookId($id));
 
         if (\array_key_exists('score', $data)) {
             $book->setScore(new Score($data['score']));

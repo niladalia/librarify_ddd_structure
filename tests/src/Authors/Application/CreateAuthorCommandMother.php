@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Service\Author;
+namespace App\Tests\src\Authors\Application;
 
 use App\Authors\Application\Create\CreateAuthorCommand;
 

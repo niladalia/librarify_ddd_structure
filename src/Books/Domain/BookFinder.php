@@ -12,12 +12,12 @@ class BookFinder
     public function __construct(private BookRepository $bookRep) {}
 
 
-    public function __invoke(string $id): Book
+    public function __invoke(BookId $bookId): Book
     {
-        $book = $this->bookRep->search(Uuid::fromString($id));
+        $book = $this->bookRep->search($bookId);
 
         if (!$book) {
-            BookNotFound::throw($id);
+            BookNotFound::throw($bookId->getValue());
         }
         return $book;
     }

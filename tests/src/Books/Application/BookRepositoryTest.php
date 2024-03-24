@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Tests\Infrastructure\Books;
+namespace App\Tests\src\Books\Application;
 
-use App\Books\Domain\Book;
 use App\Books\Domain\BookId;
 use App\Books\Domain\BookRepository;
-use App\Tests\Mother\BookMother;
+use App\Tests\src\Books\Domain\BookMother;
 use Ramsey\Uuid\Nonstandard\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

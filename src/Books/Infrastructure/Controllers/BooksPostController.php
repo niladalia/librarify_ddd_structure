@@ -3,7 +3,7 @@
 namespace App\Books\Infrastructure\Controllers;
 
 use App\Books\Application\Create\BookCreator;
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Shared\Infrastructure\Symfony\ApiController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +16,7 @@ class BooksPostController extends ApiController
     {
         $request_data = json_decode($request->getContent(), true);
         $this->validate($request_data,$this->constraints());
-        
-        $bookDto = new BookDto(
+        $bookDto = new CreateBookRequest(
             $request_data['title'] ?? null,
             $request_data['base64Image'] ?? null,
             $request_data['categories'] ?? [],
@@ -26,6 +25,7 @@ class BooksPostController extends ApiController
             $request_data['description'] ?? null
         );
         $book = ($bookCreator)($bookDto);
+
         return new JsonResponse(
             $book->toArray()
         );

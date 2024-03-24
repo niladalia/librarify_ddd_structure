@@ -17,15 +17,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class Book
 {
-    private BookId $id;
-
-
-    private ?int $pages = null;
-
-
-    /**
-     * @var  Collection<int, Category>
-    */
 
     private Collection $categories;
 
@@ -33,7 +24,7 @@ class Book
 
 
     public function __construct(
-        private BookId $uuid,
+        private BookId $bookId,
         private Title $title,
         private ?string $image,
 
@@ -42,7 +33,6 @@ class Book
         private ?Description $description =  new Description(),
         private ?Score $score = new Score()
     ) {
-        $this->id = $uuid;
         $this->categories = new ArrayCollection();
     }
 
@@ -96,7 +86,7 @@ class Book
     }
     public function getId(): BookId
     {
-        return $this->id;
+        return $this->bookId;
     }
 
     public function getTitle(): Title

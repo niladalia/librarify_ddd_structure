@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Infrastructure\FileUploader;
+namespace App\Tests\src\Books\Infrastructure\Uploader;
 
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Books\Infrastructure\Uploader\LocalBookFileUploader;
 use App\FileUploader\Application\FileUploaderLocal;
 use League\Flysystem\FilesystemOperator;
@@ -15,7 +15,7 @@ class FileUploaderLocalUnitTest extends KernelTestCase
         $this->markTestSkipped('PHPUnit will skip this test method');
         #Segurament el bookDto tindria que estar mokejat d'alguna forma
         $bookDto = $this->bookDto();
-        $data = explode(',', $bookDto->base64Image);
+        $data = explode(',', $bookDto->base64Image());
 
         #Aquí mokejem la interface necesaria per al constructor.
         #Ja que no podem utilitzar la interfaz real perque sino escriuria el fitxer en el servidor
@@ -44,12 +44,12 @@ class FileUploaderLocalUnitTest extends KernelTestCase
         $this->assertStringContainsString('.jpeg', $filename);
     }
 
-    private function bookDto(): BookDto
+    private function bookDto(): CreateBookRequest
     {
-        $book = new BookDto();
-        $book->title = 'Random Title';
-        $book->base64Image = $this->base64Image();
-        return $book;
+        return new CreateBookRequest(
+            'Random Title',
+            $this->base64Image()
+        );
     }
 
     private function base64Image(): string

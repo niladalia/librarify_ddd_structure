@@ -2,13 +2,14 @@
 
 namespace App\Books\Application\Edit;
 
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Books\Application\Dto\BookFormType;
 use App\Books\Application\Find\BookFinder;
 use App\Books\Application\Update\UpdateBookAuthor;
 use App\Books\Application\Update\UpdateBookCategory;
 use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
+use App\Books\Domain\BookId;
 use App\Books\Domain\BookRepository;
 use App\Books\Domain\Description;
 use App\Books\Domain\Score;
@@ -27,21 +28,14 @@ class BookEditor
         private BookFinder           $BookFinder,
         private UpdateBookCategory   $updateBookCategory,
         private UpdateBookAuthor     $updateBookAuthor
-    ) {
-        $this->book_rep = $book_rep;
-        $this->formFactory = $formFactory;
-        $this->fileUploader = $fileUploader;
-        $this->BookFinder = $BookFinder;
-        $this->updateBookCategory = $updateBookCategory;
-        $this->updateBookAuthor = $updateBookAuthor;
-    }
+    ) { }
 
     public function __invoke(array $request_data, string $id): Book
     {
-        $book = ($this->BookFinder)($id);
+        $book = ($this->BookFinder)(new BookId($id));
 
-        //$bookDto = BookDto::createFromBook($book);
-        $bookDto = new BookDto(
+        //$bookDto = CreateBookRequest::createFromBook($book);
+        $bookDto = new CreateBookRequest(
             $request_data['title'] ?? null,
             $request_data['base64Image'] ?? null,
             $request_data['categories'] ?? [],
@@ -58,7 +52,7 @@ class BookEditor
         foreach ($book->getCategories() as $category) {
             # Creem DTO de category per tal de asignar-les al llibre DTO que acabem de crear  (realment cal la category DTO?)
             $categoryDto = CategoryDto::createFromCategory($category);
-            $bookDto->categories[] = $categoryDto;
+            $bookDto->categories()[] = $categoryDto;
             # Afegim la category al array original_categories
             $original_categories_dto->add($categoryDto);
         }
@@ -80,20 +74,22 @@ class BookEditor
 
         */
 
-        $form = $this->formFactory->create(BookFormType::class, $bookDto);
-        $form->submit($request_data);
+        /*  Find alternative to this !!!
+            $form = $this->formFactory->create(BookFormType::class, $bookDto);
+            $form->submit($request_data);
 
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            InvalidData::throw("Object is not valid");
-        }
+            if (!$form->isSubmitted() || !$form->isValid()) {
+                InvalidData::throw("Object is not valid");
+            }
+        */
         ($this->updateBookCategory)($original_categories_dto, $bookDto, $book);
-        $new_author = $bookDto->author_id ? ($this->updateBookAuthor)($bookDto->author_id, $book) : null;
+        $new_author = $bookDto->author_id() ? ($this->updateBookAuthor)($bookDto->author_id(), $book) : null;
         $book->update(
-            new Title($bookDto->title),
-            $bookDto->base64Image ? $this->fileUploader->__invoke($bookDto) : null,
+            new Title($bookDto->title()),
+            $bookDto->base64Image() ? $this->fileUploader->__invoke($bookDto) : null,
             $new_author ? $new_author : null,
-            new Description($bookDto->description),
-            new Score($bookDto->score)
+            new Description($bookDto->description()),
+            new Score($bookDto->score())
         );
         $this->book_rep->save($book);
         return $book;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Infrastructure\FileUploader;
+namespace App\Tests\src\Books\Infrastructure\Uploader;
 
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\FileUploader\Application\FileUploaderS3;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -13,7 +13,7 @@ class FileUploaderS3UnitTest extends KernelTestCase
     {
         $this->markTestSkipped('PHPUnit will skip this test method');
         $bookDto = $this->bookDto();
-        $data = explode(',', $bookDto->base64Image);
+        $data = explode(',', $bookDto->base64Image());
 
         $fileSystem = $this->createMock(FilesystemOperator::class);
         $fileSystem->expects(self::exactly(1))
@@ -31,18 +31,18 @@ class FileUploaderS3UnitTest extends KernelTestCase
         $this->assertStringContainsString('.jpeg', $filename);
 
         $this->assertFileExists(
-            '/var/www/librarify/public/storage/default/local_book_'.preg_replace('/\s+/', '_', $bookDto->title).'.jpeg',
+            '/var/www/librarify/public/storage/default/local_book_'.preg_replace('/\s+/', '_', $bookDto->title()).'.jpeg',
             "given filename doesn't exists"
         );
 
     }
 
-    private function bookDto(): BookDto
+    private function bookDto(): CreateBookRequest
     {
-        $book = new BookDto();
-        $book->title = 'Random Title';
-        $book->base64Image = $this->base64Image();
-        return $book;
+        return new CreateBookRequest(
+            'Random Title',
+            $this->base64Image()
+        );
     }
 
     private function base64Image(): string

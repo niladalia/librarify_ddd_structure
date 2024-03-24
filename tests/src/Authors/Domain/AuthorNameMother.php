@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Mother;
+namespace App\Tests\src\Authors\Domain;
 
 use App\Authors\Domain\AuthorName;
 

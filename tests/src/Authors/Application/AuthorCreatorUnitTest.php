@@ -2,16 +2,14 @@
 
 namespace App\Test\Service\Author;
 
-use App\Authors\Domain\Author;
-use App\Authors\Application\Dto\AuthorDto;
-use App\Shared\Domain\Exceptions\InvalidArgument;
-use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
 use App\Authors\Application\Create\AuthorCreator;
-use App\Tests\Mother\AuthorIdMother;
-use App\Tests\Mother\AuthorNameMother;
+use App\Authors\Domain\Author;
+use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
+use App\Shared\Domain\Exceptions\InvalidArgument;
+use App\Tests\src\Authors\Domain\AuthorIdMother;
+use App\Tests\src\Authors\Domain\AuthorNameMother;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 class AuthorCreatorUnitTest extends KernelTestCase
 {

@@ -6,7 +6,7 @@ use App\Books\Domain\BookId;
 use App\Books\Domain\Description;
 use App\Books\Domain\Title;
 use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
-use App\Tests\Mother\BookMother;
+use App\Tests\src\Books\Domain\BookMother;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

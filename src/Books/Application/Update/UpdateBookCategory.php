@@ -3,7 +3,7 @@
 namespace App\Books\Application\Update;
 
 use App\Books\Domain\Book;
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Categories\Application\Create\CategoryCreator;
 use App\Categories\Application\Find\CategoryFinder;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,11 +21,11 @@ class UpdateBookCategory
     }
 
 
-    public function __invoke(ArrayCollection $original_categories_dto, BookDto $bookDto, Book $book)
+    public function __invoke(ArrayCollection $original_categories_dto, CreateBookRequest $bookDto, Book $book)
     {
         // Si cal, borrem la categoria
         foreach ($original_categories_dto as $category_dto) {
-            if (!in_array($category_dto, $bookDto->categories)) {
+            if (!in_array($category_dto, $bookDto->categories())) {
                 $category = ($this->getCategory)($category_dto->id);
                 if ($category !== null) {
                     $book->removeCategory($category);
@@ -33,7 +33,7 @@ class UpdateBookCategory
             }
         }
         // Creem la categoria si no existeix
-        foreach ($bookDto->categories as $new_category) {
+        foreach ($bookDto->categories() as $new_category) {
             $category = null;
             if (!$original_categories_dto->contains($new_category)) {
                 if ($new_category->id != null) {

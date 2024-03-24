@@ -13,9 +13,6 @@ class BookCreatedDomainEvent extends DomainEvent
 		string $occurred_on = null
     ) {
         parent::__construct($bookId,$eventId,$occurred_on);
-        
-        $this->bookId = $bookId;
-        $this->title = $title;
     }
 
     public function getId(): string
@@ -35,7 +32,7 @@ class BookCreatedDomainEvent extends DomainEvent
 		string $eventId,
 		string $occurred_on
 	): DomainEvent {
-		return new self($bookId, $body['filename'], $body['author_id'], $eventId, $occurred_on);
+		return new self($bookId, $body['title'], $eventId, $occurred_on);
 	}
 
 	public function serialize(): array

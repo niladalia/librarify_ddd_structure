@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Mother;
+namespace App\Tests\src\Authors\Domain;
 
 use App\Authors\Application\Create\CreateAuthorCommand;
 use App\Authors\Domain\Author;

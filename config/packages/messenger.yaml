@@ -23,10 +23,12 @@ framework:
                     exchange:
                         name: exchange_librarify
                         type: topic
-                    queues: [ ]       
+                    queues: [ ]
+            sync: 'sync://'
 
 
         routing:
             '*': amqp
+            App\Authors\Application\Create\CreateAuthorCommand: sync
 #            'App\Books\Domain\BookCreatedDomainEvent': librarify_book_created_subscriber
 #            'App\Books\Domain\BookDeletedDomainEvent': notify_user_on_book_deleted

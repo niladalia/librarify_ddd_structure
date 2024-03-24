@@ -2,7 +2,7 @@
 
 namespace App\Books\Application\Dto;
 
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Categories\Application\Dto\CategoryFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -32,7 +32,7 @@ class BookFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => BookDto::class,
+            'data_class' => CreateBookRequest::class,
             'csrf_protection' => false,
         ]);
     }

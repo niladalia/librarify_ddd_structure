@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Test\Service\Author;
+namespace App\Tests\src\Authors\Application;
 
-use App\Authors\Domain\Author;
-use App\Shared\Domain\Exceptions\InvalidArgument;
-use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
 use App\Authors\Application\Create\AuthorCreator;
-use App\Authors\Application\Create\CreateAuthorCommand;
 use App\Authors\Application\Create\CreateAuthorCommandHandler;
-use App\Tests\Mother\AuthorIdMother;
-use App\Tests\Mother\AuthorMother;
-use App\Tests\Mother\AuthorNameMother;
-use App\Tests\Service\Author\CreateAuthorCommandMother;
+use App\Authors\Domain\Author;
+use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
+use App\Shared\Domain\Exceptions\InvalidArgument;
+use App\Tests\src\Authors\Domain\AuthorIdMother;
+use App\Tests\src\Authors\Domain\AuthorMother;
+use App\Tests\src\Authors\Domain\AuthorNameMother;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

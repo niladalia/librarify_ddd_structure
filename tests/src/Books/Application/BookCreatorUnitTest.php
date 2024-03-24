@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Test\Service\Book;
+namespace App\Tests\src\Books\Application;
 
 use App\Authors\Application\Find\AuthorFinder;
 use App\Authors\Domain\AuthorNotFound;
 use App\Books\Application\Create\BookCreator;
-use App\Books\Application\Dto\BookDto;
+use App\Books\Application\Dto\CreateBookRequest;
 use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
 use App\Books\Domain\Description;
@@ -45,7 +45,7 @@ class BookCreatorUnitTest extends KernelTestCase
 
     public function test_it_creates_a_simple_book()
     {
-        $bookDto = new BookDto(
+        $bookDto = new CreateBookRequest(
             "Title"
         );
 
@@ -62,7 +62,7 @@ class BookCreatorUnitTest extends KernelTestCase
     {
         $author = AuthorMother::create(AuthorIdMother::create(Uuid::uuid4()));
 
-        $bookDto = new BookDto(
+        $bookDto = new CreateBookRequest(
             "Title",
             $this->base64Image(),
             [],
@@ -103,7 +103,7 @@ class BookCreatorUnitTest extends KernelTestCase
     {
         $this->markTestSkipped('PHPUnit will skip this test method');
         //Not catching the exception, nose perque !
-        $bookDto = new BookDto(
+        $bookDto = new CreateBookRequest(
             "Title",
             null,
             [],

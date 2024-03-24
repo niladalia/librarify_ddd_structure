@@ -18,9 +18,9 @@ class Author
 
     private Collection $books;
 
-    public function __construct(AuthorId $uuid, ?AuthorName $name = new AuthorName())
+    public function __construct(AuthorId $id, ?AuthorName $name = new AuthorName())
     {
-        $this->id = $uuid;
+        $this->id = $id;
         $this->name = $name;
         $this->books = new ArrayCollection();
     }

@@ -4,7 +4,7 @@ namespace App\Books\Application\Dto;
 
 use App\Books\Domain\Book;
 
-class BookDto
+class CreateBookRequest
 {
     public function __construct(
         private ?string $title = null,
