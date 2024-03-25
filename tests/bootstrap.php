@@ -17,7 +17,7 @@ if ($_SERVER['APP_DEBUG']) {
 
 $env = 'test';
 
-passthru(
+/*passthru(
     sprintf(
         'php bin/console doctrine:database:drop --if-exists --force --env=%s',
         $env
@@ -36,4 +36,4 @@ passthru(
         'php bin/console doctrine:schema:create --env=%s',
         $env
     )
-);
+);*/

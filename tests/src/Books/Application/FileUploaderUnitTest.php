@@ -5,9 +5,10 @@ namespace App\Test\Service\FileUploader;
 use App\Books\Application\Dto\CreateBookRequest;
 use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Infrastructure\Uploader\LocalBookFileUploader;
+use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class FileUploaderUnitTest extends KernelTestCase
+class FileUploaderUnitTest extends UnitTestCase
 {
     private $localFileUploader;
     private $fileUploader;

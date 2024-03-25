@@ -10,15 +10,15 @@ use App\Shared\Domain\Exceptions\InvalidArgument;
 use App\Tests\src\Authors\Domain\AuthorIdMother;
 use App\Tests\src\Authors\Domain\AuthorMother;
 use App\Tests\src\Authors\Domain\AuthorNameMother;
+use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class CreateAuthorCommandHandlerTest extends KernelTestCase
+class CreateAuthorCommandHandlerTest extends UnitTestCase
 {
     private $handler;
     private $authorCreator;
     private $repository;
-    private $command;
 
     protected function setUp(): void
     {

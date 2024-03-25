@@ -8,10 +8,11 @@ use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
 use App\Shared\Domain\Exceptions\InvalidArgument;
 use App\Tests\src\Authors\Domain\AuthorIdMother;
 use App\Tests\src\Authors\Domain\AuthorNameMother;
+use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class AuthorCreatorUnitTest extends KernelTestCase
+class AuthorCreatorUnitTest extends UnitTestCase
 {
     private $authorRep;
     private $authorCreator;

@@ -5,10 +5,11 @@ namespace App\Tests\src\Books\Application;
 use App\Books\Domain\BookId;
 use App\Books\Domain\BookRepository;
 use App\Tests\src\Books\Domain\BookMother;
+use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Nonstandard\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class BookRepositoryTest extends KernelTestCase
+class BookRepositoryTest extends UnitTestCase
 {
     private $repository;
 
@@ -18,18 +19,8 @@ class BookRepositoryTest extends KernelTestCase
         $this->repository = $this->getContainer()->get(BookRepository::class);
     }
 
-    /** @test */
-	public function it_should_save_a_book(): void
-	{
-        $this->markTestSkipped('PHPUnit will skip this test method');
-
-		$book = BookMother::create();
-
-		$this->repository->save($book);
-	}
-
 	/** @test */
-	public function it_should_return_an_existing_book(): void
+	public function it_should_save_and_return_an_existing_book(): void
 	{
         $bookId = new BookId(Uuid::uuid4());
 

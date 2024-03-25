@@ -8,16 +8,17 @@ use App\Books\Application\Create\BookCreator;
 use App\Books\Application\Dto\CreateBookRequest;
 use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
+use App\Books\Domain\BookRepository;
 use App\Books\Domain\Description;
 use App\Books\Domain\Score;
-use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
 use App\Shared\Domain\Event\EventBus;
 use App\Tests\src\Authors\Domain\AuthorIdMother;
 use App\Tests\src\Authors\Domain\AuthorMother;
+use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class BookCreatorUnitTest extends KernelTestCase
+class BookCreatorUnitTest extends UnitTestCase
 {
     private $fileUploader;
     private $bookRep;
@@ -30,8 +31,7 @@ class BookCreatorUnitTest extends KernelTestCase
         parent::setUp();
 
         $this->fileUploader = $this->createMock(BookFileUploader::class);
-        // TODO : Cambiar el DoctrineBookRepository al BookRepository
-        $this->bookRep = $this->createMock(DoctrineBookRepository::class);
+        $this->bookRep = $this->createMock(BookRepository::class);
         $this->bookFinder = $this->createMock(AuthorFinder::class);
         $this->eventDispatcher = $this->createMock(EventBus::class);
 

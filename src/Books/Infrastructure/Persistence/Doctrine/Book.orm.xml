@@ -8,7 +8,6 @@
     
     <embedded name="title" class="App\Books\Domain\Title" use-column-prefix="false"/>
     <field name="image" type="string" column="image" length="255" nullable="true"/>
-    <field name="pages" type="integer" column="pages" nullable="true"/>
     <!--<field name="description" type="text" column="description" nullable="true"/>-->
     <embedded name="description" class="App\Books\Domain\Description" use-column-prefix="false"/>
     <embedded name="score" class="App\Books\Domain\Score" use-column-prefix="false"/>

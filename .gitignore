@@ -3,3 +3,5 @@
 /vendor/
 /var/
 /public/storage/default/
+/.idea/*
+/.phpunit.result.cache

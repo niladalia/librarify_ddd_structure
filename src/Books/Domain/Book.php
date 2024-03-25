@@ -24,7 +24,7 @@ class Book
 
 
     public function __construct(
-        private BookId $bookId,
+        private BookId $id,
         private Title $title,
         private ?string $image,
 
@@ -86,7 +86,7 @@ class Book
     }
     public function getId(): BookId
     {
-        return $this->bookId;
+        return $this->id;
     }
 
     public function getTitle(): Title

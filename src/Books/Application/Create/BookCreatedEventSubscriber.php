@@ -24,7 +24,10 @@ class BookCreatedEventSubscriber implements EventSubscriberInterface
 
     public function logCreation(BookCreatedDomainEvent $event)
     {
+
+        // Not working because EventBus is implemented by RabbitMQ
         $book = ($this->BookFinder)(new BookId($event->id()));
+        $this->logger->info("EVENT SUBSCRIBER !!!!!");
         $this->logger->info(sprintf('Book Created: %s', $book->getTitle()->getValue()));
     }
 

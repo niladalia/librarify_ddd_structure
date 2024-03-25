@@ -8,10 +8,11 @@ use App\Books\Domain\BookNotFound;
 use App\Books\Domain\Title;
 use App\Books\Infrastructure\Persistence\DoctrineBookRepository;
 use App\Tests\src\Books\Domain\BookMother;
+use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class BookFinderUnitTest extends KernelTestCase
+class BookFinderUnitTest extends UnitTestCase
 {
     private $bookRep;
     private $BookFinder;

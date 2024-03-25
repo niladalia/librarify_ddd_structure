@@ -3,18 +3,17 @@
 namespace App\Tests\src\Shared\Infrastructure\PhpUnit;
 
 use App\Tests\src\Shared\Infrastructure\Doctrine\MysqlTestDatabaseCleaner;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UnitTestCase extends KernelTestCase
 {
     protected function setUp(): void
     {
-        /*
-         * $entityManager = self::getContainer()->get(EntityManager::class);
-         * $cleaner =  new MysqlTestDatabaseCleaner();
-         * $cleaner->__invoke($entityManager);
-         */
+        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        $cleaner =  new MysqlTestDatabaseCleaner();
+
+        $cleaner->__invoke($entityManager);
 	}
 
     protected function tearDown(): void
