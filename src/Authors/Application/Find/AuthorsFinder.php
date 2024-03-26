@@ -2,11 +2,8 @@
 
 namespace App\Authors\Application\Find;
 
-use App\Authors\Domain\Author;
-use App\Authors\Domain\AuthorNotFound;
 use App\Authors\Domain\Authors;
 use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
-use Ramsey\Uuid\Uuid;
 
 class AuthorsFinder
 {

@@ -2,7 +2,6 @@
 
 namespace App\Authors\Domain;
 
-use App\Authors\Domain\AuthorName;
 use App\Books\Domain\Book;
 use App\Books\Domain\Books;
 use Doctrine\Common\Collections\ArrayCollection;

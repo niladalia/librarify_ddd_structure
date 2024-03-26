@@ -2,13 +2,11 @@
 
 namespace App\Books\Application\Update;
 
+use App\Books\Application\Create\DTO\CreateBookRequest;
 use App\Books\Domain\Book;
-use App\Books\Application\Dto\CreateBookRequest;
 use App\Categories\Application\Create\CategoryCreator;
 use App\Categories\Application\Find\CategoryFinder;
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Ramsey\Uuid\Uuid;
 
 class UpdateBookCategory
 {

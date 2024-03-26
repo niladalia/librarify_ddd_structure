@@ -3,7 +3,7 @@
 namespace App\Books\Application\Create;
 
 use App\Authors\Application\Find\AuthorFinder;
-use App\Books\Application\Dto\CreateBookRequest;
+use App\Books\Application\Create\DTO\CreateBookRequest;
 use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
 use App\Books\Domain\BookRepository;

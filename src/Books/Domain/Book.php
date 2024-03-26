@@ -3,17 +3,12 @@
 namespace App\Books\Domain;
 
 use App\Authors\Domain\Author;
-use App\Books\Domain\Description;
-use App\Books\Domain\Score;
-use App\Books\Domain\Title;
-use App\Categories\Domain\Category;
 use App\Categories\Domain\Categories;
-use App\Books\Domain\BookCreatedDomainEvent;
+use App\Categories\Domain\Category;
 use App\Shared\Domain\Event\DomainEvent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
-use Symfony\Contracts\EventDispatcher\Event;
 
 class Book
 {
@@ -55,7 +50,7 @@ class Book
         $book->addDomainEvent(
             new BookCreatedDomainEvent(
                 $book->getId()->getValue(),
-                $book->getTitle()->getValue()
+                $book->title()->getValue()
             )
         );
         return $book;
@@ -89,7 +84,7 @@ class Book
         return $this->id;
     }
 
-    public function getTitle(): Title
+    public function title(): Title
     {
         return $this->title;
     }
@@ -119,7 +114,7 @@ class Book
 
         return [
             'id' => $this->getId()->getValue(),
-            'title' => $this->getTitle()->getValue(),
+            'title' => $this->title()->getValue(),
             'image' => $this->getImage(),
             'score' => $this->getScore()->getValue(),
             'description' => $this->getDescription()->getValue(),

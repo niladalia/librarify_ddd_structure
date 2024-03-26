@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Books\Application\Dto;
+namespace App\Books\Application\Create\DTO;
 
 use App\Books\Domain\Book;
 
@@ -50,7 +50,7 @@ class CreateBookRequest
     public static function createFromBook(Book $book)
     {
         $dto = new self();
-        $dto->title = $book->getTitle()->getValue();
+        $dto->title = $book->title()->getValue();
         return $dto;
     }
 }

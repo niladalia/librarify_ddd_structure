@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Test\Controller\Api;
+namespace App\Tests\src\Books\Infrastructure\Controllers;
 
 use App\Authors\Infrastructure\Persistence\DoctrineAuthorRepository;
 use App\Tests\src\Authors\Domain\AuthorIdMother;
 use App\Tests\src\Authors\Domain\AuthorMother;
+use App\Tests\src\Shared\Infrastructure\PhpUnit\FunctionalTestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class BookPostControllerTest extends WebTestCase
+class BookPostControllerTest extends FunctionalTestCase
 {
 
     public function testCreateComplexBookSuccess()

@@ -6,6 +6,8 @@ use App\Books\Domain\Book;
 use App\Books\Domain\BookId;
 use App\Books\Domain\BookRepository;
 use App\Books\Domain\Books;
+use App\Books\Domain\Score;
+use App\Books\Domain\Title;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -29,6 +31,29 @@ class DoctrineBookRepository extends ServiceEntityRepository implements BookRepo
         return new Books(...$all_books);
     }
 
+    public function findByParams(?Title $title, ?Score $score, ?int $limit, ?int $offset): ?Books
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('book');
+        $qb->from(Book::class,'book');
+
+        if ($title->getValue() != null) {
+            $qb->where('book.title.value LIKE :title')
+                ->setParameter('title', '%'. $title->getValue() .'%');
+        }
+
+        if ($score->getValue() != null) {
+            $qb->andWhere('book.score.value = :score')
+                ->setParameter('score', $score->getValue());
+        }
+
+        $qb->setFirstResult($offset);
+        $qb->setMaxResults($limit);
+        $books = $qb->getQuery()->getResult();
+
+        return  new Books(...$books);
+    }
  
     public function save(Book $book): Book
     {

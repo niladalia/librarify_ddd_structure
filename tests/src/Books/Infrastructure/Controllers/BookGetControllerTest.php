@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Test\Controller\Api;
+namespace App\Tests\src\Books\Infrastructure\Controllers;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -9,7 +9,6 @@ class BookGetControllerTest extends WebTestCase
     public function test_assert_find_books()
     {
         // Potser tindriem que crear un llibre per a que el test fos complert
-        
         $client = static::createClient();
 
         $client->request(

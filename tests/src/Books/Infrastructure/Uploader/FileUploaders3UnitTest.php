@@ -2,7 +2,7 @@
 
 namespace App\Tests\src\Books\Infrastructure\Uploader;
 
-use App\Books\Application\Dto\CreateBookRequest;
+use App\Books\Application\Create\DTO\CreateBookRequest;
 use App\FileUploader\Application\FileUploaderS3;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

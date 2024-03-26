@@ -2,8 +2,7 @@
 
 namespace App\Books\Application\Edit;
 
-use App\Books\Application\Dto\CreateBookRequest;
-use App\Books\Application\Dto\BookFormType;
+use App\Books\Application\Create\DTO\CreateBookRequest;
 use App\Books\Application\Find\BookFinder;
 use App\Books\Application\Update\UpdateBookAuthor;
 use App\Books\Application\Update\UpdateBookCategory;
@@ -15,7 +14,6 @@ use App\Books\Domain\Description;
 use App\Books\Domain\Score;
 use App\Books\Domain\Title;
 use App\Categories\Application\Dto\CategoryDto;
-use App\Shared\Domain\Exceptions\InvalidData;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormFactoryInterface;
 

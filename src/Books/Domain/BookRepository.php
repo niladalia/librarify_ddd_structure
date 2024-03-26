@@ -11,6 +11,8 @@ interface BookRepository
 
     public function find_all(): ?Books;
 
+    public function findByParams(?Title $title, ?Score $score, ?int $limit, ?int $offset): ?Books;
+
     public function save(Book $book): Book;
 
     public function reload(Book $book): Book;

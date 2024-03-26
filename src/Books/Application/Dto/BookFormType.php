@@ -2,7 +2,7 @@
 
 namespace App\Books\Application\Dto;
 
-use App\Books\Application\Dto\CreateBookRequest;
+use App\Books\Application\Create\DTO\CreateBookRequest;
 use App\Categories\Application\Dto\CategoryFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

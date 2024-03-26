@@ -9,6 +9,7 @@ class UnitTestCase extends KernelTestCase
 {
     protected function setUp(): void
     {
+
         $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $cleaner =  new MysqlTestDatabaseCleaner();

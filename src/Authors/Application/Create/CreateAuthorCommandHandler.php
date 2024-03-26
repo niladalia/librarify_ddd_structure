@@ -4,9 +4,9 @@ namespace App\Authors\Application\Create;
 
 use App\Authors\Domain\AuthorId;
 use App\Authors\Domain\AuthorName;
-use Ramsey\Uuid\Uuid;
-// ATENTION : Infrastructure component in Application layer !
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+
+// ATENTION : Infrastructure component in Application layer !
 
 #[AsMessageHandler]
 final readonly class CreateAuthorCommandHandler

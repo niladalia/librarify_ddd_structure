@@ -5,7 +5,7 @@ namespace App\Tests\src\Books\Application;
 use App\Authors\Application\Find\AuthorFinder;
 use App\Authors\Domain\AuthorNotFound;
 use App\Books\Application\Create\BookCreator;
-use App\Books\Application\Dto\CreateBookRequest;
+use App\Books\Application\Create\DTO\CreateBookRequest;
 use App\Books\Application\UploadFile\BookFileUploader;
 use App\Books\Domain\Book;
 use App\Books\Domain\BookRepository;
@@ -16,7 +16,6 @@ use App\Tests\src\Authors\Domain\AuthorIdMother;
 use App\Tests\src\Authors\Domain\AuthorMother;
 use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class BookCreatorUnitTest extends UnitTestCase
 {
@@ -55,7 +54,7 @@ class BookCreatorUnitTest extends UnitTestCase
         $book = $this->bookCreator->__invoke($bookDto);
 
         $this->assertInstanceOf(Book::class, $book);
-        $this->assertEquals("Title", $book->getTitle()->getValue());
+        $this->assertEquals("Title", $book->title()->getValue());
     }
 
     public function test_it_creates_a_full_book()
@@ -93,7 +92,7 @@ class BookCreatorUnitTest extends UnitTestCase
         $book = $this->bookCreator->__invoke($bookDto);
 
         $this->assertInstanceOf(Book::class, $book);
-        $this->assertEquals("Title", $book->getTitle()->getValue());
+        $this->assertEquals("Title", $book->title()->getValue());
         $this->assertEquals(new Score(3), $book->getScore());
         $this->assertEquals(new Description("Description"), $book->getDescription());
         $this->assertEquals($author, $book->getAuthor());

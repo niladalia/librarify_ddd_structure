@@ -2,9 +2,9 @@
 
 namespace App\Books\Application\Update;
 
+use App\Authors\Application\Find\AuthorFinder;
 use App\Authors\Domain\Author;
 use App\Books\Domain\Book;
-use App\Authors\Application\Find\AuthorFinder;
 
 class UpdateBookAuthor
 {

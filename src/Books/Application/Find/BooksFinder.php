@@ -2,23 +2,26 @@
 
 namespace App\Books\Application\Find;
 
+use App\Books\Application\Find\DTO\RequestBooksFinder;
 use App\Books\Domain\Books;
 use App\Books\Domain\BookRepository;
+use App\Books\Domain\Score;
+use App\Books\Domain\Title;
 
-class BooksFinder
+class   BooksFinder
 {
-    private $book_rep;
+    public function __construct(private BookRepository $book_rep) {}
 
-    public function __construct(BookRepository $book_rep)
+
+    public function __invoke(RequestBooksFinder $requestBooksFinder): Books
     {
-        $this->book_rep = $book_rep;
-    }
 
-
-    public function __invoke(): Books
-    {
-        $books = $this->book_rep->find_all();
-
-        return $books;
+        return $this->book_rep->findByParams
+        (
+            new Title($requestBooksFinder->title(),true),
+            new Score($requestBooksFinder->score()),
+            $requestBooksFinder->limit(),
+            $requestBooksFinder->offset()
+        );
     }
 }

@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Form\Type;
+namespace App\Authors\Application\Dto;
 
-use App\Authors\Application\Dto\AuthorDto;
-use App\Books\Application\Dto\CreateBookRequest;
-use App\Categories\Application\Dto\CategoryDto;
+use App\Form\Type\BookFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

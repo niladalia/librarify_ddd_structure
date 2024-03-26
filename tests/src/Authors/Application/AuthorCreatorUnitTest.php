@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Test\Service\Author;
+
+namespace App\Tests\src\Authors\Application;
 
 use App\Authors\Application\Create\AuthorCreator;
 use App\Authors\Domain\Author;
@@ -10,7 +11,6 @@ use App\Tests\src\Authors\Domain\AuthorIdMother;
 use App\Tests\src\Authors\Domain\AuthorNameMother;
 use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class AuthorCreatorUnitTest extends UnitTestCase
 {

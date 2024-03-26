@@ -2,8 +2,8 @@
 
 namespace App\Authors\Domain;
 
-use App\Shared\Domain\ValueObject\StringValueObject;
 use App\Shared\Domain\Exceptions\InvalidArgument;
+use App\Shared\Domain\ValueObject\StringValueObject;
 
 final class AuthorName extends StringValueObject
 {

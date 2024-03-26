@@ -12,7 +12,6 @@ use App\Tests\src\Authors\Domain\AuthorMother;
 use App\Tests\src\Authors\Domain\AuthorNameMother;
 use App\Tests\src\Shared\Infrastructure\PhpUnit\UnitTestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CreateAuthorCommandHandlerTest extends UnitTestCase
 {

@@ -2,7 +2,7 @@
 
 namespace App\Books\Application\UploadFile;
 
-use App\Books\Application\Dto\CreateBookRequest;
+use App\Books\Application\Create\DTO\CreateBookRequest;
 use App\Books\Domain\BookFileUploaderInterface;
 
 class BookFileUploader

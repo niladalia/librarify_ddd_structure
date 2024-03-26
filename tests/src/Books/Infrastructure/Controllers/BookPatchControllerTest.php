@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Test\Controller\Api;
+namespace App\Tests\src\Books\Infrastructure\Controllers;
 
 use App\Books\Domain\BookId;
 use App\Books\Domain\Description;
@@ -36,7 +36,7 @@ class BookPatchControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // Assert  the title has changed correclty
-        $this->assertEquals("New Title", $book->getTitle()->getValue());
+        $this->assertEquals("New Title", $book->title()->getValue());
         // Assert that, since it is a patch call and it updates just the attributes we specify and doesn't change other attributes.
         $this->assertEquals("Description", $book->getDescription()->getValue());
     }
